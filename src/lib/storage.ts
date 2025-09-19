@@ -29,6 +29,18 @@ function uid() {
 }
 
 // Users
+export function setCurrentUser(userId: string | null) {
+  if (!userId) {
+    localStorage.removeItem("currentUserId");
+  } else {
+    localStorage.setItem("currentUserId", userId);
+  }
+}
+
+export function getCurrentUser(): string | null {
+  return localStorage.getItem("currentUserId");
+}
+
 export async function loadUsers(env: Env): Promise<User[]> {
   const res = await env.DB.prepare('SELECT * FROM users').all<User>();
   return (res.results || []) as User[];
