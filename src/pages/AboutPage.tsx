@@ -11,7 +11,7 @@ export default function AboutPage() {
               关于我们
             </h1>
             <p className="mx-auto max-w-3xl text-lg text-muted-foreground">
-              我们致力于通过高品质的大麦青汁产品，帮助人们实现更健康、更活力的生活方式
+              我们致力于打造值得信赖的二手车交易平台，以透明车况和专业服务让购车更简单
             </p>
           </div>
         </div>
@@ -23,14 +23,14 @@ export default function AboutPage() {
             <div className="space-y-6">
               <div>
                 <h2 className="text-3xl font-bold tracking-tight">
-                  我们的故事
+                  我们的���事
                 </h2>
                 <div className="mt-4 space-y-4">
                   <p>
-                    大麦青汁的故事始于2010年，当时我们的创始人张博士在日本考察传统健康食品时，被大麦青汁的神奇功效所吸引。他意识到，在现代快节奏的生活中，人们越来越难以获取全面的营养，而大麦青汁作为一种浓缩的营养饮品，正好可以弥补这一缺口。
+                    我们的故事始于2015年，几位资深汽车人希望用更透明的方式重塑二手车交易体验。我们深知买车不易，于是从源头把控车源、建立标准化检测，减少信息不对称。
                   </p>
                   <p>
-                    回国后，张博士组建了一支专业的研发团队，经过三年的研发和实验，终于在2013年推出了第一款适合中国人口味的大麦青汁产品。从那时起，我们一直致力于提高产品质量，扩展产品线，以满足不同消费者的需求。
+                    经过多年沉淀，我们形成了严谨的车况评估体系与完善的服务流程，让每一位用户都能高效、安心地找到合适的车辆。
                   </p>
                 </div>
               </div>
@@ -40,10 +40,10 @@ export default function AboutPage() {
                 </h2>
                 <div className="mt-4 space-y-4">
                   <p>
-                    我们的使命是通过提供高品质的大麦青汁产品，帮助人们实现更健康、更平衡的生活方式。我们相信，健康不仅仅是身体没有疾病，而是身体、心理和社会适应能力的完全良好状态。
+                    我们的使命是让二手车交易更简单可信：车况透明、价格透明、流程高效。
                   </p>
                   <p>
-                    我们希望通过我们的产品，让每个人都能轻松获取自然、全面的营养，提高生活质量，享受健康带来的活力和幸福。
+                    无论是通勤代步还是家庭出行，我们希望帮助每位用户以合理的预算买到称心如意的车。
                   </p>
                 </div>
               </div>
@@ -98,7 +98,7 @@ export default function AboutPage() {
             <div className="rounded-lg bg-white p-6 shadow-md">
               <h3 className="mb-4 text-xl font-semibold">环境责任</h3>
               <p>
-                我们关注产品全生命周期的环境影响。我们选用环保包装材料，优化生产流程，减少资源消耗和废弃物排放，为保护环境贡献自己的力量。
+                我们关注产品全生命周期的环境影响。我们选���环保包装材料，优化生产流程，减少资源消耗和废弃物排放，为保护环境贡献自己的力量。
               </p>
             </div>
             <div className="rounded-lg bg-white p-6 shadow-md">
@@ -115,7 +115,7 @@ export default function AboutPage() {
         <div className="mb-12 text-center">
           <h2 className="mb-4 text-3xl font-bold tracking-tight">我们的团队</h2>
           <p className="mx-auto max-w-3xl text-muted-foreground">
-            由营养学专家、食品科学家和健康顾问组成的专业团队
+            由车辆评估师、资深销售顾问与服务工程师组成的专业团队
           </p>
         </div>
 
@@ -128,7 +128,7 @@ export default function AboutPage() {
             { id: 5, name: "王女士", role: "市场总监", image: "/images/wang.jpg" },
             { id: 6, name: "杨主管", role: "客户服务主管", image: "/images/member6.jpg" },
             { id: 7, name: "赵经理", role: "供应链经理", image: "/images/member7.jpg" },
-            { id: 8, name: "孙顾问", role: "健康顾问", image: "/images/member8.jpg" },
+            { id: 8, name: "孙顾问", role: "车辆顾问", image: "/images/member8.jpg" },
           ].map((member) => (
             <div key={member.id} className="text-center">
               <div className="mx-auto mb-4 h-40 w-40 overflow-hidden rounded-full">
