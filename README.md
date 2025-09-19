@@ -1,1 +1,1 @@
-# web_car_global
+# Basic project starter
