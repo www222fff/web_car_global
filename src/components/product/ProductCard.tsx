@@ -8,8 +8,10 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { ShoppingCart } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useAuth } from "@/context/AuthContext";
+import { useCart } from "@/context/CartContext";
 
 interface ProductCardProps {
   id: string;
@@ -28,41 +30,19 @@ export function ProductCard({
   originalPrice,
   image,
 }: ProductCardProps) {
-  // 新增：本地状态用于反馈
   const [submitting, setSubmitting] = useState(false);
-  const [success, setSuccess] = useState(false);
   const [quantity, setQuantity] = useState(1);
-  const [contact, setContact] = useState("");
+  const { user } = useAuth();
+  const { add } = useCart();
+  const navigate = useNavigate();
 
-  // 新增：下单处理函数，调用 /api/orders
-  const handleOrder = async () => {
-    if (!contact.trim()) {
-      setContact('请填写联系方式');
+  const handleAddToCart = () => {
+    if (!user) {
+      navigate('/login');
       return;
     }
     setSubmitting(true);
-    setSuccess(false);
-    try {
-      const orderDate = new Date().toISOString();
-      await fetch("/api/orders", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          product: name,
-          num: quantity,
-          contact,
-          orderdata: JSON.stringify({ orderDate }),
-        }),
-      });
-      setSuccess(true);
-      setContact('下单成功！');
-      setTimeout(() => {
-        setSuccess(false);
-        setContact("");
-      }, 2000);
-    } catch (e) {
-      // 可选：处理错误
-    }
+    add(id, quantity);
     setSubmitting(false);
   };
 
@@ -99,17 +79,6 @@ export function ProductCard({
             </span>
           )}
         </div>
-        <div className="mt-2">
-          <input
-            type="text"
-            className="w-full border rounded px-2 py-1 text-sm"
-            placeholder="请输入联系方式（手机号/微信/邮箱）"
-            value={contact}
-            onChange={e => setContact(e.target.value)}
-            disabled={submitting}
-            style={success || contact === '请填写联系方式' ? { color: contact === '请填写联系方式' ? 'red' : 'green', fontWeight: 'bold' } : {}}
-          />
-        </div>
       </CardContent>
       <CardFooter className="p-4 pt-0">
         <div className="flex w-full gap-2 items-center">
@@ -137,13 +106,13 @@ export function ProductCard({
           <Button
             variant="outline"
             size="icon"
-            onClick={handleOrder}
+            onClick={handleAddToCart}
             disabled={submitting}
+            title="加入购物车"
           >
             <ShoppingCart className="h-4 w-4" />
           </Button>
         </div>
-        {/* 下单成功提示区域已由输入框高亮和内容提示替代，无需再渲染此区域 */}
       </CardFooter>
     </Card>
   );

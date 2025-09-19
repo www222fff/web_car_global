@@ -6,14 +6,14 @@ export function Footer() {
       <div className="container py-8 md:py-12">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           <div className="space-y-3">
-            <h3 className="text-lg font-semibold">大麦青汁</h3>
+            <h3 className="text-lg font-semibold">二手车市场</h3>
             <img
-              src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=200&q=80"
+              src="https://images.unsplash.com/photo-1549924231-f129b911e442?auto=format&fit=crop&w=200&q=80"
               alt="品牌logo"
               className="w-20 h-20 object-cover rounded-full mb-2"
             />
             <p className="text-sm text-muted-foreground">
-              源自自然的健康能量，每一天的绿色活力。
+              严选优质二手车，车况透明，放心购车。
             </p>
             <div className="flex gap-2 mt-2">
               <a
@@ -68,7 +68,7 @@ export function Footer() {
                   to="/products"
                   className="text-sm text-muted-foreground hover:text-green-600"
                 >
-                  产品
+                  车辆
                 </Link>
               </li>
               <li>
@@ -76,7 +76,7 @@ export function Footer() {
                   to="/benefits"
                   className="text-sm text-muted-foreground hover:text-green-600"
                 >
-                  健康功效
+                  购车指南
                 </Link>
               </li>
             </ul>
@@ -124,7 +124,7 @@ export function Footer() {
 
         <div className="mt-8 border-t pt-8 text-center">
           <p className="text-xs text-muted-foreground">
-            &copy; {new Date().getFullYear()} 大麦青汁. 保留所有权利.
+            &copy; {new Date().getFullYear()} 二手车市场. 保留所有权利.
           </p>
         </div>
       </div>

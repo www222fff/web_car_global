@@ -3,21 +3,21 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 // Sample testimonials data
 const testimonials = [
 	{
-		quote: "大麦青汁已经成为我每日生活的一部分，精力明显提升，很推荐！",
+		quote: "车辆检测报告很详细，销售服务专业，提车流程高效。",
 		author: "张女士",
 		role: "上班族",
 		avatar: "https://randomuser.me/api/portraits/women/65.jpg",
 	},
 	{
-		quote: "喝了半年的大麦青汁，身体各项指标都有明显改善，非常满意这个产品。",
+		quote: "价格透明，没有隐形费用，购车体验非常顺畅。",
 		author: "王先生",
-		role: "健身教练",
+		role: "工程师",
 		avatar: "https://randomuser.me/api/portraits/men/32.jpg",
 	},
 	{
-		quote: "口感比想象中好很多，孩子们也愿意喝，全家人的健康守护者。",
+		quote: "车况与描述一致，售后响应及时，值得推荐。",
 		author: "李女士",
-		role: "家庭主妇",
+		role: "新手妈妈",
 		avatar: "https://randomuser.me/api/portraits/women/68.jpg",
 	},
 ];

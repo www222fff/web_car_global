@@ -11,55 +11,18 @@ import {
 } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import { Search } from "lucide-react";
-import { useState } from "react";
-
-// Sample products data
-const allProducts = [
-  {
-    id: "1",
-    name: "大麦青汁基础版",
-    description: "纯天然大麦草精华，每日健康饮品",
-    price: 99,
-    originalPrice: 129,
-    image: "/images/product1.jpg",
-    category: "基础系列",
-  },
-  {
-    id: "2",
-    name: "大麦青汁高级版",
-    description: "添加多种水果精华，口感更佳",
-    price: 129,
-    originalPrice: 159,
-    image: "/images/product2.jpg",
-    category: "高级系列",
-  },
-  {
-    id: "3",
-    name: "大麦青汁家庭装",
-    description: "30袋大容量，全家共享健康",
-    price: 239,
-    originalPrice: 299,
-    image: "/images/product3.jpg",
-    category: "家庭系列",
-  },
-  {
-    id: "4",
-    name: "大麦青汁礼盒装",
-    description: "精美包装，送礼佳选",
-    price: 299,
-    originalPrice: 359,
-    image: "/images/product4.jpg",
-    category: "礼品系列",
-  },
-];
+import { useMemo, useState } from "react";
+import { loadCars } from "@/lib/storage";
 
 export default function ProductsPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
-  const [priceRange, setPriceRange] = useState<number[]>([0, 500]);
+  const cars = loadCars();
+  const maxPrice = useMemo(() => (cars.length ? Math.max(...cars.map((c) => c.price)) : 100000), [cars]);
+  const [priceRange, setPriceRange] = useState<number[]>([0, maxPrice]);
 
-  // Filter products based on search, category, and price range
-  const filteredProducts = allProducts.filter((product) => {
+  // Filter cars based on search, category, and price range
+  const filteredProducts = cars.filter((product) => {
     const matchesSearch =
       product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       product.description.toLowerCase().includes(searchQuery.toLowerCase());
@@ -74,19 +37,19 @@ export default function ProductsPage() {
   // Get unique categories
   const categories = [
     "all",
-    ...new Set(allProducts.map((product) => product.category)),
+    ...Array.from(new Set(cars.map((product) => product.category).filter(Boolean))) as string[],
   ];
 
   return (
     <Layout>
       <div className="container py-8 md:py-12">
-        <h1 className="mb-6 text-3xl font-bold">全部产品</h1>
+        <h1 className="mb-6 text-3xl font-bold">全部车辆</h1>
 
         <div className="grid gap-8 md:grid-cols-4">
           {/* Filters Sidebar */}
           <div className="space-y-6">
             <div>
-              <h3 className="mb-4 font-medium">搜索产品</h3>
+              <h3 className="mb-4 font-medium">搜索车辆</h3>
               <div className="relative">
                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                 <Input
@@ -100,7 +63,7 @@ export default function ProductsPage() {
             </div>
 
             <div>
-              <h3 className="mb-4 font-medium">产品分类</h3>
+              <h3 className="mb-4 font-medium">车型分类</h3>
               <Select
                 value={selectedCategory}
                 onValueChange={setSelectedCategory}
@@ -121,9 +84,9 @@ export default function ProductsPage() {
             <div>
               <h3 className="mb-4 font-medium">价格范围</h3>
               <Slider
-                defaultValue={[0, 500]}
-                max={500}
-                step={10}
+                defaultValue={[0, maxPrice]}
+                max={Math.max(maxPrice, 10000)}
+                step={1000}
                 value={priceRange}
                 onValueChange={setPriceRange}
                 className="mb-6"
@@ -140,7 +103,7 @@ export default function ProductsPage() {
               onClick={() => {
                 setSearchQuery("");
                 setSelectedCategory("all");
-                setPriceRange([0, 500]);
+                setPriceRange([0, maxPrice]);
               }}
             >
               重置筛选

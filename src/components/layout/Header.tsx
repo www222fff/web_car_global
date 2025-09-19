@@ -1,18 +1,23 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ShoppingCart, Menu, X } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/context/AuthContext";
+import { useCart } from "@/context/CartContext";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, isAdmin, logout } = useAuth();
+  const { count } = useCart();
+  const navigate = useNavigate();
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center">
           <Link to="/" className="flex items-center space-x-2">
-            <span className="text-xl font-bold text-green-600">大麦青汁</span>
+            <span className="text-xl font-bold text-green-600">二手车市场</span>
           </Link>
         </div>
 
@@ -28,33 +33,35 @@ export function Header() {
             to="/products"
             className="text-sm font-medium transition-colors hover:text-green-600"
           >
-            产品
+            车辆
           </Link>
-          <Link
-            to="/benefits"
-            className="text-sm font-medium transition-colors hover:text-green-600"
-          >
-            健康功效
-          </Link>
-          <Link
-            to="/about"
-            className="text-sm font-medium transition-colors hover:text-green-600"
-          >
-            关于我们
-          </Link>
-          <Link
-            to="/contact"
-            className="text-sm font-medium transition-colors hover:text-green-600"
-          >
-            联系我们
-          </Link>
+          {isAdmin && (
+            <Link
+              to="/admin/upload"
+              className="text-sm font-medium transition-colors hover:text-green-600"
+            >
+              发布车辆
+            </Link>
+          )}
         </nav>
 
         <div className="flex items-center space-x-4">
-          <Button variant="ghost" size="icon" className="relative">
+          {!user ? (
+            <div className="hidden md:flex items-center gap-2">
+              <Button variant="ghost" onClick={() => navigate('/login')}>登录</Button>
+              <Button onClick={() => navigate('/register')}>注册</Button>
+            </div>
+          ) : (
+            <div className="hidden md:flex items-center gap-2">
+              <span className="text-sm text-muted-foreground">{user.username}</span>
+              <Button variant="outline" onClick={() => { logout(); navigate('/'); }}>退出</Button>
+            </div>
+          )}
+
+          <Button variant="ghost" size="icon" className="relative" onClick={() => navigate('/cart')}>
             <ShoppingCart className="h-5 w-5" />
             <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-green-600 text-[10px] text-white">
-              0
+              {count}
             </span>
           </Button>
 
@@ -94,29 +101,25 @@ export function Header() {
             className="flex h-10 items-center border-b text-sm font-medium transition-colors hover:text-green-600"
             onClick={() => setIsMenuOpen(false)}
           >
-            产品
+            车辆
           </Link>
-          <Link
-            to="/benefits"
-            className="flex h-10 items-center border-b text-sm font-medium transition-colors hover:text-green-600"
-            onClick={() => setIsMenuOpen(false)}
-          >
-            健康功效
-          </Link>
-          <Link
-            to="/about"
-            className="flex h-10 items-center border-b text-sm font-medium transition-colors hover:text-green-600"
-            onClick={() => setIsMenuOpen(false)}
-          >
-            关于我们
-          </Link>
-          <Link
-            to="/contact"
-            className="flex h-10 items-center border-b text-sm font-medium transition-colors hover:text-green-600"
-            onClick={() => setIsMenuOpen(false)}
-          >
-            联系我们
-          </Link>
+          {isAdmin && (
+            <Link
+              to="/admin/upload"
+              className="flex h-10 items-center border-b text-sm font-medium transition-colors hover:text-green-600"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              发布车辆
+            </Link>
+          )}
+          {!user ? (
+            <>
+              <Link to="/login" className="flex h-10 items-center border-b text-sm font-medium transition-colors hover:text-green-600" onClick={() => setIsMenuOpen(false)}>登录</Link>
+              <Link to="/register" className="flex h-10 items-center border-b text-sm font-medium transition-colors hover:text-green-600" onClick={() => setIsMenuOpen(false)}>注册</Link>
+            </>
+          ) : (
+            <button className="flex h-10 items-center border-b text-sm font-medium text-left hover:text-green-600" onClick={() => { logout(); setIsMenuOpen(false); navigate('/'); }}>退出</button>
+          )}
         </nav>
       </div>
     </header>
