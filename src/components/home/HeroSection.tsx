@@ -9,18 +9,18 @@ export function HeroSection() {
           <div className="space-y-6">
             <div>
               <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-                自然能量，<span className="text-green-600">健康生活</span>
+                放心选车，<span className="text-green-600">轻松成交</span>
               </h1>
               <p className="mt-4 text-lg text-muted-foreground">
-                大麦青汁 - 源自天然大麦草，营养丰富，让您每天都充满活力和健康。
+                精选优质二手车源，透明车况，支持在线咨询与购物车管理。
               </p>
             </div>
             <div className="flex flex-col gap-2 sm:flex-row">
               <Button size="lg" asChild>
-                <Link to="/products">立即购买</Link>
+                <Link to="/products">查看车辆</Link>
               </Button>
               <Button size="lg" variant="outline" asChild>
-                <Link to="/benefits">了解更多</Link>
+                <Link to="/login">登录</Link>
               </Button>
             </div>
             <div className="flex items-center gap-4">
