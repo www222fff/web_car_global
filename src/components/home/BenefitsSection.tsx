@@ -5,28 +5,28 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Heart, Battery, Droplets, Leaf } from "lucide-react";
+import { ShieldCheck, FileCheck, Wrench, Car } from "lucide-react";
 
 const benefits = [
   {
-    icon: <Heart className="h-10 w-10 text-red-500" />,
-    title: "促进心血管健康",
-    description: "富含抗氧化物质，帮助降低血压和胆固醇，保护心血管系统。",
+    icon: <ShieldCheck className="h-10 w-10 text-green-600" />,
+    title: "严选质检",
+    description: "多项车况检测与历史核验，排除重大事故、火烧、水泡。",
   },
   {
-    icon: <Battery className="h-10 w-10 text-yellow-500" />,
-    title: "增强能量",
-    description: "提供多种维生素和矿物质，帮助提高身体能量水平，消除疲劳感。",
+    icon: <FileCheck className="h-10 w-10 text-blue-600" />,
+    title: "透明报告",
+    description: "提供详细检测报告与维保记录，车辆信息一目了然。",
   },
   {
-    icon: <Droplets className="h-10 w-10 text-blue-500" />,
-    title: "促进排毒",
-    description: "含有叶绿素和多种酶，帮助清理体内毒素，促进身体排毒。",
+    icon: <Wrench className="h-10 w-10 text-amber-600" />,
+    title: "售后保障",
+    description: "基础质保与7天无忧问题处理，购车更放心。",
   },
   {
-    icon: <Leaf className="h-10 w-10 text-green-500" />,
-    title: "提高免疫力",
-    description: "富含维生素和抗氧化剂，帮助增强免疫系统，抵抗疾病。",
+    icon: <Car className="h-10 w-10 text-slate-600" />,
+    title: "多样车源",
+    description: "轿车、SUV、MPV等多种选择，满足通勤与家庭出行需求。",
   },
 ];
 
@@ -36,10 +36,10 @@ export function BenefitsSection() {
       <div className="container">
         <div className="mb-12 text-center">
           <h2 className="mb-2 text-3xl font-bold tracking-tight">
-            大麦青汁的健康功效
+            我们的服务保障
           </h2>
           <p className="text-muted-foreground">
-            源自自然的多种营养成分，为您的健康保驾护航
+            车况透明、质检可靠、售后无忧，助您放心选车
           </p>
         </div>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
