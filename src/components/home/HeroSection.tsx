@@ -44,10 +44,9 @@ export function HeroSection() {
             </div>
           </div>
           <div className="relative overflow-hidden rounded-lg flex items-center justify-center bg-black h-[220px] md:h-[350px] lg:h-[350px]">
-            <video
+            <img
               src="/images/group.jpg"
               className="h-full w-full object-cover"
-              poster="https://images.unsplash.com/photo-1610970881699-44a5587cabec?w=800&h=800&fit=crop"
             />
           </div>
         </div>
