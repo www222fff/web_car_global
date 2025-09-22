@@ -19,7 +19,12 @@ export async function onRequest({ request, env }: OnRequestArgs) {
   const db = env.DB as D1Database;
 
   if (request.method === 'POST') {
-    const body = await request.json();
+    let body: any = {};
+    try {
+      body = await request.json();
+    } catch {
+      body = {};
+    }
     if (url.pathname.endsWith('/api/users/login') || body.action === 'login') {
       const { username, password } = body;
       if (!username || !password) return badRequest('缺少用户名或密码');
