@@ -1,12 +1,4 @@
-// ...existing code...
-export async function onRequest({ request, env }: OnRequestArgs) {
-  // ...existing code...
-  if (request.method === 'DELETE') {
-    if (!isAdmin) return badRequest('仅管理员可操作', 403);
-    if (!id) return badRequest('缺少车辆ID');
-    await db.prepare('DELETE FROM cars WHERE id=?').bind(id).run();
-    return ensureJsonResponse({ success: true });
-  }
+import { ensureSchema, seedIfNeeded, getUserFromRequest, ensureJsonResponse, badRequest } from "./_utils";
 // 临时声明 D1Database 类型（如有 Cloudflare D1 依赖请替换为官方类型）
 type D1Database = {
   prepare: (sql: string) => {
@@ -16,10 +8,11 @@ type D1Database = {
     bind: (...args: any[]) => any;
   };
 };
-import { ensureSchema, seedIfNeeded, getUserFromRequest, ensureJsonResponse, badRequest } from "./_utils";
-
 interface Env { DB: D1Database }
 interface OnRequestArgs { request: Request; env: Env }
+
+export async function onRequest({ request, env }: OnRequestArgs) {
+  // ...existing code...
 export async function onRequest({ request, env }: OnRequestArgs) {
   await ensureSchema(env);
   await seedIfNeeded(env);
