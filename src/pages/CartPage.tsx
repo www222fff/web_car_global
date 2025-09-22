@@ -7,6 +7,7 @@ import { useCart } from "@/context/CartContext";
 import { Link, useNavigate } from "react-router-dom";
 import { api } from "@/lib/api";
 
+export default function CartPage() {
   const { user } = useAuth();
   const { items, update, remove } = useCart();
   const navigate = useNavigate();
@@ -75,4 +76,4 @@ import { api } from "@/lib/api";
       </div>
     </Layout>
   );
-// ...existing code...
+}

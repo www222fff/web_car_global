@@ -1,19 +1,3 @@
-export const api = {
-  async deleteCar(userId: string, id: string) {
-    const res = await fetch(`/api/cars?id=${encodeURIComponent(id)}`, { method: 'DELETE', ...withHeaders(userId) });
-    if (!res.ok) throw new Error((await res.json()).error || '删除失败');
-    return res.json();
-  },
-  async deleteOrder(userId: string, id: string) {
-    const res = await fetch('/api/orders', { method: 'DELETE', ...withHeaders(userId), body: JSON.stringify({ id }) });
-    if (!res.ok) throw new Error((await res.json()).error || '删除失败');
-    return res.json();
-  },
-  async cancelOrder(id: string) {
-    const res = await fetch('/api/orders', { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id, status: 'cancelled' }) });
-    if (!res.ok) throw new Error((await res.json()).error || '取消失败');
-    return res.json();
-  },
 export interface UserDTO { id: string; username: string; role: 'admin'|'user' }
 export interface CarDTO { id: string; name: string; description: string; price: number; image?: string|null; year?: number|null; mileage?: number|null; category?: string|null; createdBy: string; images?: string[]; isActive?: number }
 export interface CartItemDTO { carId: string; qty: number; car?: { id: string; name: string; price: number; image?: string|null } }
@@ -25,6 +9,11 @@ function withHeaders(userId?: string) {
 }
 
 export const api = {
+  async deleteCar(userId: string, id: string) {
+    const res = await fetch(`/api/cars?id=${encodeURIComponent(id)}`, { method: 'DELETE', ...withHeaders(userId) });
+    if (!res.ok) throw new Error((await res.json()).error || '删除失败');
+    return res.json();
+  },
   async login(username: string, password: string): Promise<UserDTO> {
     const res = await fetch('/api/users', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'login', username, password }) });
     if (!res.ok) throw new Error((await res.json()).error || '登录失败');
@@ -80,14 +69,19 @@ export const api = {
     if (!res.ok) throw new Error('获取订单失败');
     return res.json();
   },
-    async deleteOrder(userId: string, id: string) {
-      const res = await fetch('/api/orders', { method: 'DELETE', ...withHeaders(userId), body: JSON.stringify({ id }) });
-      if (!res.ok) throw new Error((await res.json()).error || '删除失败');
-      return res.json();
-    },
-    async cancelOrder(userId: string, id: string) {
-      const res = await fetch('/api/orders', { method: 'PATCH', ...withHeaders(userId), body: JSON.stringify({ id, status: 'cancelled' }) });
-      if (!res.ok) throw new Error((await res.json()).error || '取消失败');
-      return res.json();
-    },
+  async deleteOrder(userId: string, id: string) {
+    const res = await fetch('/api/orders', { method: 'DELETE', ...withHeaders(userId), body: JSON.stringify({ id }) });
+    if (!res.ok) throw new Error((await res.json()).error || '删除失败');
+    return res.json();
+  },
+  async cancelOrder(userId: string, id: string) {
+    const res = await fetch('/api/orders', { method: 'PATCH', ...withHeaders(userId), body: JSON.stringify({ id, status: 'cancelled' }) });
+    if (!res.ok) throw new Error((await res.json()).error || '取消失败');
+    return res.json();
+  },
+  async createOrder(userId: string) {
+    const res = await fetch('/api/orders', { method: 'POST', ...withHeaders(userId) });
+    if (!res.ok) throw new Error((await res.json()).error || '下单失败');
+    return res.json();
+  },
 };
