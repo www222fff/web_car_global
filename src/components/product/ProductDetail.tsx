@@ -13,6 +13,7 @@ interface ProductDetailProps {
   details: string;
   ingredients: string;
   instructions: string;
+  isActive?: number;
 }
 
 export function ProductDetail({
@@ -25,6 +26,7 @@ export function ProductDetail({
   details,
   ingredients,
   instructions,
+  isActive = 1,
 }: ProductDetailProps) {
   const [quantity, setQuantity] = useState(1);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
@@ -71,7 +73,12 @@ export function ProductDetail({
       <div className="grid gap-8 md:grid-cols-2 md:gap-12">
         {/* Product Images */}
         <div className="space-y-4">
-          <div className="overflow-hidden rounded-lg">
+          <div className="overflow-hidden rounded-lg relative">
+            {isActive === 0 && (
+              <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/60">
+                <span className="text-white text-lg font-bold">已售出</span>
+              </div>
+            )}
             <img
               src={images[selectedImageIndex]}
               alt={name}
@@ -137,7 +144,7 @@ export function ProductDetail({
                   variant="outline"
                   size="icon"
                   onClick={decreaseQuantity}
-                  disabled={quantity <= 1}
+                  disabled={quantity <= 1 || isActive === 0}
                 >
                   <Minus className="h-4 w-4" />
                 </Button>
@@ -146,6 +153,7 @@ export function ProductDetail({
                   variant="outline"
                   size="icon"
                   onClick={increaseQuantity}
+                  disabled={isActive === 0}
                 >
                   <Plus className="h-4 w-4" />
                 </Button>
@@ -158,19 +166,19 @@ export function ProductDetail({
                 placeholder="请输入联系方式（手机号/微信/邮箱）"
                 value={contact}
                 onChange={e => setContact(e.target.value)}
-                disabled={submitting}
+                disabled={submitting || isActive === 0}
                 style={success || contact === '请填写联系方式' ? { color: contact === '请填写联系方式' ? 'red' : 'green', fontWeight: 'bold' } : {}}
               />
             </div>
             <div className="flex gap-2">
-              <Button className="flex-1 gap-2" size="lg" onClick={handleOrder} disabled={submitting}>
+              <Button className="flex-1 gap-2" size="lg" onClick={handleOrder} disabled={submitting || isActive === 0}>
                 <ShoppingCart className="h-4 w-4" />
-                下单
+                {isActive === 0 ? '已售出' : '下单'}
               </Button>
-              <Button variant="outline" size="icon" className="h-11 w-11">
+              <Button variant="outline" size="icon" className="h-11 w-11" disabled={isActive === 0}>
                 <Heart className="h-5 w-5" />
               </Button>
-              <Button variant="outline" size="icon" className="h-11 w-11">
+              <Button variant="outline" size="icon" className="h-11 w-11" disabled={isActive === 0}>
                 <Share2 className="h-5 w-5" />
               </Button>
             </div>

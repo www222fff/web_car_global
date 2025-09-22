@@ -1,3 +1,6 @@
+// ...existing code...
+export async function onRequest({ request, env }: OnRequestArgs) {
+  // ...existing code...
   if (request.method === 'DELETE') {
     if (!isAdmin) return badRequest('仅管理员可操作', 403);
     if (!id) return badRequest('缺少车辆ID');

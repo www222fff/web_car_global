@@ -52,7 +52,7 @@ export default function ProductPage() {
           </Button>
         </div>
       )}
-      <CarDetail id={car.id} name={car.name} description={car.description} price={car.price} images={car.images} image={car.image || undefined} year={car.year || undefined} mileage={car.mileage || undefined} />
+  <CarDetail id={car.id} name={car.name} description={car.description} price={car.price} images={car.images} image={car.image || undefined} year={car.year || undefined} mileage={car.mileage || undefined} isActive={car.isActive} />
       <div className="container my-16">
         <h2 className="mb-8 text-2xl font-bold">您可能也喜欢</h2>
         <ProductsSection />

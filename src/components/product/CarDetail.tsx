@@ -13,9 +13,10 @@ interface CarDetailProps {
   image?: string;
   year?: number;
   mileage?: number;
+  isActive?: number;
 }
 
-export function CarDetail({ id, name, description, price, images, image, year, mileage }: CarDetailProps) {
+export function CarDetail({ id, name, description, price, images, image, year, mileage, isActive = 1 }: CarDetailProps) {
   const [quantity, setQuantity] = useState(1);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const { user } = useAuth();
@@ -27,7 +28,7 @@ export function CarDetail({ id, name, description, price, images, image, year, m
   const decreaseQuantity = () => setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
 
   const handleAdd = () => {
-    if (!user) return;
+    if (!user || isActive === 0) return;
     add(id, quantity);
   };
 
@@ -89,9 +90,9 @@ export function CarDetail({ id, name, description, price, images, image, year, m
               </div>
             </div>
             <div className="flex gap-2">
-              <Button className="flex-1 gap-2" size="lg" onClick={handleAdd} disabled={!user}>
+              <Button className="flex-1 gap-2" size="lg" onClick={handleAdd} disabled={!user || isActive === 0}>
                 <ShoppingCart className="h-4 w-4" />
-                加入购物车
+                {isActive === 0 ? '已售出' : '加入购物车'}
               </Button>
             </div>
           </div>
