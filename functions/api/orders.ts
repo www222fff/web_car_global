@@ -1,10 +1,54 @@
-export async function onRequestPost({ request, env }) {
-  const { product, num, contact, orderdata } = await request.json();
-  await env.damaiqingzhiorder
-    .prepare(
-      `INSERT INTO orders (product, num, contact, orderdata) VALUES (?, ?, ?, ?)`
-    )
-    .bind(product, num, contact, orderdata)
-    .run();
-  return new Response(JSON.stringify({ success: true }), { status: 200 });
+import { ensureSchema, seedIfNeeded, getUserFromRequest, ensureJsonResponse, badRequest } from "./_utils";
+
+export async function onRequest({ request, env }) {
+  await ensureSchema(env);
+  await seedIfNeeded(env);
+  const db = env.DB as D1Database;
+  const url = new URL(request.url);
+
+  if (request.method === 'GET') {
+    const user = await getUserFromRequest(request, env);
+    if (!user) return badRequest('未登录', 401);
+    const isAdmin = user.role === 'admin';
+    const all = isAdmin && url.searchParams.get('all') === '1';
+    const stmt = all \
+      ? `SELECT id, userId, items, totalPrice, status, createdAt FROM orders ORDER BY createdAt DESC` \
+      : `SELECT id, userId, items, totalPrice, status, createdAt FROM orders WHERE userId=? ORDER BY createdAt DESC`;
+    const rs = all ? await db.prepare(stmt).all() : await db.prepare(stmt).bind(user.id).all();
+    const orders = (rs.results || []).map((r: any) => ({ ...r, items: JSON.parse(r.items) }));
+    return ensureJsonResponse(orders);
+  }
+
+  if (request.method === 'POST') {
+    const user = await getUserFromRequest(request, env);
+    if (!user) return badRequest('未登录', 401);
+    const body = await request.json().catch(() => ({}));
+    let items: any[] | null = Array.isArray(body?.items) ? body.items : null;
+    if (!items) {
+      // build from cart
+      const rs = await db.prepare(`SELECT c.carId, c.qty, cars.price FROM cart c LEFT JOIN cars ON cars.id=c.carId WHERE c.userId=?`).bind(user.id).all();
+      items = (rs.results || []).map((r: any) => ({ carId: r.carId, qty: r.qty, price: r.price }));
+    }
+    if (!items || items.length === 0) return badRequest('订单为空');
+    // compute total from DB prices
+    let total = 0;
+    const validated: {carId:string; qty:number; price:number}[] = [];
+    for (const it of items) {
+      const row = await db.prepare(`SELECT price FROM cars WHERE id=?`).bind(it.carId).first<{price:number}>();
+      if (!row) return badRequest(`车辆不存在: ${it.carId}`);
+      const price = Number(row.price);
+      const qty = Number(it.qty || 1);
+      validated.push({ carId: it.carId, qty, price });
+      total += price * qty;
+    }
+    const id = crypto.randomUUID();
+    const createdAt = Date.now();
+    await db.prepare(`INSERT INTO orders (id, userId, items, totalPrice, status, createdAt) VALUES (?, ?, ?, ?, 'pending', ?)`)
+      .bind(id, user.id, JSON.stringify(validated), total, createdAt).run();
+    // Clear cart after order
+    await db.prepare(`DELETE FROM cart WHERE userId=?`).bind(user.id).run();
+    return ensureJsonResponse({ id, totalPrice: total, status: 'pending', createdAt, items: validated }, 201);
+  }
+
+  return badRequest('不支持的请求方法', 405);
 }
