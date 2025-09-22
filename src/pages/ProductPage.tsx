@@ -39,8 +39,11 @@ export default function ProductPage() {
 
   const toggleActive = async () => {
     if (!user || !isAdmin) return;
-    const updated = await api.updateCar(user.id, car.id, { isActive: car.isActive ? 0 : 1 });
-    setCar(updated);
+    if (car.isActive) {
+      // 下架时直接删除车辆
+      await api.deleteCar(user.id, car.id);
+      window.location.href = "/products";
+    }
   };
 
   return (
