@@ -56,17 +56,16 @@ export async function onRequest({ request, env }) {
     return ensureJsonResponse({ id, totalPrice: total, status: 'pending', createdAt, items: validated }, 201);
   }
 
-  // 订单取消
+  // 订单取消（与删除订单行为一致，直接删除订单并恢复车辆可售）
   if (request.method === 'PATCH') {
     const user = await getUserFromRequest(request, env);
     if (!user) return badRequest('未登录', 401);
     const body = await request.json().catch(() => ({}));
     const { id, status } = body || {};
     if (!id || status !== 'cancelled') return badRequest('参数错误');
-    // 只允许本人或管理员取消，且仅能取消pending订单
+    // 只允许本人或管理员取消
     const order = await db.prepare('SELECT * FROM orders WHERE id=?').bind(id).first();
     if (!order) return badRequest('订单不存在');
-    if (order.status !== 'pending') return badRequest('仅可取消待处理订单');
     if (order.userId !== user.id && user.role !== 'admin') return badRequest('无权限');
     // 恢复车辆可售
     const items = JSON.parse(order.items || '[]');
@@ -86,12 +85,10 @@ export async function onRequest({ request, env }) {
     if (!id) return badRequest('缺少订单ID');
     const order = await db.prepare('SELECT * FROM orders WHERE id=?').bind(id).first();
     if (!order) return badRequest('订单不存在');
-    if (order.status === 'pending') {
-      // 恢复车辆可售
-      const items = JSON.parse(order.items || '[]');
-      for (const it of items) {
-        await db.prepare('UPDATE cars SET isActive=1 WHERE id=?').bind(it.carId).run();
-      }
+    // 删除订单时无论状态都恢复车辆可售
+    const items = JSON.parse(order.items || '[]');
+    for (const it of items) {
+      await db.prepare('UPDATE cars SET isActive=1 WHERE id=?').bind(it.carId).run();
     }
     await db.prepare('DELETE FROM orders WHERE id=?').bind(id).run();
     return ensureJsonResponse({ success: true });
