@@ -1,22 +1,4 @@
-  // 管理员删除订单
-  if (request.method === 'DELETE') {
-    const user = await getUserFromRequest(request, env);
-    if (!user || user.role !== 'admin') return badRequest('无权限', 403);
-    const body = await request.json().catch(() => ({}));
-    const { id } = body || {};
-    if (!id) return badRequest('缺少订单ID');
-    const order = await db.prepare('SELECT * FROM orders WHERE id=?').bind(id).first();
-    if (!order) return badRequest('订单不存在');
-    if (order.status === 'pending') {
-      // 恢复车辆可售
-      const items = JSON.parse(order.items || '[]');
-      for (const it of items) {
-        await db.prepare('UPDATE cars SET isActive=1 WHERE id=?').bind(it.carId).run();
-      }
-    }
-    await db.prepare('DELETE FROM orders WHERE id=?').bind(id).run();
-    return ensureJsonResponse({ success: true });
-  }
+
 import { ensureSchema, seedIfNeeded, getUserFromRequest, ensureJsonResponse, badRequest } from "./_utils";
 
 export async function onRequest({ request, env }) {
@@ -94,5 +76,26 @@ export async function onRequest({ request, env }) {
     }
     return ensureJsonResponse({ success: true });
   }
+
+  // 管理员删除订单
+  if (request.method === 'DELETE') {
+    const user = await getUserFromRequest(request, env);
+    if (!user || user.role !== 'admin') return badRequest('无权限', 403);
+    const body = await request.json().catch(() => ({}));
+    const { id } = body || {};
+    if (!id) return badRequest('缺少订单ID');
+    const order = await db.prepare('SELECT * FROM orders WHERE id=?').bind(id).first();
+    if (!order) return badRequest('订单不存在');
+    if (order.status === 'pending') {
+      // 恢复车辆可售
+      const items = JSON.parse(order.items || '[]');
+      for (const it of items) {
+        await db.prepare('UPDATE cars SET isActive=1 WHERE id=?').bind(it.carId).run();
+      }
+    }
+    await db.prepare('DELETE FROM orders WHERE id=?').bind(id).run();
+    return ensureJsonResponse({ success: true });
+  }
+  
   return badRequest('不支持的请求方法', 405);
 }
