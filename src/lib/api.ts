@@ -10,12 +10,12 @@ function withHeaders(userId?: string) {
 
 export const api = {
   async login(username: string, password: string): Promise<UserDTO> {
-    const res = await fetch('/api/users/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username, password }) });
+    const res = await fetch('/api/users', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'login', username, password }) });
     if (!res.ok) throw new Error((await res.json()).error || '登录失败');
     return res.json();
   },
   async register(username: string, password: string): Promise<UserDTO> {
-    const res = await fetch('/api/users/register', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username, password }) });
+    const res = await fetch('/api/users', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'register', username, password }) });
     if (!res.ok) throw new Error((await res.json()).error || '注册失败');
     return res.json();
   },

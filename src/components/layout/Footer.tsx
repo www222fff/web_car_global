@@ -112,16 +112,6 @@ export function Footer() {
             </ul>
           </div>
 
-          <div className="space-y-3">
-            <h3 className="text-sm font-semibold">联系我们</h3>
-            <address className="not-italic">
-              <p className="text-sm text-muted-foreground">
-                邮箱: 705701550@qq.com
-              </p>
-            </address>
-          </div>
-        </div>
-
         <div className="mt-8 border-t pt-8 text-center">
           <p className="text-xs text-muted-foreground">
             &copy; {new Date().getFullYear()} 二手车市场. 保留所有权利.

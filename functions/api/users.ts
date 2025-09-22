@@ -25,14 +25,14 @@ export async function onRequest({ request, env }: OnRequestArgs) {
     } catch {
       body = {};
     }
-    if (url.pathname.endsWith('/api/users/login') || body.action === 'login') {
+    if (body.action === 'login') {
       const { username, password } = body;
       if (!username || !password) return badRequest('缺少用户名或密码');
       const row = await db.prepare(`SELECT id, username, role FROM users WHERE username=? AND password=?`).bind(username, password).first();
       if (!row) return badRequest('用户名或密码不正确', 401);
       return ensureJsonResponse(row);
     }
-    if (url.pathname.endsWith('/api/users/register') || body.action === 'register') {
+    if (body.action === 'register') {
       const { username, password } = body;
       if (!username || !password) return badRequest('缺少用户名或密码');
       const exists = await db.prepare(`SELECT 1 FROM users WHERE username=?`).bind(username).first();
