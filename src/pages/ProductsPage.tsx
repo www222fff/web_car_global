@@ -15,6 +15,7 @@ import { useEffect, useMemo, useState } from "react";
 import { api, CarDTO } from "@/lib/api";
 import { useAuth } from "@/context/AuthContext";
 
+export default function ProductsPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [cars, setCars] = useState<CarDTO[]>([]);

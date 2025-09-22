@@ -19,7 +19,7 @@ export interface ProductCardProps {
   description: string;
   price: number;
   originalPrice?: number;
-  image: string;
+  image?: string | null;
   isActive?: number;
 }
 

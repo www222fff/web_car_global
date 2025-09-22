@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 
 interface OrderRow { id: string; userId: string; items: {carId:string; qty:number; price:number}[]; totalPrice: number; status: string; createdAt: number }
 
+export default function MyOrdersPage() {
   const { user, isAdmin } = useAuth();
   const [orders, setOrders] = useState<OrderRow[]>([]);
 
