@@ -11,8 +11,7 @@ type D1Database = {
 interface Env { DB: D1Database }
 interface OnRequestArgs { request: Request; env: Env }
 
-export async function onRequest({ request, env }: OnRequestArgs) {
-  // ...existing code...
+// ...existing code...
 export async function onRequest({ request, env }: OnRequestArgs) {
   await ensureSchema(env);
   await seedIfNeeded(env);
