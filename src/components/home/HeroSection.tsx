@@ -19,9 +19,6 @@ export function HeroSection() {
               <Button size="lg" asChild>
                 <Link to="/products">查看车辆</Link>
               </Button>
-              <Button size="lg" variant="outline" asChild>
-                <Link to="/login">登录</Link>
-              </Button>
             </div>
             <div className="flex items-center gap-4">
               <div className="flex -space-x-2">

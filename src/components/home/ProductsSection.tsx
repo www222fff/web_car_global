@@ -17,9 +17,6 @@ export function ProductsSection() {
             <h2 className="text-3xl font-bold tracking-tight">精选车源</h2>
             <p className="text-muted-foreground">严选优质二手车，价格透明，车况可靠</p>
           </div>
-          <Button variant="outline" asChild>
-            <Link to="/products">查看全部车辆</Link>
-          </Button>
         </div>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {cars.map((car) => (
