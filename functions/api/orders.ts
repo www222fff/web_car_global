@@ -68,12 +68,12 @@ export async function onRequest({ request, env }) {
     if (!order) return badRequest('订单不存在');
     if (order.status !== 'pending') return badRequest('仅可取消待处理订单');
     if (order.userId !== user.id && user.role !== 'admin') return badRequest('无权限');
-    await db.prepare('UPDATE orders SET status="cancelled" WHERE id=?').bind(id).run();
     // 恢复车辆可售
     const items = JSON.parse(order.items || '[]');
     for (const it of items) {
       await db.prepare('UPDATE cars SET isActive=1 WHERE id=?').bind(it.carId).run();
     }
+    await db.prepare('DELETE FROM orders WHERE id=?').bind(id).run();
     return ensureJsonResponse({ success: true });
   }
 
@@ -96,6 +96,6 @@ export async function onRequest({ request, env }) {
     await db.prepare('DELETE FROM orders WHERE id=?').bind(id).run();
     return ensureJsonResponse({ success: true });
   }
-  
+
   return badRequest('不支持的请求方法', 405);
 }
