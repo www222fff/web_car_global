@@ -28,11 +28,16 @@ export default function CartPage() {
     );
   }
 
-  const checkout = async () => {
-    await api.createOrder(user.id);
-    // Ideally show toast, and refresh cart
-    navigate("/my-orders");
-  };
+    const checkout = async () => {
+      try {
+        await api.createOrder(user.id);
+        // Ideally show toast, and refresh cart
+        await new Promise((resolve) => setTimeout(resolve, 100)); // 确保后端已写入
+        navigate("/my-orders");
+      } catch (e) {
+        alert((e as Error).message || '下单失败');
+      }
+    };
 
   return (
     <Layout>

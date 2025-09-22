@@ -24,17 +24,19 @@ export default function ProductsPage() {
   const maxPrice = useMemo(() => (cars.length ? Math.max(...cars.map((c) => c.price)) : 100000), [cars]);
   const [priceRange, setPriceRange] = useState<number[]>([0, maxPrice]);
 
-  const filteredProducts = cars.filter((product) => {
-    const matchesSearch =
-      product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (product.description || '').toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory =
-      selectedCategory === "all" || product.category === selectedCategory;
-    const matchesPrice =
-      product.price >= priceRange[0] && product.price <= priceRange[1];
-
-    return matchesSearch && matchesCategory && matchesPrice;
-  });
+    // 只过滤下架车辆（isActive === -1 或 null），已售出(isActive===0)也显示但不可买
+    const filteredProducts = cars.filter((product) => {
+      // 只隐藏下架车辆
+      if (product.isActive === -1 || product.isActive === null) return false;
+      const matchesSearch =
+        product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (product.description || '').toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesCategory =
+        selectedCategory === "all" || product.category === selectedCategory;
+      const matchesPrice =
+        product.price >= priceRange[0] && product.price <= priceRange[1];
+      return matchesSearch && matchesCategory && matchesPrice;
+    });
 
   const categories = [
     "all",

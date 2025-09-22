@@ -49,15 +49,17 @@ export function ProductCard(props: ProductCardProps & { onDelete?: (id: string) 
     }
   };
 
-  return (
-    <Card className="overflow-hidden transition-all hover:shadow-md relative">
-      {isAdmin && (
-        <Button
-          variant="destructive"
-          size="icon"
-          className="absolute top-2 right-2 z-20"
-          onClick={handleDelete}
-        >
+    const isSold = isActive === 0;
+
+    return (
+      <Card className="overflow-hidden transition-all hover:shadow-md relative opacity-100">
+        {isAdmin && (
+          <Button
+            variant="destructive"
+            size="icon"
+            className="absolute top-2 right-2 z-20"
+            onClick={handleDelete}
+          >
           删除
         </Button>
       )}
