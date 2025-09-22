@@ -7,7 +7,18 @@ type D1Database = {
     bind: (...args: any[]) => any;
   };
 };
-import { randomUUID } from "crypto";
+
+// 兼容 Cloudflare Workers/浏览器/Node 的 randomUUID polyfill
+export function randomUUID() {
+  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+    return crypto.randomUUID();
+  }
+  // Fallback: 生成简单的 UUID v4
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    const r = (Math.random() * 16) | 0, v = c === 'x' ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+}
 
 export type Role = "admin" | "user";
 

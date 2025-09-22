@@ -8,7 +8,7 @@ type D1Database = {
   };
 };
 import { ensureSchema, seedIfNeeded, ensureJsonResponse, badRequest } from "./_utils";
-import { randomUUID } from "crypto";
+import { randomUUID } from "./_utils";
 
 interface Env { DB: D1Database }
 interface OnRequestArgs { request: Request; env: Env }
