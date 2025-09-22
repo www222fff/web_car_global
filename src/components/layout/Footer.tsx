@@ -111,7 +111,7 @@ export function Footer() {
               </li>
             </ul>
           </div>
-
+        </div>
         <div className="mt-8 border-t pt-8 text-center">
           <p className="text-xs text-muted-foreground">
             &copy; {new Date().getFullYear()} 二手车市场. 保留所有权利.
