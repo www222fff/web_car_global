@@ -1,3 +1,12 @@
+// 临时声明 D1Database 类型（如有 Cloudflare D1 依赖请替换为官方类型）
+type D1Database = {
+  prepare: (sql: string) => {
+    run: (...args: any[]) => Promise<any>;
+    all: (...args: any[]) => Promise<any>;
+    first: <T=any>() => Promise<T>;
+    bind: (...args: any[]) => any;
+  };
+};
 import { randomUUID } from "crypto";
 
 export type Role = "admin" | "user";
@@ -153,7 +162,7 @@ export async function seedIfNeeded(env: any) {
 export async function getUserFromRequest(request: Request, env: any) {
   const userId = request.headers.get('X-User-Id');
   if (!userId) return null;
-  const row = await (env.DB as D1Database).prepare(`SELECT id, username, role FROM users WHERE id = ?`).bind(userId).first<User>();
+  const row = await (env.DB as D1Database).prepare(`SELECT id, username, role FROM users WHERE id = ?`).bind(userId).first();
   return row || null;
 }
 

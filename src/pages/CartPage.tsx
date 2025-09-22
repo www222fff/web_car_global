@@ -5,7 +5,6 @@ import { Input } from "@/components/ui/input";
 import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
 import { Link } from "react-router-dom";
-import { Layout } from "@/components/layout/Layout";
 import { api } from "@/lib/api";
 
 export default function CartPage() {

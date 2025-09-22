@@ -1,5 +1,4 @@
 import { Layout } from "@/components/layout/Layout";
-import { CtaSection } from "@/components/home/CtaSection";
 
 export default function AboutPage() {
   return (
@@ -145,7 +144,7 @@ export default function AboutPage() {
         </div>
       </div>
 
-      <CtaSection />
+  {/* <CtaSection /> */}
     </Layout>
   );
 }
