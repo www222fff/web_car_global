@@ -23,7 +23,7 @@ export function ProductsSection() {
         </div>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {cars.map((car) => (
-            <ProductCard key={car.id} id={car.id} name={car.name} description={car.description} price={car.price} image={car.image || undefined} />
+            <ProductCard key={car.id} {...car} />
           ))}
         </div>
       </div>

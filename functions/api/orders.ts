@@ -34,8 +34,9 @@ export async function onRequest({ request, env }) {
     let total = 0;
     const validated: {carId:string; qty:number; price:number}[] = [];
     for (const it of items) {
-      const row = await db.prepare(`SELECT price FROM cars WHERE id=?`).bind(it.carId).first<{price:number}>();
+      const row = await db.prepare(`SELECT price, isActive FROM cars WHERE id=?`).bind(it.carId).first<{price:number,isActive:number}>();
       if (!row) return badRequest(`车辆不存在: ${it.carId}`);
+      if (row.isActive === 0) return badRequest(`车辆已售出: ${it.carId}`);
       const price = Number(row.price);
       const qty = Number(it.qty || 1);
       validated.push({ carId: it.carId, qty, price });
@@ -45,6 +46,10 @@ export async function onRequest({ request, env }) {
     const createdAt = Date.now();
     await db.prepare(`INSERT INTO orders (id, userId, items, totalPrice, status, createdAt) VALUES (?, ?, ?, ?, 'pending', ?)`)
       .bind(id, user.id, JSON.stringify(validated), total, createdAt).run();
+    // 标记车辆为已售出
+    for (const it of validated) {
+      await db.prepare(`UPDATE cars SET isActive=0 WHERE id=?`).bind(it.carId).run();
+    }
     // Clear cart after order
     await db.prepare(`DELETE FROM cart WHERE userId=?`).bind(user.id).run();
     return ensureJsonResponse({ id, totalPrice: total, status: 'pending', createdAt, items: validated }, 201);

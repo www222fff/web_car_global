@@ -13,23 +13,18 @@ import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
 
-interface ProductCardProps {
+export interface ProductCardProps {
   id: string;
   name: string;
   description: string;
   price: number;
   originalPrice?: number;
   image: string;
+  isActive?: number;
 }
 
-export function ProductCard({
-  id,
-  name,
-  description,
-  price,
-  originalPrice,
-  image,
-}: ProductCardProps) {
+export function ProductCard(props: ProductCardProps) {
+  const { id, name, description, price, originalPrice, image, isActive = 1 } = props;
   const [submitting, setSubmitting] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const { user } = useAuth();
@@ -47,8 +42,13 @@ export function ProductCard({
   };
 
   return (
-    <Card className="overflow-hidden transition-all hover:shadow-md">
+    <Card className="overflow-hidden transition-all hover:shadow-md relative">
       <div className="aspect-square overflow-hidden">
+        {isActive === 0 && (
+          <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/60">
+            <span className="text-white text-lg font-bold">已售出</span>
+          </div>
+        )}
         <img
           src={
             image ||
@@ -107,7 +107,7 @@ export function ProductCard({
             variant="outline"
             size="icon"
             onClick={handleAddToCart}
-            disabled={submitting}
+            disabled={submitting || isActive === 0}
             title="加入购物车"
           >
             <ShoppingCart className="h-4 w-4" />
