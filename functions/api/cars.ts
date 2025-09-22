@@ -35,8 +35,8 @@ export async function onRequest({ request, env }: OnRequestArgs) {
       const car = { ...row, images: row.images ? JSON.parse(row.images) : [] };
       return ensureJsonResponse(car);
     }
-    const includeAll = isAdmin && url.searchParams.get('all') === '1';
-    const rs = await db.prepare(`SELECT id, name, description, price, image, year, mileage, category, createdBy, images, isActive FROM cars ${includeAll ? '' : 'WHERE isActive=1'} ORDER BY rowid DESC`).all();
+    // 返回所有车辆（不再只查isActive=1），如需特殊下架可用isActive=-1
+    const rs = await db.prepare(`SELECT id, name, description, price, image, year, mileage, category, createdBy, images, isActive FROM cars ORDER BY rowid DESC`).all();
     const cars = (rs.results || []).map((r: any) => ({ ...r, images: r.images ? JSON.parse(r.images) : [] }));
     return ensureJsonResponse(cars);
   }

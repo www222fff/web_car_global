@@ -33,7 +33,7 @@ export default function CartPage() {
         await api.createOrder(user.id);
         // Ideally show toast, and refresh cart
         await new Promise((resolve) => setTimeout(resolve, 100)); // 确保后端已写入
-        navigate("/my-orders");
+        navigate("/orders");
       } catch (e) {
         alert((e as Error).message || '下单失败');
       }
