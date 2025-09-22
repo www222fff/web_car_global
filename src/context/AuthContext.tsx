@@ -1,15 +1,8 @@
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
-import {
-  User,
-  authenticate,
-  bootstrapDemo,
-  getCurrentUser,
-  registerUser as storageRegister,
-  setCurrentUser,
-} from "@/lib/storage";
+import { createContext, useContext, useMemo, useState } from "react";
+import { api, UserDTO } from "@/lib/api";
 
 interface AuthContextValue {
-  user: User | null;
+  user: UserDTO | null;
   isAdmin: boolean;
   login: (username: string, password: string) => Promise<void>;
   register: (username: string, password: string) => Promise<void>;
@@ -19,29 +12,19 @@ interface AuthContextValue {
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
-
-  useEffect(() => {
-    bootstrapDemo();
-    const u = getCurrentUser();
-    if (u) setUser(u);
-  }, []);
+  const [user, setUser] = useState<UserDTO | null>(null);
 
   const login = async (username: string, password: string) => {
-    const u = authenticate(username, password);
-    if (!u) throw new Error("用户名或密码不正确");
-    setCurrentUser(u.id);
+    const u = await api.login(username, password);
     setUser(u);
   };
 
   const register = async (username: string, password: string) => {
-    const u = storageRegister(username, password);
-    setCurrentUser(u.id);
+    const u = await api.register(username, password);
     setUser(u);
   };
 
   const logout = () => {
-    setCurrentUser(null);
     setUser(null);
   };
 

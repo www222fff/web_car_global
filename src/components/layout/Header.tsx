@@ -35,13 +35,29 @@ export function Header() {
           >
             车辆
           </Link>
-          {isAdmin && (
+          {user && (
             <Link
-              to="/admin/upload"
+              to="/orders"
               className="text-sm font-medium transition-colors hover:text-green-600"
             >
-              发布车辆
+              我的订单
             </Link>
+          )}
+          {isAdmin && (
+            <>
+              <Link
+                to="/admin/upload"
+                className="text-sm font-medium transition-colors hover:text-green-600"
+              >
+                发布车辆
+              </Link>
+              <Link
+                to="/admin/orders"
+                className="text-sm font-medium transition-colors hover:text-green-600"
+              >
+                订单管理
+              </Link>
+            </>
           )}
         </nav>
 
@@ -103,14 +119,32 @@ export function Header() {
           >
             车辆
           </Link>
-          {isAdmin && (
+          {user && (
             <Link
-              to="/admin/upload"
+              to="/orders"
               className="flex h-10 items-center border-b text-sm font-medium transition-colors hover:text-green-600"
               onClick={() => setIsMenuOpen(false)}
             >
-              发布车辆
+              我的订单
             </Link>
+          )}
+          {isAdmin && (
+            <>
+              <Link
+                to="/admin/upload"
+                className="flex h-10 items-center border-b text-sm font-medium transition-colors hover:text-green-600"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                发布车辆
+              </Link>
+              <Link
+                to="/admin/orders"
+                className="flex h-10 items-center border-b text-sm font-medium transition-colors hover:text-green-600"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                订单管理
+              </Link>
+            </>
           )}
           {!user ? (
             <>

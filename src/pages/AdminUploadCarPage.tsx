@@ -4,10 +4,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { addCar } from "@/lib/storage";
 import { useAuth } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { api } from "@/lib/api";
 
 export default function AdminUploadCarPage() {
   const { isAdmin, user } = useAuth();
@@ -39,12 +39,12 @@ export default function AdminUploadCarPage() {
     reader.readAsDataURL(file);
   };
 
-  const onSubmit = (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       if (!user) throw new Error("未登录");
       if (!name || !price || !imageData) throw new Error("请完善名称/价格/图片");
-      const car = addCar({
+      const car = await api.createCar(user.id, {
         name,
         description,
         price: Number(price),
@@ -52,7 +52,6 @@ export default function AdminUploadCarPage() {
         year: year ? Number(year) : undefined,
         mileage: mileage ? Number(mileage) : undefined,
         category,
-        createdBy: user.id,
         images: [imageData],
       });
       navigate(`/products/${car.id}`);
@@ -82,7 +81,7 @@ export default function AdminUploadCarPage() {
                     <SelectValue placeholder="选择车型" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="��车">轿车</SelectItem>
+                    <SelectItem value="轿车">轿车</SelectItem>
                     <SelectItem value="SUV">SUV</SelectItem>
                     <SelectItem value="MPV">MPV</SelectItem>
                     <SelectItem value="其他">其他</SelectItem>

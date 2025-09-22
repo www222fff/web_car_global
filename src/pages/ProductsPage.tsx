@@ -11,21 +11,21 @@ import {
 } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import { Search } from "lucide-react";
-import { useMemo, useState } from "react";
-import { loadCars } from "@/lib/storage";
+import { useEffect, useMemo, useState } from "react";
+import { api, CarDTO } from "@/lib/api";
 
 export default function ProductsPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
-  const cars = loadCars();
+  const [cars, setCars] = useState<CarDTO[]>([]);
+  useEffect(() => { api.getCars().then(setCars).catch(() => setCars([])); }, []);
   const maxPrice = useMemo(() => (cars.length ? Math.max(...cars.map((c) => c.price)) : 100000), [cars]);
   const [priceRange, setPriceRange] = useState<number[]>([0, maxPrice]);
 
-  // Filter cars based on search, category, and price range
   const filteredProducts = cars.filter((product) => {
     const matchesSearch =
       product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      product.description.toLowerCase().includes(searchQuery.toLowerCase());
+      (product.description || '').toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory =
       selectedCategory === "all" || product.category === selectedCategory;
     const matchesPrice =
@@ -34,7 +34,6 @@ export default function ProductsPage() {
     return matchesSearch && matchesCategory && matchesPrice;
   });
 
-  // Get unique categories
   const categories = [
     "all",
     ...Array.from(new Set(cars.map((product) => product.category).filter(Boolean))) as string[],
@@ -46,7 +45,6 @@ export default function ProductsPage() {
         <h1 className="mb-6 text-3xl font-bold">全部车辆</h1>
 
         <div className="grid gap-8 md:grid-cols-4">
-          {/* Filters Sidebar */}
           <div className="space-y-6">
             <div>
               <h3 className="mb-4 font-medium">搜索车辆</h3>
@@ -110,12 +108,11 @@ export default function ProductsPage() {
             </Button>
           </div>
 
-          {/* Products Grid */}
           <div className="md:col-span-3">
             {filteredProducts.length > 0 ? (
               <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {filteredProducts.map((product) => (
-                  <ProductCard key={product.id} {...product} />
+                  <ProductCard key={product.id} id={product.id} name={product.name} description={product.description} price={product.price} image={product.image || undefined} />
                 ))}
               </div>
             ) : (
