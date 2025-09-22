@@ -1,17 +1,9 @@
 import { createContext, useContext, useMemo, useState, useEffect } from "react";
-import {
-  addToCart as storageAdd,
-  getCart,
-  getCartCount,
-  removeFromCart as storageRemove,
-  updateCartItem as storageUpdate,
-} from "@/lib/storage";
+import { api, CartItemDTO } from "@/lib/api";
 import { useAuth } from "./AuthContext";
 
-interface CartItemVM { carId: string; qty: number }
-
 interface CartContextValue {
-  items: CartItemVM[];
+  items: CartItemDTO[];
   count: number;
   add: (carId: string, qty?: number) => void;
   update: (carId: string, qty: number) => void;
@@ -22,34 +14,37 @@ const CartContext = createContext<CartContextValue | undefined>(undefined);
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const { user } = useAuth();
-  const [items, setItems] = useState<CartItemVM[]>([]);
+  const [items, setItems] = useState<CartItemDTO[]>([]);
+  const [count, setCount] = useState(0);
 
-  const reload = () => {
-    if (!user) { setItems([]); return; }
-    setItems(getCart(user.id));
+  const reload = async () => {
+    if (!user) { setItems([]); setCount(0); return; }
+    const data = await api.getCart(user.id);
+    setItems(data.items);
+    setCount(data.count);
   };
 
   useEffect(() => { reload(); }, [user?.id]);
 
-  const add = (carId: string, qty = 1) => {
+  const add = async (carId: string, qty = 1) => {
     if (!user) return; // require login to manage cart
-    storageAdd(user.id, carId, qty);
-    reload();
+    await api.addToCart(user.id, carId, qty);
+    await reload();
   };
-  const update = (carId: string, qty: number) => {
+  const update = async (carId: string, qty: number) => {
     if (!user) return;
-    storageUpdate(user.id, carId, qty);
-    reload();
+    await api.setCartItem(user.id, carId, qty);
+    await reload();
   };
-  const remove = (carId: string) => {
+  const remove = async (carId: string) => {
     if (!user) return;
-    storageRemove(user.id, carId);
-    reload();
+    await api.removeFromCart(user.id, carId);
+    await reload();
   };
 
   const value = useMemo(
-    () => ({ items, count: user ? getCartCount(user.id) : 0, add, update, remove }),
-    [items, user?.id]
+    () => ({ items, count, add, update, remove }),
+    [items, count]
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
