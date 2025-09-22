@@ -2,6 +2,7 @@ import { Layout } from "@/components/layout/Layout";
 import { useAuth } from "@/context/AuthContext";
 import { api } from "@/lib/api";
 import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
 
 interface OrderRow { id: string; userId: string; items: {carId:string; qty:number; price:number}[]; totalPrice: number; status: string; createdAt: number }
 
@@ -22,6 +23,14 @@ export default function AdminOrdersPage() {
     );
   }
 
+  // 删除订单
+  const handleDelete = async (id: string) => {
+    if (!user) return;
+    await api.deleteOrder(user.id, id);
+    const list = await api.listOrders(user.id, true);
+    setOrders(list);
+  };
+
   return (
     <Layout>
       <div className="container py-8 md:py-12">
@@ -36,7 +45,9 @@ export default function AdminOrdersPage() {
                   <div>订单号：{o.id}（用户：{o.userId}）</div>
                   <div className="text-sm text-muted-foreground">{new Date(o.createdAt).toLocaleString()}</div>
                 </div>
-                <div className="mt-2 text-sm">状态：{o.status}</div>
+                <div className="mt-2 text-sm">状态：{o.status}
+                  <Button variant="destructive" size="sm" className="ml-4" onClick={() => handleDelete(o.id)}>删除订单</Button>
+                </div>
                 <div className="mt-2 space-y-1 text-sm">
                   {o.items.map((it, idx) => (
                     <div key={idx}>车辆ID：{it.carId} × {it.qty}，单价¥{it.price.toFixed(2)}</div>

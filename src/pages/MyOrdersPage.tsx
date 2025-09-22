@@ -2,18 +2,33 @@ import { Layout } from "@/components/layout/Layout";
 import { useAuth } from "@/context/AuthContext";
 import { api } from "@/lib/api";
 import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
 
 interface OrderRow { id: string; userId: string; items: {carId:string; qty:number; price:number}[]; totalPrice: number; status: string; createdAt: number }
 
-export default function MyOrdersPage() {
-  const { user } = useAuth();
+  const { user, isAdmin } = useAuth();
   const [orders, setOrders] = useState<OrderRow[]>([]);
 
   useEffect(() => {
-    if (!user) return;
+    if (!user || isAdmin) return;
     api.listOrders(user.id).then(setOrders).catch(() => setOrders([]));
-  }, [user?.id]);
+  }, [user?.id, isAdmin]);
 
+  // 取消订单
+  const handleCancel = async (id: string) => {
+    if (!user) return;
+    await api.cancelOrder(user.id, id);
+    const list = await api.listOrders(user.id);
+    setOrders(list);
+  };
+
+  if (isAdmin) {
+    return (
+      <Layout>
+        <div className="container py-12 text-center text-muted-foreground">管理员请使用订单管理页面</div>
+      </Layout>
+    );
+  }
   return (
     <Layout>
       <div className="container py-8 md:py-12">
@@ -28,7 +43,11 @@ export default function MyOrdersPage() {
                   <div>订单号：{o.id}</div>
                   <div className="text-sm text-muted-foreground">{new Date(o.createdAt).toLocaleString()}</div>
                 </div>
-                <div className="mt-2 text-sm">状态：{o.status}</div>
+                <div className="mt-2 text-sm">状态：{o.status}
+                  {o.status === 'pending' && (
+                    <Button variant="destructive" size="sm" className="ml-4" onClick={() => handleCancel(o.id)}>取消订单</Button>
+                  )}
+                </div>
                 <div className="mt-2 space-y-1 text-sm">
                   {o.items.map((it, idx) => (
                     <div key={idx}>车辆ID：{it.carId} × {it.qty}，单价¥{it.price.toFixed(2)}</div>

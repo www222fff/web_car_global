@@ -13,11 +13,12 @@ import { Slider } from "@/components/ui/slider";
 import { Search } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { api, CarDTO } from "@/lib/api";
+import { useAuth } from "@/context/AuthContext";
 
-export default function ProductsPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [cars, setCars] = useState<CarDTO[]>([]);
+  const { user, isAdmin } = useAuth();
   useEffect(() => { api.getCars().then(setCars).catch(() => setCars([])); }, []);
   const maxPrice = useMemo(() => (cars.length ? Math.max(...cars.map((c) => c.price)) : 100000), [cars]);
   const [priceRange, setPriceRange] = useState<number[]>([0, maxPrice]);
@@ -112,7 +113,15 @@ export default function ProductsPage() {
             {filteredProducts.length > 0 ? (
               <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {filteredProducts.map((product) => (
-                  <ProductCard key={product.id} {...product} />
+                  <ProductCard
+                    key={product.id}
+                    {...product}
+                    onDelete={async (id) => {
+                      if (!user) return;
+                      await api.deleteCar(user.id, id);
+                      setCars((prev) => prev.filter((c) => c.id !== id));
+                    }}
+                  />
                 ))}
               </div>
             ) : (

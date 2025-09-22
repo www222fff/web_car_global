@@ -23,11 +23,11 @@ export interface ProductCardProps {
   isActive?: number;
 }
 
-export function ProductCard(props: ProductCardProps) {
-  const { id, name, description, price, originalPrice, image, isActive = 1 } = props;
+export function ProductCard(props: ProductCardProps & { onDelete?: (id: string) => void }) {
+  const { id, name, description, price, originalPrice, image, isActive = 1, onDelete } = props;
   const [submitting, setSubmitting] = useState(false);
   const [quantity, setQuantity] = useState(1);
-  const { user } = useAuth();
+  const { user, isAdmin } = useAuth();
   const { add } = useCart();
   const navigate = useNavigate();
 
@@ -41,8 +41,26 @@ export function ProductCard(props: ProductCardProps) {
     setSubmitting(false);
   };
 
+  const handleDelete = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!user) return;
+    if (onDelete) {
+      onDelete(id);
+    }
+  };
+
   return (
     <Card className="overflow-hidden transition-all hover:shadow-md relative">
+      {isAdmin && (
+        <Button
+          variant="destructive"
+          size="icon"
+          className="absolute top-2 right-2 z-20"
+          onClick={handleDelete}
+        >
+          删除
+        </Button>
+      )}
       <div className="aspect-square overflow-hidden">
         {isActive === 0 && (
           <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/60">

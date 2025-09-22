@@ -4,12 +4,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { api } from "@/lib/api";
 
-export default function CartPage() {
   const { user } = useAuth();
   const { items, update, remove } = useCart();
+  const navigate = useNavigate();
 
   const total = items.reduce((sum, i) => {
     const price = i.car?.price || 0;
@@ -30,8 +30,7 @@ export default function CartPage() {
   const checkout = async () => {
     await api.createOrder(user.id);
     // Ideally show toast, and refresh cart
-    // Simplified: reload page
-    location.reload();
+    navigate("/my-orders");
   };
 
   return (
