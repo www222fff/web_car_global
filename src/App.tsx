@@ -16,6 +16,8 @@ import CartPage from "./pages/CartPage";
 import AdminUploadCarPage from "./pages/AdminUploadCarPage";
 import { AuthProvider } from "./context/AuthContext";
 import { CartProvider } from "./context/CartContext";
+import AdminOrdersPage from "./pages/AdminOrdersPage";
+import MyOrdersPage from "./pages/MyOrdersPage";
 
 const App = () => {
   // Create a new QueryClient instance for each component instance
