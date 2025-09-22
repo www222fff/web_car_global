@@ -24,10 +24,9 @@ export default function ProductsPage() {
   const maxPrice = useMemo(() => (cars.length ? Math.max(...cars.map((c) => c.price)) : 100000), [cars]);
   const [priceRange, setPriceRange] = useState<number[]>([0, maxPrice]);
 
-    // 只过滤下架车辆（isActive === -1 或 null），已售出(isActive===0)也显示但不可买
+    // 只过滤本地已被删除的车辆，已售出(isActive===0)也显示但不可买
     const filteredProducts = cars.filter((product) => {
-      // 只隐藏下架车辆
-      if (product.isActive === -1 || product.isActive === null) return false;
+      // 只隐藏本地已被删除的车辆（即不在cars数组中）
       const matchesSearch =
         product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         (product.description || '').toLowerCase().includes(searchQuery.toLowerCase());
@@ -119,11 +118,6 @@ export default function ProductsPage() {
                   <ProductCard
                     key={product.id}
                     {...product}
-                    onDelete={async (id) => {
-                      if (!user) return;
-                      await api.deleteCar(user.id, id);
-                      setCars((prev) => prev.filter((c) => c.id !== id));
-                    }}
                   />
                 ))}
               </div>

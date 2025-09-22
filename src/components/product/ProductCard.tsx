@@ -53,16 +53,6 @@ export function ProductCard(props: ProductCardProps & { onDelete?: (id: string) 
 
     return (
       <Card className="overflow-hidden transition-all hover:shadow-md relative opacity-100">
-        {isAdmin && (
-          <Button
-            variant="destructive"
-            size="icon"
-            className="absolute top-2 right-2 z-20"
-            onClick={handleDelete}
-          >
-          删除
-        </Button>
-      )}
       <div className="aspect-square overflow-hidden">
         {isActive === 0 && (
           <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/60">
