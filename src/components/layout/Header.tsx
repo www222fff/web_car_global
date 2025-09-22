@@ -8,6 +8,15 @@ import { useCart } from "@/context/CartContext";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  // 事件派发给 Layout 控制主内容 transform
+  if (typeof window !== 'undefined') {
+    window.__setMainTransform = (open: boolean) => {
+      const main = document.getElementById('main-content');
+      if (main) {
+        main.style.transform = open ? 'translateX(75vw)' : '';
+      }
+    };
+  }
   const { user, isAdmin, logout } = useAuth();
   const { count } = useCart();
   const navigate = useNavigate();
@@ -100,11 +109,17 @@ export function Header() {
       {/* Mobile Navigation */}
       <div
         className={cn(
-          "md:hidden fixed inset-0 top-16 z-50 bg-background transition-transform duration-300 ease-in-out",
-          isMenuOpen ? "translate-x-0" : "translate-x-full",
+          "md:hidden absolute left-0 top-16 h-[calc(100vh-4rem)] w-3/4 z-50 bg-background transition-transform duration-300 ease-in-out shadow-lg",
+          isMenuOpen ? "translate-x-0" : "-translate-x-full",
         )}
+        style={{ willChange: 'transform' }}
+        onTransitionEnd={() => {
+          if (typeof window !== 'undefined' && window.__setMainTransform) {
+            window.__setMainTransform(isMenuOpen);
+          }
+        }}
       >
-        <nav className="container flex flex-col space-y-4 p-4">
+        <nav className="flex flex-col space-y-4 p-4">
           <Link
             to="/"
             className="flex h-10 items-center border-b text-sm font-medium transition-colors hover:text-green-600"

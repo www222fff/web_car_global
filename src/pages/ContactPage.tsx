@@ -112,7 +112,7 @@ export default function ContactPage() {
                   <div>
                     <h3 className="mb-2 font-medium">电子邮箱</h3>
                     <p className="text-sm text-muted-foreground">
-                      客户服务: 705701550@qq.com
+                      客户服务: abc@qq.com
                     </p>
                   </div>
                 </div>
