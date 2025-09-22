@@ -11,8 +11,8 @@ export async function onRequest({ request, env }) {
     if (!user) return badRequest('未登录', 401);
     const isAdmin = user.role === 'admin';
     const all = isAdmin && url.searchParams.get('all') === '1';
-    const stmt = all \
-      ? `SELECT id, userId, items, totalPrice, status, createdAt FROM orders ORDER BY createdAt DESC` \
+    const stmt = all
+      ? `SELECT id, userId, items, totalPrice, status, createdAt FROM orders ORDER BY createdAt DESC`
       : `SELECT id, userId, items, totalPrice, status, createdAt FROM orders WHERE userId=? ORDER BY createdAt DESC`;
     const rs = all ? await db.prepare(stmt).all() : await db.prepare(stmt).bind(user.id).all();
     const orders = (rs.results || []).map((r: any) => ({ ...r, items: JSON.parse(r.items) }));
