@@ -6,14 +6,14 @@ export function Footer() {
       <div className="container py-8 md:py-12">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           <div className="space-y-3">
-            <h3 className="text-lg font-semibold">二手车市场</h3>
+            <h3 className="text-lg font-semibold">Used Car Market</h3>
             <img
               src="https://images.unsplash.com/photo-1549924231-f129b911e442?auto=format&fit=crop&w=200&q=80"
-              alt="品牌logo"
+              alt="Brand logo"
               className="w-20 h-20 object-cover rounded-full mb-2"
             />
             <p className="text-sm text-muted-foreground">
-              严选优质二手车，车况透明，放心购车。
+              Carefully selected used cars with transparent condition for a worry-free purchase.
             </p>
             <div className="flex gap-2 mt-2">
               <a
@@ -54,14 +54,14 @@ export function Footer() {
 
 
           <div className="space-y-3">
-            <h3 className="text-sm font-semibold">关于</h3>
+            <h3 className="text-sm font-semibold">About</h3>
             <ul className="space-y-2">
               <li>
                 <Link
                   to="/about"
                   className="text-sm text-muted-foreground hover:text-green-600"
                 >
-                  关于我们
+                  About Us
                 </Link>
               </li>
               <li>
@@ -69,7 +69,7 @@ export function Footer() {
                   to="/contact"
                   className="text-sm text-muted-foreground hover:text-green-600"
                 >
-                  联系我们
+                  Contact Us
                 </Link>
               </li>
               <li>
@@ -77,7 +77,7 @@ export function Footer() {
                   to="/faq"
                   className="text-sm text-muted-foreground hover:text-green-600"
                 >
-                  常见问题
+                  FAQ
                 </Link>
               </li>
             </ul>
@@ -85,7 +85,7 @@ export function Footer() {
         </div>
         <div className="mt-8 border-t pt-8 text-center">
           <p className="text-xs text-muted-foreground">
-            &copy; {new Date().getFullYear()} 二手车市场. 保留所有权利.
+            &copy; {new Date().getFullYear()} Used Car Market. All rights reserved.
           </p>
         </div>
       </div>
