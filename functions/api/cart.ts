@@ -5,7 +5,7 @@ export async function onRequest({ request, env }) {
   await seedIfNeeded(env);
   const db = env.DB as D1Database;
   const user = await getUserFromRequest(request, env);
-  if (!user) return badRequest('未登录', 401);
+  if (!user) return badRequest('Unauthorized', 401);
 
   if (request.method === 'GET') {
     const rs = await db.prepare(`SELECT c.carId, c.qty, cars.name as carName, cars.price as carPrice, cars.image as carImage FROM cart c LEFT JOIN cars ON cars.id=c.carId WHERE c.userId=?`).bind(user.id).all();
@@ -17,7 +17,7 @@ export async function onRequest({ request, env }) {
   if (request.method === 'POST') {
     const body = await request.json();
     const { carId, qty, mode } = body || {};
-    if (!carId || !qty) return badRequest('缺少carId或qty');
+    if (!carId || !qty) return badRequest('Missing carId or qty');
     if (mode === 'set') {
       await db.prepare(`INSERT INTO cart (userId, carId, qty) VALUES (?, ?, ?) ON CONFLICT(userId, carId) DO UPDATE SET qty=excluded.qty`).bind(user.id, carId, Number(qty)).run();
     } else {
@@ -31,7 +31,7 @@ export async function onRequest({ request, env }) {
   if (request.method === 'PUT') {
     const body = await request.json();
     const { carId, qty } = body || {};
-    if (!carId || qty === undefined) return badRequest('缺少carId或qty');
+    if (!carId || qty === undefined) return badRequest('Missing carId or qty');
     await db.prepare(`INSERT INTO cart (userId, carId, qty) VALUES (?, ?, ?) ON CONFLICT(userId, carId) DO UPDATE SET qty=excluded.qty`).bind(user.id, carId, Number(qty)).run();
     return ensureJsonResponse({ success: true });
   }
@@ -39,10 +39,10 @@ export async function onRequest({ request, env }) {
   if (request.method === 'DELETE') {
     const body = await request.json();
     const { carId } = body || {};
-    if (!carId) return badRequest('缺少carId');
+    if (!carId) return badRequest('Missing carId');
     await db.prepare(`DELETE FROM cart WHERE userId=? AND carId=?`).bind(user.id, carId).run();
     return ensureJsonResponse({ success: true });
   }
 
-  return badRequest('不支持的请求方法', 405);
+  return badRequest('Method not allowed', 405);
 }

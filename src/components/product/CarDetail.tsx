@@ -65,20 +65,20 @@ export function CarDetail({ id, name, description, price, images, image, year, m
           <div className="grid grid-cols-2 gap-4 text-sm">
             {year && (
               <div>
-                <div className="text-muted-foreground">年份</div>
+                <div className="text-muted-foreground">Year</div>
                 <div className="font-medium">{year}</div>
               </div>
             )}
             {mileage !== undefined && (
               <div>
-                <div className="text-muted-foreground">里程</div>
+                <div className="text-muted-foreground">Mileage</div>
                 <div className="font-medium">{mileage} km</div>
               </div>
             )}
           </div>
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <span className="font-medium">数量</span>
+              <span className="font-medium">Quantity</span>
               <div className="flex items-center space-x-2">
                 <Button variant="outline" size="icon" onClick={decreaseQuantity} disabled={quantity <= 1}>
                   <Minus className="h-4 w-4" />
@@ -92,7 +92,7 @@ export function CarDetail({ id, name, description, price, images, image, year, m
             <div className="flex gap-2">
               <Button className="flex-1 gap-2" size="lg" onClick={handleAdd} disabled={!user || isActive === 0}>
                 <ShoppingCart className="h-4 w-4" />
-                {isActive === 0 ? '已售出' : '加入购物车'}
+                {isActive === 0 ? 'Sold' : 'Add to Cart'}
               </Button>
             </div>
           </div>

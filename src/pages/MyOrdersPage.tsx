@@ -15,7 +15,7 @@ export default function MyOrdersPage() {
     api.listOrders(user.id).then(setOrders).catch(() => setOrders([]));
   }, [user?.id, isAdmin]);
 
-  // 取消订单
+  // Cancel Order
   const handleCancel = async (id: string) => {
     if (!user) return;
     await api.cancelOrder(user.id, id);
@@ -26,35 +26,35 @@ export default function MyOrdersPage() {
   if (isAdmin) {
     return (
       <Layout>
-        <div className="container py-12 text-center text-muted-foreground">管理员请使用订单管理页面</div>
+        <div className="container py-12 text-center text-muted-foreground">Admins: please use the Orders Management page</div>
       </Layout>
     );
   }
   return (
     <Layout>
       <div className="container py-8 md:py-12">
-        <h1 className="mb-6 text-3xl font-bold">我的订单</h1>
+        <h1 className="mb-6 text-3xl font-bold">My Orders</h1>
         {(!user || orders.length === 0) ? (
-          <div className="text-muted-foreground">暂无订单</div>
+          <div className="text-muted-foreground">No orders yet</div>
         ) : (
           <div className="space-y-4">
             {orders.map(o => (
               <div key={o.id} className="rounded border p-4">
                 <div className="flex justify-between">
-                  <div>订单号：{o.id}</div>
+                  <div>Order ID:{o.id}</div>
                   <div className="text-sm text-muted-foreground">{new Date(o.createdAt).toLocaleString()}</div>
                 </div>
-                <div className="mt-2 text-sm">状态：{o.status}
+                <div className="mt-2 text-sm">Status:{o.status}
                   {o.status === 'pending' && (
-                    <Button variant="destructive" size="sm" className="ml-4" onClick={() => handleCancel(o.id)}>取消订单</Button>
+                    <Button variant="destructive" size="sm" className="ml-4" onClick={() => handleCancel(o.id)}>Cancel Order</Button>
                   )}
                 </div>
                 <div className="mt-2 space-y-1 text-sm">
                   {o.items.map((it, idx) => (
-                    <div key={idx}>车辆ID：{it.carId} × {it.qty}，单价¥{it.price.toFixed(2)}</div>
+                    <div key={idx}>Car ID:{it.carId} × {it.qty}, unit price¥{it.price.toFixed(2)}</div>
                   ))}
                 </div>
-                <div className="mt-2 font-semibold">总价：¥{o.totalPrice.toFixed(2)}</div>
+                <div className="mt-2 font-semibold">Total:¥{o.totalPrice.toFixed(2)}</div>
               </div>
             ))}
           </div>

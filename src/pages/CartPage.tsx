@@ -21,8 +21,8 @@ export default function CartPage() {
     return (
       <Layout>
         <div className="container py-12 text-center">
-          <div className="text-muted-foreground">请先登录以管理购物车</div>
-          <div className="mt-4"><Link className="text-green-600" to="/login">去登录</Link></div>
+          <div className="text-muted-foreground">Please log in to manage your cart</div>
+          <div className="mt-4"><Link className="text-green-600" to="/login">Log in</Link></div>
         </div>
       </Layout>
     );
@@ -35,7 +35,7 @@ export default function CartPage() {
         await new Promise((resolve) => setTimeout(resolve, 100)); // 确保后端已写入
         navigate("/orders");
       } catch (e) {
-        alert((e as Error).message || '下单失败');
+        alert((e as Error).message || 'Checkout failed');
       }
     };
 
@@ -44,11 +44,11 @@ export default function CartPage() {
       <div className="container py-8 md:py-12">
         <Card>
           <CardHeader>
-            <CardTitle>我的购物车</CardTitle>
+            <CardTitle>My Cart</CardTitle>
           </CardHeader>
           <CardContent>
             {items.length === 0 ? (
-              <div className="text-muted-foreground">购物车为空</div>
+              <div className="text-muted-foreground">Your cart is empty</div>
             ) : (
               <div className="space-y-4">
                 {items.map((i) => {
@@ -73,8 +73,8 @@ export default function CartPage() {
                   );
                 })}
                 <div className="flex items-center justify-between pt-2">
-                  <div className="text-lg font-bold">合计：¥{total.toFixed(2)}</div>
-                  <Button onClick={checkout}>去结算</Button>
+                  <div className="text-lg font-bold">Total:¥{total.toFixed(2)}</div>
+                  <Button onClick={checkout}>Checkout</Button>
                 </div>
               </div>
             )}
