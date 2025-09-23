@@ -22,8 +22,8 @@ export async function onRequest({ request, env }: OnRequestArgs) {
   const id = url.searchParams.get('id');
 
   if (request.method === 'DELETE') {
-    if (!isAdmin) return badRequest('仅管理员可操作', 403);
-    if (!id) return badRequest('缺少车辆ID');
+    if (!isAdmin) return badRequest('Admins only', 403);
+    if (!id) return badRequest('Missing car ID');
     await db.prepare('DELETE FROM cars WHERE id=?').bind(id).run();
     return ensureJsonResponse({ success: true });
   }
@@ -31,7 +31,7 @@ export async function onRequest({ request, env }: OnRequestArgs) {
   if (request.method === 'GET') {
     if (id) {
       const row = await db.prepare(`SELECT id, name, description, price, image, year, mileage, category, createdBy, images, isActive FROM cars WHERE id=?`).bind(id).first();
-      if (!row) return badRequest('车辆未找到', 404);
+      if (!row) return badRequest('Car not found', 404);
       const car = { ...row, images: row.images ? JSON.parse(row.images) : [] };
       return ensureJsonResponse(car);
     }
@@ -42,10 +42,10 @@ export async function onRequest({ request, env }: OnRequestArgs) {
   }
 
   if (request.method === 'POST') {
-    if (!isAdmin) return badRequest('仅管理员可发布车辆', 403);
+    if (!isAdmin) return badRequest('Admins only', 403);
     const body = await request.json();
     const { name, description, price, image, year, mileage, category, images } = body || {};
-    if (!name || !price) return badRequest('缺少必要字段');
+    if (!name || !price) return badRequest('Missing required fields');
     const id = crypto.randomUUID();
     await db.prepare(`INSERT INTO cars (id, name, description, price, image, year, mileage, category, createdBy, images, isActive) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)`) 
       .bind(id, name, description || '', Number(price), image || null, year || null, mileage || null, category || null, user!.id, JSON.stringify(images || (image ? [image] : [])))
@@ -56,8 +56,8 @@ export async function onRequest({ request, env }: OnRequestArgs) {
   }
 
   if (request.method === 'PATCH') {
-    if (!isAdmin) return badRequest('仅管理员可操作', 403);
-    if (!id) return badRequest('缺少车辆ID');
+    if (!isAdmin) return badRequest('Admins only', 403);
+    if (!id) return badRequest('Missing car ID');
     const body = await request.json();
     const { isActive, name, description, price, image, year, mileage, category, images } = body || {};
     // Build dynamic update
@@ -72,7 +72,7 @@ export async function onRequest({ request, env }: OnRequestArgs) {
     if (mileage !== undefined) { sets.push('mileage=?'); vals.push(mileage || null); }
     if (category !== undefined) { sets.push('category=?'); vals.push(category || null); }
     if (images !== undefined) { sets.push('images=?'); vals.push(JSON.stringify(images)); }
-    if (!sets.length) return badRequest('无更新内容');
+    if (!sets.length) return badRequest('No updates');
     vals.push(id);
     await db.prepare(`UPDATE cars SET ${sets.join(', ')} WHERE id=?`).bind(...vals).run();
     const row = await db.prepare(`SELECT id, name, description, price, image, year, mileage, category, createdBy, images, isActive FROM cars WHERE id=?`).bind(id).first();
@@ -80,5 +80,5 @@ export async function onRequest({ request, env }: OnRequestArgs) {
     return ensureJsonResponse(car);
   }
 
-  return badRequest('不支持的请求方法', 405);
+  return badRequest('Method not allowed', 405);
 }
