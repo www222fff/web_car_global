@@ -63,10 +63,10 @@ export default function ContactPage() {
         <div className="container">
           <div className="text-center">
             <h1 className="mb-4 text-4xl font-bold tracking-tight md:text-5xl">
-              联系我们
+              Contact Us
             </h1>
             <p className="mx-auto max-w-3xl text-lg text-muted-foreground">
-              如果您有任何问题、建议或合作意向，请随时联系我们，我们将竭诚为您服务
+              如果您有任何问题、建议或合作意向，请随时Contact Us，我们将竭诚为您服务
             </p>
           </div>
         </div>
