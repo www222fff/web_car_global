@@ -26,7 +26,7 @@ export function Header() {
       <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center">
           <Link to="/" className="flex items-center space-x-2">
-            <span className="text-xl font-bold text-green-600">二手车市场</span>
+            <span className="text-xl font-bold text-green-600">Used Car Market</span>
           </Link>
         </div>
 
@@ -36,20 +36,20 @@ export function Header() {
             to="/"
             className="text-sm font-medium transition-colors hover:text-green-600"
           >
-            首页
+            Home
           </Link>
           <Link
             to="/products"
             className="text-sm font-medium transition-colors hover:text-green-600"
           >
-            车辆
+            Cars
           </Link>
           {user && !isAdmin && (
             <Link
               to="/orders"
               className="text-sm font-medium transition-colors hover:text-green-600"
             >
-              我的订单
+              My Orders
             </Link>
           )}
           {isAdmin && (
@@ -64,7 +64,7 @@ export function Header() {
                 to="/admin/orders"
                 className="text-sm font-medium transition-colors hover:text-green-600"
               >
-                订单管理
+                Order Management
               </Link>
             </>
           )}
@@ -73,13 +73,13 @@ export function Header() {
         <div className="flex items-center space-x-4">
           {!user ? (
             <div className="hidden md:flex items-center gap-2">
-              <Button variant="ghost" onClick={() => navigate('/login')}>登录</Button>
-              <Button onClick={() => navigate('/register')}>注册</Button>
+              <Button variant="ghost" onClick={() => navigate('/login')}>Log in</Button>
+              <Button onClick={() => navigate('/register')}>Sign up</Button>
             </div>
           ) : (
             <div className="hidden md:flex items-center gap-2">
               <span className="text-sm text-muted-foreground">{user.username}</span>
-              <Button variant="outline" onClick={() => { logout(); navigate('/'); }}>退出</Button>
+              <Button variant="outline" onClick={() => { logout(); navigate('/'); }}>Log out</Button>
             </div>
           )}
 
@@ -125,14 +125,14 @@ export function Header() {
             className="flex h-10 items-center border-b text-sm font-medium transition-colors hover:text-green-600"
             onClick={() => setIsMenuOpen(false)}
           >
-            首页
+            Home
           </Link>
           <Link
             to="/products"
             className="flex h-10 items-center border-b text-sm font-medium transition-colors hover:text-green-600"
             onClick={() => setIsMenuOpen(false)}
           >
-            车辆
+            Cars
           </Link>
           {user && (
             <Link
@@ -140,7 +140,7 @@ export function Header() {
               className="flex h-10 items-center border-b text-sm font-medium transition-colors hover:text-green-600"
               onClick={() => setIsMenuOpen(false)}
             >
-              我的订单
+              My Orders
             </Link>
           )}
           {isAdmin && (
@@ -157,17 +157,17 @@ export function Header() {
                 className="flex h-10 items-center border-b text-sm font-medium transition-colors hover:text-green-600"
                 onClick={() => setIsMenuOpen(false)}
               >
-                订单管理
+                Order Management
               </Link>
             </>
           )}
           {!user ? (
             <>
-              <Link to="/login" className="flex h-10 items-center border-b text-sm font-medium transition-colors hover:text-green-600" onClick={() => setIsMenuOpen(false)}>登录</Link>
-              <Link to="/register" className="flex h-10 items-center border-b text-sm font-medium transition-colors hover:text-green-600" onClick={() => setIsMenuOpen(false)}>注册</Link>
+              <Link to="/login" className="flex h-10 items-center border-b text-sm font-medium transition-colors hover:text-green-600" onClick={() => setIsMenuOpen(false)}>Log in</Link>
+              <Link to="/register" className="flex h-10 items-center border-b text-sm font-medium transition-colors hover:text-green-600" onClick={() => setIsMenuOpen(false)}>Sign up</Link>
             </>
           ) : (
-            <button className="flex h-10 items-center border-b text-sm font-medium text-left hover:text-green-600" onClick={() => { logout(); setIsMenuOpen(false); navigate('/'); }}>退出</button>
+            <button className="flex h-10 items-center border-b text-sm font-medium text-left hover:text-green-600" onClick={() => { logout(); setIsMenuOpen(false); navigate('/'); }}>Log out</button>
           )}
         </nav>
       </div>
