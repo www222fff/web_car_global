@@ -45,17 +45,17 @@ export default function ProductsPage() {
   return (
     <Layout>
       <div className="container py-8 md:py-12">
-        <h1 className="mb-6 text-3xl font-bold">全部车辆</h1>
+        <h1 className="mb-6 text-3xl font-bold">All Cars</h1>
 
         <div className="grid gap-8 md:grid-cols-4">
           <div className="space-y-6">
             <div>
-              <h3 className="mb-4 font-medium">搜索车辆</h3>
+              <h3 className="mb-4 font-medium">Search Cars</h3>
               <div className="relative">
                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                 <Input
                   type="search"
-                  placeholder="搜索..."
+                  placeholder="Search..."
                   className="pl-8"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
@@ -64,18 +64,18 @@ export default function ProductsPage() {
             </div>
 
             <div>
-              <h3 className="mb-4 font-medium">车型分类</h3>
+              <h3 className="mb-4 font-medium">Vehicle Category</h3>
               <Select
                 value={selectedCategory}
                 onValueChange={setSelectedCategory}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="选择分类" />
+                  <SelectValue placeholder="Select category" />
                 </SelectTrigger>
                 <SelectContent>
                   {categories.map((category) => (
                     <SelectItem key={category} value={category}>
-                      {category === "all" ? "全部分类" : category}
+                      {category === "all" ? "All categories" : category}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -83,7 +83,7 @@ export default function ProductsPage() {
             </div>
 
             <div>
-              <h3 className="mb-4 font-medium">价格范围</h3>
+              <h3 className="mb-4 font-medium">Price Range</h3>
               <Slider
                 defaultValue={[0, maxPrice]}
                 max={Math.max(maxPrice, 10000)}
@@ -107,7 +107,7 @@ export default function ProductsPage() {
                 setPriceRange([0, maxPrice]);
               }}
             >
-              重置筛选
+              Reset filters
             </Button>
           </div>
 
@@ -123,9 +123,9 @@ export default function ProductsPage() {
               </div>
             ) : (
               <div className="rounded-lg border border-dashed p-8 text-center">
-                <h3 className="mb-2 text-lg font-medium">未找到产品</h3>
+                <h3 className="mb-2 text-lg font-medium">No products found</h3>
                 <p className="text-muted-foreground">
-                  尝试调整您的筛选条件以查看更多产品。
+                  Try adjusting your filters to see more products.
                 </p>
               </div>
             )}
