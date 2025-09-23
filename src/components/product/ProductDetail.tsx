@@ -39,7 +39,7 @@ export function ProductDetail({
 
   const handleOrder = async () => {
     if (!contact.trim()) {
-      setContact('请填写联系方式');
+      setContact('Please enter contact info');
       return;
     }
     setSubmitting(true);
@@ -57,7 +57,7 @@ export function ProductDetail({
         }),
       });
       setSuccess(true);
-      setContact('下单成功！');
+      setContact('Order placed!');
       setTimeout(() => {
         setSuccess(false);
         setContact("");
@@ -76,7 +76,7 @@ export function ProductDetail({
           <div className="overflow-hidden rounded-lg relative">
             {isActive === 0 && (
               <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/60">
-                <span className="text-white text-lg font-bold">已售出</span>
+                <span className="text-white text-lg font-bold">Sold</span>
               </div>
             )}
             <img
@@ -131,14 +131,14 @@ export function ProductDetail({
             )}
             {originalPrice && (
               <span className="rounded-md bg-red-100 px-2 py-1 text-sm font-medium text-red-600">
-                节省 ¥{(originalPrice - price).toFixed(2)}
+                Save ¥{(originalPrice - price).toFixed(2)}
               </span>
             )}
           </div>
 
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <span className="font-medium">数量</span>
+              <span className="font-medium">Quantity</span>
               <div className="flex items-center space-x-2">
                 <Button
                   variant="outline"
@@ -163,17 +163,17 @@ export function ProductDetail({
               <input
                 type="text"
                 className="w-full border rounded px-2 py-1 text-sm"
-                placeholder="请输入联系方式（手机号/微信/邮箱）"
+                placeholder="Enter contact (phone/WeChat/email)"
                 value={contact}
                 onChange={e => setContact(e.target.value)}
                 disabled={submitting || isActive === 0}
-                style={success || contact === '请填写联系方式' ? { color: contact === '请填写联系方式' ? 'red' : 'green', fontWeight: 'bold' } : {}}
+                style={success || contact === 'Please enter contact info' ? { color: contact === 'Please enter contact info' ? 'red' : 'green', fontWeight: 'bold' } : {}}
               />
             </div>
             <div className="flex gap-2">
               <Button className="flex-1 gap-2" size="lg" onClick={handleOrder} disabled={submitting || isActive === 0}>
                 <ShoppingCart className="h-4 w-4" />
-                {isActive === 0 ? '已售出' : '下单'}
+                {isActive === 0 ? 'Sold' : 'Order Now'}
               </Button>
               <Button variant="outline" size="icon" className="h-11 w-11" disabled={isActive === 0}>
                 <Heart className="h-5 w-5" />
@@ -188,13 +188,13 @@ export function ProductDetail({
             <Tabs defaultValue="details">
               <TabsList className="w-full">
                 <TabsTrigger value="details" className="flex-1">
-                  产品详情
+                  Details
                 </TabsTrigger>
                 <TabsTrigger value="ingredients" className="flex-1">
-                  成分
+                  Ingredients
                 </TabsTrigger>
                 <TabsTrigger value="instructions" className="flex-1">
-                  使用方法
+                  How to Use
                 </TabsTrigger>
               </TabsList>
               <TabsContent value="details" className="mt-4">
