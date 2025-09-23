@@ -21,7 +21,7 @@ import { useState } from "react";
 import { toast } from "@/components/ui/use-toast";
 
 const formSchema = z.object({
-  name: z.string().min(2, { message: "姓名至少需要2个字符" }),
+  name: z.string().min(2, { message: "Name must be at least 2 characters" }),
   email: z.string().email({ message: "请输入有效的电子邮件地址" }),
   phone: z.string().min(11, { message: "请输入有效的电话号码" }),
   subject: z.string().min(5, { message: "主题至少需要5个字符" }),
