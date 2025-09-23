@@ -113,8 +113,8 @@ export async function seedIfNeeded(env: any) {
     const createdBy = adminIdRow?.id || randomUUID();
     const samples: Omit<CarItem, 'id'>[] = [
       {
-        name: '本田 CR-V 2017款 2.0L 两驱',
-        description: '空间大，油耗低，家用首选，支持二手检测报告',
+        name: 'Honda CR-V 2017 2.0L 2WD',
+        description: 'Spacious, fuel-efficient, family favorite with inspection report available',
         price: 88000,
         year: 2017,
         mileage: 92000,
