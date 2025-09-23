@@ -10,23 +10,23 @@ import { ShieldCheck, FileCheck, Wrench, Car } from "lucide-react";
 const benefits = [
   {
     icon: <ShieldCheck className="h-10 w-10 text-green-600" />,
-    title: "严选质检",
-    description: "多项车况检测与历史核验，排除重大事故、火烧、水泡。",
+    title: "Rigorous Inspection",
+    description: "Multi-point condition checks and history verification; excludes major accidents, fire, and flood damage.",
   },
   {
     icon: <FileCheck className="h-10 w-10 text-blue-600" />,
-    title: "透明报告",
-    description: "提供详细检测报告与维保记录，车辆信息一目了然。",
+    title: "Transparent Reports",
+    description: "Detailed inspection reports and maintenance records for full transparency.",
   },
   {
     icon: <Wrench className="h-10 w-10 text-amber-600" />,
-    title: "售后保障",
-    description: "基础质保与7天无忧问题处理，购车更放心。",
+    title: "After-sales Support",
+    description: "Basic warranty and 7-day hassle-free issue handling for peace of mind.",
   },
   {
     icon: <Car className="h-10 w-10 text-slate-600" />,
-    title: "多样车源",
-    description: "轿车、SUV、MPV等多种选择，满足通勤与家庭出行需求。",
+    title: "Wide Selection",
+    description: "Sedans, SUVs, MPVs and more to meet commuting and family needs.",
   },
 ];
 
@@ -36,10 +36,10 @@ export function BenefitsSection() {
       <div className="container">
         <div className="mb-12 text-center">
           <h2 className="mb-2 text-3xl font-bold tracking-tight">
-            我们的服务保障
+            Our Guarantees
           </h2>
           <p className="text-muted-foreground">
-            车况透明、质检可靠、售后无忧，助您放心选车
+            Transparent condition, reliable inspection, and worry-free after-sales—helping you buy with confidence
           </p>
         </div>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
