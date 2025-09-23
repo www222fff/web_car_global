@@ -44,7 +44,7 @@ export function Header() {
           >
             车辆
           </Link>
-          {user && (
+          {user && !isAdmin && (
             <Link
               to="/orders"
               className="text-sm font-medium transition-colors hover:text-green-600"
