@@ -6,7 +6,7 @@ export function HeroSection() {
     <section className="relative overflow-hidden bg-gradient-to-b from-green-50 to-white py-16 md:py-24">
       <div className="container relative z-10">
         <div className="grid gap-8 md:grid-cols-2 md:gap-12 lg:items-center">
-          <div className="space-y-6">
+          <div className="space-y-6 text-center">
             <div>
               <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
                 放心选车，<span className="text-green-600">轻松成交</span>
@@ -15,12 +15,12 @@ export function HeroSection() {
                 精选优质二手车源，透明车况，支持在线咨询与购物车管理。
               </p>
             </div>
-            <div className="flex flex-col gap-2 sm:flex-row">
+            <div className="flex flex-col gap-2 sm:flex-row justify-center">
               <Button size="lg" asChild>
                 <Link to="/products">查看车辆</Link>
               </Button>
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center justify-center gap-4">
               <div className="flex -space-x-2">
                 {[1, 2, 3, 4].map((id) => (
                   <div
