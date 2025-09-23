@@ -9,7 +9,7 @@ import { api } from "@/lib/api";
 
 export default function CartPage() {
   const { user } = useAuth();
-  const { items, update, remove } = useCart();
+  const { items, update } = useCart();
   const navigate = useNavigate();
 
   const total = items.reduce((sum, i) => {
