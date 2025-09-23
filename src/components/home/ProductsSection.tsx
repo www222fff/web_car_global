@@ -12,11 +12,9 @@ export function ProductsSection() {
   return (
     <section className="py-16 md:py-24">
       <div className="container">
-        <div className="mb-12 flex flex-col items-center justify-between gap-4 sm:flex-row">
-          <div>
-            <h2 className="text-3xl font-bold tracking-tight">精选车源</h2>
-            <p className="text-muted-foreground">严选优质二手车，价格透明，车况可靠</p>
-          </div>
+        <div className="mb-12 text-center">
+          <h2 className="mb-2 text-3xl font-bold tracking-tight">精选车源</h2>
+          <p className="text-muted-foreground">严选优��二手车，价格透明，车况可靠</p>
         </div>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {cars.map((car) => (
