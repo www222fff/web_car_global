@@ -9,15 +9,15 @@ export function HeroSection() {
           <div className="space-y-6 text-center max-w-3xl">
             <div>
               <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-                放心选车，<span className="text-green-600">轻松成交</span>
+                Shop with confidence,<span className="text-green-600">buy with ease</span>
               </h1>
               <p className="mt-4 text-lg text-muted-foreground">
-                精选优质二手车源，透明车况，支持在线咨询与购物车管理。
+                Handpicked used cars with transparent condition, with online inquiries and cart management.
               </p>
             </div>
             <div className="flex flex-col gap-2 sm:flex-row justify-center">
               <Button size="lg" asChild>
-                <Link to="/products">查看车辆</Link>
+                <Link to="/products">Browse Cars</Link>
               </Button>
             </div>
             <div className="flex items-center justify-center gap-4">
@@ -29,14 +29,14 @@ export function HeroSection() {
                   >
                     <img
                       src={`https://randomuser.me/api/portraits/men/${id + 30}.jpg`}
-                      alt="用户头像"
+                      alt="User avatar"
                       className="h-full w-full object-cover"
                     />
                   </div>
                 ))}
               </div>
               <div className="text-sm">
-                <span className="font-medium">1000+</span> 用户好评
+                <span className="font-medium">1000+</span> positive reviews
               </div>
             </div>
           </div>
