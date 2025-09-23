@@ -21,7 +21,7 @@ export default function ProductPage() {
   if (loading) {
     return (
       <Layout>
-        <div className="container py-16 text-center">加载中...</div>
+        <div className="container py-16 text-center">Loading...</div>
       </Layout>
     );
   }
@@ -30,8 +30,8 @@ export default function ProductPage() {
     return (
       <Layout>
         <div className="container py-16 text-center">
-          <h1 className="text-2xl font-bold">车辆未找到</h1>
-          <p className="mt-4">抱歉，您查找的车辆不存在。</p>
+          <h1 className="text-2xl font-bold">Car not found</h1>
+          <p className="mt-4">Sorry, the car you are looking for does not exist.</p>
         </div>
       </Layout>
     );
@@ -51,13 +51,13 @@ export default function ProductPage() {
       {isAdmin && (
         <div className="container mt-6 flex justify-end">
           <Button variant={car.isActive ? "destructive" : "default"} onClick={toggleActive}>
-            {car.isActive ? "下架车辆" : "上架车辆"}
+            {car.isActive ? "Remove Listing" : "Activate Listing"}
           </Button>
         </div>
       )}
   <CarDetail id={car.id} name={car.name} description={car.description} price={car.price} images={car.images} image={car.image || undefined} year={car.year || undefined} mileage={car.mileage || undefined} isActive={car.isActive} />
       <div className="container my-16">
-        <h2 className="mb-8 text-2xl font-bold">您可能也喜欢</h2>
+        <h2 className="mb-8 text-2xl font-bold">You may also like</h2>
         <ProductsSection />
       </div>
     </Layout>
