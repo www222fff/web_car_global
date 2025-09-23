@@ -55,14 +55,14 @@ export default function CartPage() {
                   const car = i.car;
                   if (!car) return null;
                   return (
-                    <div key={i.carId} className="flex items-center gap-3 border-b pb-3">
-                      <img src={car.image || ''} alt={car.name} className="h-16 w-24 object-cover rounded" />
-                      <div className="flex-1">
+                    <div key={i.carId} className="flex flex-wrap items-start gap-3 border-b pb-3">
+                      <img src={car.image || ''} alt={car.name} className="h-16 w-24 object-cover rounded shrink-0" />
+                      <div className="flex-1 min-w-0">
                         <div className="font-medium line-clamp-1">{car.name}</div>
                         <div className="text-sm text-muted-foreground">¥{car.price.toFixed(2)}</div>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <Button variant="outline" size="icon" onClick={() => update(i.carId, i.qty - 1)}> - </Button>
+                      <div className="flex items-center gap-2 flex-wrap w-full sm:w-auto sm:ml-auto">
+                        <Button variant="outline" size="icon" onClick={() => update(i.carId, i.qty - 1)}>-</Button>
                         <Input value={i.qty} onChange={(e) => {
                           const val = Number(e.target.value);
                           update(i.carId, Number.isFinite(val) ? val : i.qty);
