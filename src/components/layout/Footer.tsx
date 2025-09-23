@@ -4,7 +4,7 @@ export function Footer() {
   return (
     <footer className="border-t bg-slate-50">
       <div className="container py-8 md:py-12">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           <div className="space-y-3">
             <h3 className="text-lg font-semibold">二手车市场</h3>
             <img
@@ -52,35 +52,6 @@ export function Footer() {
             </div>
           </div>
 
-          <div className="space-y-3">
-            <h3 className="text-sm font-semibold">快速链接</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link
-                  to="/"
-                  className="text-sm text-muted-foreground hover:text-green-600"
-                >
-                  首页
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/products"
-                  className="text-sm text-muted-foreground hover:text-green-600"
-                >
-                  车辆
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/benefits"
-                  className="text-sm text-muted-foreground hover:text-green-600"
-                >
-                  购车指南
-                </Link>
-              </li>
-            </ul>
-          </div>
 
           <div className="space-y-3">
             <h3 className="text-sm font-semibold">关于</h3>
