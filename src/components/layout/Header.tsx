@@ -58,7 +58,7 @@ export function Header() {
                 to="/admin/upload"
                 className="text-sm font-medium transition-colors hover:text-green-600"
               >
-                发布车辆
+                Post Car
               </Link>
               <Link
                 to="/admin/orders"
@@ -150,7 +150,7 @@ export function Header() {
                 className="flex h-10 items-center border-b text-sm font-medium transition-colors hover:text-green-600"
                 onClick={() => setIsMenuOpen(false)}
               >
-                发布车辆
+                Post Car
               </Link>
               <Link
                 to="/admin/orders"
