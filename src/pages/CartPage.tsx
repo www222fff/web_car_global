@@ -62,11 +62,13 @@ export default function CartPage() {
                         <div className="text-sm text-muted-foreground">¥{car.price.toFixed(2)}</div>
                       </div>
                       <div className="flex items-center gap-2">
-                        <Button variant="outline" size="icon" onClick={() => update(i.carId, Math.max(1, i.qty - 1))}>-</Button>
-                        <Input value={i.qty} onChange={(e) => update(i.carId, Math.max(1, Number(e.target.value)||1))} className="w-16 text-center" />
+                        <Button variant="outline" size="icon" onClick={() => update(i.carId, i.qty - 1)}> - </Button>
+                        <Input value={i.qty} onChange={(e) => {
+                          const val = Number(e.target.value);
+                          update(i.carId, Number.isFinite(val) ? val : i.qty);
+                        }} className="w-16 text-center" />
                         <Button variant="outline" size="icon" onClick={() => update(i.carId, i.qty + 1)}>+</Button>
                       </div>
-                      <Button variant="destructive" onClick={() => remove(i.carId)}>移除</Button>
                     </div>
                   );
                 })}
