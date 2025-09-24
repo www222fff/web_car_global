@@ -93,7 +93,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   };
 
   const value = useMemo(
-    () => ({ items, count, add, update, remove }),
+    () => ({ items, count, add, update, remove, reload }),
     [items, count]
   );
 

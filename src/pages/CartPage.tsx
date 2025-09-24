@@ -28,11 +28,12 @@ export default function CartPage() {
     );
   }
 
+    const { reload } = useCart();
     const checkout = async () => {
       try {
         await api.createOrder(user.id);
-        // Ideally show toast, and refresh cart
-        await new Promise((resolve) => setTimeout(resolve, 100)); // 确保后端已写入
+        await reload(); // 结算后刷新购物车
+        await new Promise((resolve) => setTimeout(resolve, 100));
         navigate("/orders");
       } catch (e) {
         alert((e as Error).message || 'Checkout failed');
