@@ -1,6 +1,7 @@
 import { Layout } from "@/components/layout/Layout";
 import { useAuth } from "@/context/AuthContext";
 import { api } from "@/lib/api";
+import { CarDTO } from "@/lib/api";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 
@@ -9,10 +10,21 @@ interface OrderRow { id: string; userId: string; items: {carId:string; qty:numbe
 export default function AdminOrdersPage() {
   const { user, isAdmin } = useAuth();
   const [orders, setOrders] = useState<OrderRow[]>([]);
+  const [carMap, setCarMap] = useState<Record<string, CarDTO>>({});
 
   useEffect(() => {
     if (!user || !isAdmin) return;
-    api.listOrders(user.id, true).then(setOrders).catch(() => setOrders([]));
+    Promise.all([
+      api.listOrders(user.id, true),
+      api.getCars(true)
+    ])
+      .then(([orders, cars]) => {
+        setOrders(orders);
+        const map: Record<string, CarDTO> = {};
+        cars.forEach((c: CarDTO) => { map[c.id] = c; });
+        setCarMap(map);
+      })
+      .catch(() => { setOrders([]); setCarMap({}); });
   }, [user?.id, isAdmin]);
 
   if (!isAdmin) {
