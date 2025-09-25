@@ -94,6 +94,13 @@ export async function ensureSchema(env: any) {
     status TEXT NOT NULL DEFAULT 'pending',
     createdAt INTEGER NOT NULL
   );`).run();
+
+  // Addresses
+  await db.prepare(`CREATE TABLE IF NOT EXISTS addresses (
+    userId TEXT PRIMARY KEY,
+    address TEXT NOT NULL,
+    contact TEXT NOT NULL
+  );`).run();
 }
 
 export async function seedIfNeeded(env: any) {
@@ -102,7 +109,7 @@ export async function seedIfNeeded(env: any) {
   const admin = await db.prepare(`SELECT id FROM users WHERE role = 'admin' LIMIT 1;`).first<{id:string}>();
   if (!admin) {
     const id = randomUUID();
-    await db.prepare(`INSERT INTO users (id, username, password, role) VALUES (?, ?, ?, ?);`).bind(id, 'admin', 'admin', 'admin').run();
+    await db.prepare(`INSERT INTO users (id, username, password, role) VALUES (?, ?, ?, ?);`).bind(id, 'admin', 'admin', 'admin', 'admin').run();
   }
 
   // Seed sample cars

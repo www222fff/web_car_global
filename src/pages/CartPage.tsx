@@ -6,13 +6,22 @@ import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
 import { Link, useNavigate } from "react-router-dom";
 import { api } from "@/lib/api";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useUserAddress } from "@/hooks/use-user-address";
 
 export default function CartPage() {
   const { user } = useAuth();
   const { items, update } = useCart();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [addressInfo, setAddressInfo] = useState<{address?: string, contact?: string}|null>(null);
+
+  useEffect(() => {
+    if (!user) return;
+    fetch("/api/address", { headers: { "X-User-Id": user.id } })
+      .then(res => res.ok ? res.json() : null)
+      .then(data => setAddressInfo(data));
+  }, [user]);
 
   const total = items.reduce((sum, i) => {
     const price = i.car?.price || 0;
@@ -34,6 +43,11 @@ export default function CartPage() {
     const checkout = async () => {
       setLoading(true);
       try {
+        if (!addressInfo || !addressInfo.address || !addressInfo.contact) {
+          alert("Please add your recipient address and contact info before checkout.");
+          navigate("/address");
+          return;
+        }
         await api.createOrder(user.id);
         await reload(); // 结算后刷新购物车
         await new Promise((resolve) => setTimeout(resolve, 100));
