@@ -45,13 +45,17 @@ export default function AdminOrdersPage() {
                   <div>Order ID:{o.id} (User:{o.userId})</div>
                   <div className="text-sm text-muted-foreground">{new Date(o.createdAt).toLocaleString()}</div>
                 </div>
-                <div className="mt-2 text-sm">Status:{o.status}
-                  <Button variant="destructive" size="sm" className="ml-4" onClick={() => handleDelete(o.id)}>Delete Order</Button>
-                </div>
                 <div className="mt-2 space-y-1 text-sm">
                   {o.items.map((it, idx) => (
                     <div key={idx}>Car ID:{it.carId} × {it.qty}, unit price¥{it.price.toFixed(2)}</div>
                   ))}
+                </div>
+                <div className="mt-2 text-sm text-muted-foreground">
+                  <span>Recipient Address: {o.address || '-'}</span><br />
+                  <span>Contact: {o.contact || '-'}</span>
+                </div>
+                <div className="mt-2 text-sm">Status:{o.status}
+                  <Button variant="destructive" size="sm" className="ml-4" onClick={() => handleDelete(o.id)}>Delete Order</Button>
                 </div>
                 <div className="mt-2 font-semibold">Total:¥{o.totalPrice.toFixed(2)}</div>
               </div>
