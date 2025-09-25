@@ -29,7 +29,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => { reload(); }, [user?.id]);
 
   const add = async (carId: string, qty = 1) => {
-    if (!user) return; // require login to manage cart
+    if (!user) return;
     // Optimistic update
     setItems(prev => {
       const idx = prev.findIndex(i => i.carId === carId);
@@ -44,16 +44,14 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     });
     try {
       await api.addToCart(user.id, carId, qty);
-    } catch (e) {
-      // fallback to server truth on error
-      await reload();
+    } finally {
+      reload(); // always reload to fix car info
     }
   };
 
   const update = async (carId: string, qty: number) => {
     if (!user) return;
     if (qty <= 0) {
-      // treat as remove
       setItems(prev => {
         const next = prev.filter(i => i.carId !== carId);
         setCount(computeCount(next));
@@ -61,8 +59,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       });
       try {
         await api.removeFromCart(user.id, carId);
-      } catch (e) {
-        await reload();
+      } finally {
+        reload();
       }
       return;
     }
@@ -73,8 +71,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     });
     try {
       await api.setCartItem(user.id, carId, qty);
-    } catch (e) {
-      await reload();
+    } finally {
+      reload();
     }
   };
 
@@ -87,8 +85,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     });
     try {
       await api.removeFromCart(user.id, carId);
-    } catch (e) {
-      await reload();
+    } finally {
+      reload();
     }
   };
 
