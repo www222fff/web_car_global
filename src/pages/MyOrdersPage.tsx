@@ -9,13 +9,17 @@ interface OrderRow { id: string; userId: string; items: {carId:string; qty:numbe
 export default function MyOrdersPage() {
   const { user, isAdmin } = useAuth();
   const [orders, setOrders] = useState<OrderRow[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!user || isAdmin) return;
-    api.listOrders(user.id).then(setOrders).catch(() => setOrders([]));
+    setLoading(true);
+    api.listOrders(user.id)
+      .then(setOrders)
+      .catch(() => setOrders([]))
+      .finally(() => setLoading(false));
   }, [user?.id, isAdmin]);
 
-  // Cancel Order
   const handleCancel = async (id: string) => {
     if (!user) return;
     await api.cancelOrder(user.id, id);
@@ -34,7 +38,9 @@ export default function MyOrdersPage() {
     <Layout>
       <div className="container py-8 md:py-12">
         <h1 className="mb-6 text-3xl font-bold">My Orders</h1>
-        {(!user || orders.length === 0) ? (
+        {loading ? (
+          <div className="text-muted-foreground">Loading orders...</div>
+        ) : (!user || orders.length === 0) ? (
           <div className="text-muted-foreground">No orders yet</div>
         ) : (
           <div className="space-y-4">
