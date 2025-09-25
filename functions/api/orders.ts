@@ -12,8 +12,8 @@ export async function onRequest({ request, env }) {
     const isAdmin = user.role === 'admin';
     const all = isAdmin && url.searchParams.get('all') === '1';
     const stmt = all
-      ? `SELECT id, userId, items, totalPrice, status, createdAt FROM orders ORDER BY createdAt DESC`
-      : `SELECT id, userId, items, totalPrice, status, createdAt FROM orders WHERE userId=? ORDER BY createdAt DESC`;
+      ? `SELECT id, userId, items, totalPrice, status, createdAt, address, contact FROM orders ORDER BY createdAt DESC`
+      : `SELECT id, userId, items, totalPrice, status, createdAt, address, contact FROM orders WHERE userId=? ORDER BY createdAt DESC`;
     const rs = all ? await db.prepare(stmt).all() : await db.prepare(stmt).bind(user.id).all();
     const orders = (rs.results || []).map((r: any) => ({ ...r, items: JSON.parse(r.items) }));
     return ensureJsonResponse(orders);
@@ -24,12 +24,20 @@ export async function onRequest({ request, env }) {
     if (!user) return badRequest('Unauthorized', 401);
     const body = await request.json().catch(() => ({}));
     let items: any[] | null = Array.isArray(body?.items) ? body.items : null;
+    let address = body.address, contact = body.contact;
     if (!items) {
       // build from cart
       const rs = await db.prepare(`SELECT c.carId, c.qty, cars.price FROM cart c LEFT JOIN cars ON cars.id=c.carId WHERE c.userId=?`).bind(user.id).all();
       items = (rs.results || []).map((r: any) => ({ carId: r.carId, qty: r.qty, price: r.price }));
     }
     if (!items || items.length === 0) return badRequest('Empty order');
+    // fetch address/contact if not provided
+    if (!address || !contact) {
+      const addrRow = await db.prepare('SELECT address, contact FROM addresses WHERE userId=?').bind(user.id).first();
+      address = addrRow?.address || '';
+      contact = addrRow?.contact || '';
+    }
+    if (!address || !contact) return badRequest('Missing address or contact');
     // compute total from DB prices
     let total = 0;
     const validated: {carId:string; qty:number; price:number}[] = [];
@@ -44,15 +52,15 @@ export async function onRequest({ request, env }) {
     }
     const id = crypto.randomUUID();
     const createdAt = Date.now();
-    await db.prepare(`INSERT INTO orders (id, userId, items, totalPrice, status, createdAt) VALUES (?, ?, ?, ?, 'pending', ?)`)
-      .bind(id, user.id, JSON.stringify(validated), total, createdAt).run();
+    await db.prepare(`INSERT INTO orders (id, userId, items, totalPrice, status, createdAt, address, contact) VALUES (?, ?, ?, ?, 'pending', ?, ?, ?)`)
+      .bind(id, user.id, JSON.stringify(validated), total, createdAt, address, contact).run();
     // 标记车辆为已售出
     for (const it of validated) {
       await db.prepare(`UPDATE cars SET isActive=0 WHERE id=?`).bind(it.carId).run();
     }
     // Clear cart after order
     await db.prepare(`DELETE FROM cart WHERE userId=?`).bind(user.id).run();
-    return ensureJsonResponse({ id, totalPrice: total, status: 'pending', createdAt, items: validated }, 201);
+    return ensureJsonResponse({ id, totalPrice: total, status: 'pending', createdAt, items: validated, address, contact }, 201);
   }
 
   // 订单取消（与删除订单行为一致，直接删除订单并恢复车辆可售）

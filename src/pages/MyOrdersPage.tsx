@@ -80,6 +80,10 @@ export default function MyOrdersPage() {
                     );
                   })}
                 </div>
+                <div className="mt-2 text-sm text-muted-foreground">
+                  <span>Recipient Address: {o.address || '-'}</span><br />
+                  <span>Contact: {o.contact || '-'}</span>
+                </div>
                 <div className="mt-2 font-semibold text-right">Total: <span className="text-green-700">¥{o.totalPrice.toFixed(2)}</span></div>
               </div>
             ))}

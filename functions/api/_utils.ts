@@ -92,7 +92,9 @@ export async function ensureSchema(env: any) {
     items TEXT NOT NULL,
     totalPrice REAL NOT NULL,
     status TEXT NOT NULL DEFAULT 'pending',
-    createdAt INTEGER NOT NULL
+    createdAt INTEGER NOT NULL,
+    address TEXT,
+    contact TEXT
   );`).run();
 
   // Addresses
