@@ -18,6 +18,7 @@ import { AuthProvider } from "./context/AuthContext";
 import { CartProvider } from "./context/CartContext";
 import AdminOrdersPage from "./pages/AdminOrdersPage";
 import MyOrdersPage from "./pages/MyOrdersPage";
+import AddressPage from "./pages/AddressPage";
 
 const App = () => {
   // Create a new QueryClient instance for each component instance
@@ -44,6 +45,7 @@ const App = () => {
                 <Route path="/register" element={<RegisterPage />} />
                 <Route path="/about" element={<AboutPage />} />
                 <Route path="/contact" element={<ContactPage />} />
+                <Route path="/address" element={<AddressPage />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFoundPage />} />
               </Routes>
