@@ -3,6 +3,7 @@ import { Minus, Plus, ShoppingCart } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
+import { useToast } from "@/components/ui/use-toast";
 
 interface CarDetailProps {
   id: string;
@@ -21,6 +22,7 @@ export function CarDetail({ id, name, description, price, images, image, year, m
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const { user } = useAuth();
   const { add } = useCart();
+  const { toast } = useToast();
 
   const gallery = images && images.length > 0 ? images : (image ? [image] : []);
 
@@ -30,6 +32,7 @@ export function CarDetail({ id, name, description, price, images, image, year, m
   const handleAdd = () => {
     if (!user || isActive === 0) return;
     add(id, quantity);
+    toast({ title: "Added to cart successfully!" });
   };
 
   return (

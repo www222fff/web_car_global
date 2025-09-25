@@ -57,7 +57,6 @@ export default function ProductPage() {
       )}
   <CarDetail id={car.id} name={car.name} description={car.description} price={car.price} images={car.images} image={car.image || undefined} year={car.year || undefined} mileage={car.mileage || undefined} isActive={car.isActive} />
       <div className="container my-16">
-        <h2 className="mb-8 text-2xl font-bold">You may also like</h2>
         <ProductsSection />
       </div>
     </Layout>
