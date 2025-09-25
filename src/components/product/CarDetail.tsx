@@ -21,7 +21,7 @@ export function CarDetail({ id, name, description, price, images, image, year, m
   const [quantity, setQuantity] = useState(1);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const { user } = useAuth();
-  const { add } = useCart();
+  const { add, reload } = useCart();
   const { toast } = useToast();
 
   const gallery = images && images.length > 0 ? images : (image ? [image] : []);
@@ -29,9 +29,10 @@ export function CarDetail({ id, name, description, price, images, image, year, m
   const increaseQuantity = () => setQuantity((prev) => prev + 1);
   const decreaseQuantity = () => setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
 
-  const handleAdd = () => {
+  const handleAdd = async () => {
     if (!user || isActive === 0) return;
-    add(id, quantity);
+    await add(id, quantity);
+    await reload();
     toast({ title: "Added to cart successfully!" });
   };
 
