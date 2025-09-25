@@ -6,11 +6,13 @@ import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
 import { Link, useNavigate } from "react-router-dom";
 import { api } from "@/lib/api";
+import { useState } from "react";
 
 export default function CartPage() {
   const { user } = useAuth();
   const { items, update } = useCart();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const total = items.reduce((sum, i) => {
     const price = i.car?.price || 0;
@@ -30,6 +32,7 @@ export default function CartPage() {
 
     const { reload } = useCart();
     const checkout = async () => {
+      setLoading(true);
       try {
         await api.createOrder(user.id);
         await reload(); // 结算后刷新购物车
@@ -37,6 +40,8 @@ export default function CartPage() {
         navigate("/orders");
       } catch (e) {
         alert((e as Error).message || 'Checkout failed');
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -75,7 +80,13 @@ export default function CartPage() {
                 })}
                 <div className="flex items-center justify-between pt-2">
                   <div className="text-lg font-bold">Total:¥{total.toFixed(2)}</div>
-                  <Button onClick={checkout}>Checkout</Button>
+                  <Button onClick={checkout} disabled={loading}>
+                    {loading ? (
+                      <span className="flex items-center"><svg className="animate-spin h-4 w-4 mr-2" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" /></svg>Processing...</span>
+                    ) : (
+                      'Checkout'
+                    )}
+                  </Button>
                 </div>
               </div>
             )}
