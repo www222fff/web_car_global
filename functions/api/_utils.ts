@@ -53,7 +53,7 @@ export async function ensureSchema(env: any) {
     role TEXT NOT NULL
   );`).run();
 
-  // Cars
+  // Cars (复用表结构作为商品表)
   await db.prepare(`CREATE TABLE IF NOT EXISTS cars (
     id TEXT PRIMARY KEY,
     name TEXT NOT NULL,
@@ -111,10 +111,10 @@ export async function seedIfNeeded(env: any) {
   const admin = await db.prepare(`SELECT id FROM users WHERE role = 'admin' LIMIT 1;`).first<{id:string}>();
   if (!admin) {
     const id = randomUUID();
-    await db.prepare(`INSERT INTO users (id, username, password, role) VALUES (?, ?, ?, ?);`).bind(id, 'admin', 'admin', 'admin', 'admin').run();
+    await db.prepare(`INSERT INTO users (id, username, password, role) VALUES (?, ?, ?, ?);`).bind(id, 'admin', 'admin', 'admin').run();
   }
 
-  // Seed sample cars
+  // Seed sample products (lingerie)
   const countRow = await db.prepare(`SELECT COUNT(*) as c FROM cars;`).first<{c:number}>();
   const count = countRow ? Number((countRow as any).c) : 0;
   if (count === 0) {
@@ -122,22 +122,40 @@ export async function seedIfNeeded(env: any) {
     const createdBy = adminIdRow?.id || randomUUID();
     const samples: Omit<CarItem, 'id'>[] = [
       {
-        name: 'Honda CR-V 2017 2.0L 2WD',
-        description: 'Spacious, fuel-efficient, family favorite with inspection report available',
-        price: 88000,
-        year: 2017,
-        mileage: 92000,
-        image: 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?q=80&w=1200&auto=format&fit=crop',
-        category: 'SUV',
+        name: '轻薄无钢圈文胸',
+        description: '亲肤透气，轻盈承托，适合日常长时间穿着',
+        price: 199,
+        image: 'https://images.unsplash.com/photo-1603252109303-2751441dd157?q=80&w=1200&auto=format&fit=crop',
+        category: '文胸',
         createdBy,
-        images: ['https://images.unsplash.com/photo-1552519507-da3b142c6e3d?q=80&w=1200&auto=format&fit=crop'],
+        images: ['https://images.unsplash.com/photo-1603252109303-2751441dd157?q=80&w=1200&auto=format&fit=crop'],
+        isActive: 1,
+      },
+      {
+        name: '莫代尔高腰内裤 3 条装',
+        description: '柔软亲肤，弹力贴合，日常舒适之选',
+        price: 129,
+        image: 'https://images.unsplash.com/photo-1603252109744-5f17d0c0d5f1?q=80&w=1200&auto=format&fit=crop',
+        category: '内裤',
+        createdBy,
+        images: ['https://images.unsplash.com/photo-1603252109744-5f17d0c0d5f1?q=80&w=1200&auto=format&fit=crop'],
+        isActive: 1,
+      },
+      {
+        name: '棉质家居睡衣套装',
+        description: '宽松版型，透气面料，放松每一刻',
+        price: 239,
+        image: 'https://images.unsplash.com/photo-1519340241574-2cec6aef0c01?q=80&w=1200&auto=format&fit=crop',
+        category: '家居服',
+        createdBy,
+        images: ['https://images.unsplash.com/photo-1519340241574-2cec6aef0c01?q=80&w=1200&auto=format&fit=crop'],
         isActive: 1,
       },
     ];
     for (const s of samples) {
       const id = randomUUID();
       await db.prepare(`INSERT INTO cars (id, name, description, price, image, year, mileage, category, createdBy, images, isActive) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`)
-        .bind(id, s.name, s.description, s.price, s.image ?? null, s.year ?? null, s.mileage ?? null, s.category ?? null, s.createdBy, JSON.stringify(s.images ?? []), s.isActive ?? 1)
+        .bind(id, s.name, s.description, s.price, s.image ?? null, null, null, s.category ?? null, s.createdBy, JSON.stringify(s.images ?? []), s.isActive ?? 1)
         .run();
     }
   }

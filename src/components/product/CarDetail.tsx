@@ -33,7 +33,7 @@ export function CarDetail({ id, name, description, price, images, image, year, m
     if (!user || isActive === 0) return;
     await add(id, quantity);
     await reload();
-    toast({ title: "Added to cart successfully!" });
+    toast({ title: "已加入购物车" });
   };
 
   return (
@@ -42,7 +42,14 @@ export function CarDetail({ id, name, description, price, images, image, year, m
         <div className="space-y-4">
           <div className="overflow-hidden rounded-lg">
             {gallery[0] ? (
-              <img src={gallery[selectedImageIndex]} alt={name} className="w-full object-cover" />
+              <div className="relative">
+                {isActive === 0 && (
+                  <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/60">
+                    <span className="text-white text-lg font-bold">已售罄</span>
+                  </div>
+                )}
+                <img src={gallery[selectedImageIndex]} alt={name} className="w-full object-cover" />
+              </div>
             ) : (
               <div className="aspect-video w-full rounded bg-muted" />
             )}
@@ -66,23 +73,9 @@ export function CarDetail({ id, name, description, price, images, image, year, m
           <div className="flex items-center gap-2">
             <span className="text-3xl font-bold text-green-600">¥{price.toFixed(2)}</span>
           </div>
-          <div className="grid grid-cols-2 gap-4 text-sm">
-            {year && (
-              <div>
-                <div className="text-muted-foreground">Year</div>
-                <div className="font-medium">{year}</div>
-              </div>
-            )}
-            {mileage !== undefined && (
-              <div>
-                <div className="text-muted-foreground">Mileage</div>
-                <div className="font-medium">{mileage} km</div>
-              </div>
-            )}
-          </div>
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <span className="font-medium">Quantity</span>
+              <span className="font-medium">数量</span>
               <div className="flex items-center space-x-2">
                 <Button variant="outline" size="icon" onClick={decreaseQuantity} disabled={quantity <= 1}>
                   <Minus className="h-4 w-4" />
@@ -96,7 +89,7 @@ export function CarDetail({ id, name, description, price, images, image, year, m
             <div className="flex gap-2">
               <Button className="flex-1 gap-2" size="lg" onClick={handleAdd} disabled={!user || isActive === 0}>
                 <ShoppingCart className="h-4 w-4" />
-                {isActive === 0 ? 'Sold' : 'Add to Cart'}
+                {isActive === 0 ? '已售罄' : '加入购物车'}
               </Button>
             </div>
           </div>

@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useAuth } from "@/context/AuthContext";
+aimport { useAuth } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { api } from "@/lib/api";
@@ -15,9 +15,7 @@ export default function AdminUploadCarPage() {
 
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
-  const [year, setYear] = useState<number | "">("");
-  const [mileage, setMileage] = useState<number | "">("");
-  const [category, setCategory] = useState("轿车");
+  const [category, setCategory] = useState("文胸");
   const [description, setDescription] = useState("");
   const [imageData, setImageData] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
@@ -26,7 +24,7 @@ export default function AdminUploadCarPage() {
     return (
       <Layout>
         <div className="container py-12">
-          <div className="text-center text-muted-foreground">无权访问，仅管理员可发布车辆</div>
+          <div className="text-center text-muted-foreground">无权访问，仅管理员可发布商品</div>
         </div>
       </Layout>
     );
@@ -49,8 +47,6 @@ export default function AdminUploadCarPage() {
         description,
         price: Number(price),
         image: imageData,
-        year: year ? Number(year) : undefined,
-        mileage: mileage ? Number(mileage) : undefined,
         category,
         images: [imageData],
       });
@@ -66,28 +62,27 @@ export default function AdminUploadCarPage() {
         <div className="mx-auto max-w-2xl">
           <Card>
             <CardHeader>
-              <CardTitle>发布二手车</CardTitle>
+              <CardTitle>发布商品</CardTitle>
             </CardHeader>
             <CardContent>
               <form className="space-y-4" onSubmit={onSubmit}>
-                <Input placeholder="车辆标题，如：丰田 卡罗拉 2019款 1.2T" value={name} onChange={(e) => setName(e.target.value)} />
-                <div className="grid grid-cols-3 gap-3">
+                <Input placeholder="商品标题，如：轻薄无钢圈文胸" value={name} onChange={(e) => setName(e.target.value)} />
+                <div className="grid grid-cols-2 gap-3">
                   <Input type="number" placeholder="价格 (¥)" value={price} onChange={(e) => setPrice(Number(e.target.value))} />
-                  <Input type="number" placeholder="年份" value={year} onChange={(e) => setYear(e.target.value ? Number(e.target.value) : "")} />
-                  <Input type="number" placeholder="里程 (km)" value={mileage} onChange={(e) => setMileage(e.target.value ? Number(e.target.value) : "")} />
+                  <Select value={category} onValueChange={setCategory}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="选择分类" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="文胸">文胸</SelectItem>
+                      <SelectItem value="内裤">内裤</SelectItem>
+                      <SelectItem value="家居服">家居服</SelectItem>
+                      <SelectItem value="运动内衣">运动内衣</SelectItem>
+                      <SelectItem value="配件">配件</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
-                <Select value={category} onValueChange={setCategory}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="选择车型" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="轿车">轿车</SelectItem>
-                    <SelectItem value="SUV">SUV</SelectItem>
-                    <SelectItem value="MPV">MPV</SelectItem>
-                    <SelectItem value="其他">其他</SelectItem>
-                  </SelectContent>
-                </Select>
-                <Textarea placeholder="车辆描述" value={description} onChange={(e) => setDescription(e.target.value)} />
+                <Textarea placeholder="商品描述" value={description} onChange={(e) => setDescription(e.target.value)} />
                 <div>
                   <input type="file" accept="image/*" onChange={(e) => onImageChange(e.target.files?.[0] || null)} />
                   {imageData && (

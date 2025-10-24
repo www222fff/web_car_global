@@ -1,15 +1,16 @@
-import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ShoppingCart, Menu, X } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
+import { Link, useNavigate } from "react-router-dom";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  // 事件派发给 Layout 控制主内容 transform
   if (typeof window !== 'undefined') {
+    // 控制主内容在移动端抽屉展开时的位移
+    // @ts-expect-error global assignment
     window.__setMainTransform = (open: boolean) => {
       const main = document.getElementById('main-content');
       if (main) {
@@ -26,7 +27,7 @@ export function Header() {
       <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center">
           <Link to="/" className="flex items-center space-x-2">
-            <span className="text-xl font-bold text-green-600">Used Car Market</span>
+            <span className="text-xl font-bold text-green-600">Lingerie Boutique</span>
           </Link>
         </div>
 
@@ -36,20 +37,20 @@ export function Header() {
             to="/"
             className="text-sm font-medium transition-colors hover:text-green-600"
           >
-            Home
+            首页
           </Link>
           <Link
             to="/products"
             className="text-sm font-medium transition-colors hover:text-green-600"
           >
-            Cars
+            内衣
           </Link>
           {user && !isAdmin && (
             <Link
               to="/orders"
               className="text-sm font-medium transition-colors hover:text-green-600"
             >
-              My Orders
+              我的订单
             </Link>
           )}
           {isAdmin && (
@@ -58,13 +59,13 @@ export function Header() {
                 to="/admin/upload"
                 className="text-sm font-medium transition-colors hover:text-green-600"
               >
-                Post Car
+                发布商品
               </Link>
               <Link
                 to="/admin/orders"
                 className="text-sm font-medium transition-colors hover:text-green-600"
               >
-                Order Management
+                订单管理
               </Link>
             </>
           )}
@@ -73,13 +74,13 @@ export function Header() {
         <div className="flex items-center space-x-4">
           {!user ? (
             <div className="hidden md:flex items-center gap-2">
-              <Button variant="ghost" onClick={() => navigate('/login')}>Log in</Button>
-              <Button onClick={() => navigate('/register')}>Sign up</Button>
+              <Button variant="ghost" onClick={() => navigate('/login')}>登录</Button>
+              <Button onClick={() => navigate('/register')}>注册</Button>
             </div>
           ) : (
             <div className="hidden md:flex items-center gap-2">
               <span className="text-sm text-muted-foreground">{user.username}</span>
-              <Button variant="outline" onClick={() => { logout(); navigate('/'); }}>Log out</Button>
+              <Button variant="outline" onClick={() => { logout(); navigate('/'); }}>退出</Button>
             </div>
           )}
 
@@ -114,8 +115,8 @@ export function Header() {
         )}
         style={{ willChange: 'transform' }}
         onTransitionEnd={() => {
-          if (typeof window !== 'undefined' && window.__setMainTransform) {
-            window.__setMainTransform(isMenuOpen);
+          if (typeof window !== 'undefined' && (window as any).__setMainTransform) {
+            (window as any).__setMainTransform(isMenuOpen);
           }
         }}
       >
@@ -125,14 +126,14 @@ export function Header() {
             className="flex h-10 items-center border-b text-sm font-medium transition-colors hover:text-green-600"
             onClick={() => setIsMenuOpen(false)}
           >
-            Home
+            首页
           </Link>
           <Link
             to="/products"
             className="flex h-10 items-center border-b text-sm font-medium transition-colors hover:text-green-600"
             onClick={() => setIsMenuOpen(false)}
           >
-            Cars
+            内衣
           </Link>
           {user && (
             <Link
@@ -140,7 +141,7 @@ export function Header() {
               className="flex h-10 items-center border-b text-sm font-medium transition-colors hover:text-green-600"
               onClick={() => setIsMenuOpen(false)}
             >
-              My Orders
+              我的订单
             </Link>
           )}
           {isAdmin && (
@@ -150,24 +151,24 @@ export function Header() {
                 className="flex h-10 items-center border-b text-sm font-medium transition-colors hover:text-green-600"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Post Car
+                发布商品
               </Link>
               <Link
                 to="/admin/orders"
                 className="flex h-10 items-center border-b text-sm font-medium transition-colors hover:text-green-600"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Order Management
+                订单管理
               </Link>
             </>
           )}
           {!user ? (
             <>
-              <Link to="/login" className="flex h-10 items-center border-b text-sm font-medium transition-colors hover:text-green-600" onClick={() => setIsMenuOpen(false)}>Log in</Link>
-              <Link to="/register" className="flex h-10 items-center border-b text-sm font-medium transition-colors hover:text-green-600" onClick={() => setIsMenuOpen(false)}>Sign up</Link>
+              <Link to="/login" className="flex h-10 items-center border-b text-sm font-medium transition-colors hover:text-green-600" onClick={() => setIsMenuOpen(false)}>登录</Link>
+              <Link to="/register" className="flex h-10 items-center border-b text-sm font-medium transition-colors hover:text-green-600" onClick={() => setIsMenuOpen(false)}>注册</Link>
             </>
           ) : (
-            <button className="flex h-10 items-center border-b text-sm font-medium text-left hover:text-green-600" onClick={() => { logout(); setIsMenuOpen(false); navigate('/'); }}>Log out</button>
+            <button className="flex h-10 items-center border-b text-sm font-medium text-left hover:text-green-600" onClick={() => { logout(); setIsMenuOpen(false); navigate('/'); }}>退出</button>
           )}
         </nav>
       </div>

@@ -30,8 +30,8 @@ export default function ProductPage() {
     return (
       <Layout>
         <div className="container py-16 text-center">
-          <h1 className="text-2xl font-bold">Car not found</h1>
-          <p className="mt-4">Sorry, the car you are looking for does not exist.</p>
+          <h1 className="text-2xl font-bold">未找到商品</h1>
+          <p className="mt-4">抱歉，您访问的商品不存在。</p>
         </div>
       </Layout>
     );
@@ -40,7 +40,6 @@ export default function ProductPage() {
   const toggleActive = async () => {
     if (!user || !isAdmin) return;
     if (car.isActive) {
-      // 下架时直接删除车辆
       await api.deleteCar(user.id, car.id);
       window.location.href = "/products";
     }
@@ -51,11 +50,11 @@ export default function ProductPage() {
       {isAdmin && (
         <div className="container mt-6 flex justify-end">
           <Button variant={car.isActive ? "destructive" : "default"} onClick={toggleActive}>
-            {car.isActive ? "Remove Listing" : "Activate Listing"}
+            {car.isActive ? "下架商品" : "上架商品"}
           </Button>
         </div>
       )}
-  <CarDetail id={car.id} name={car.name} description={car.description} price={car.price} images={car.images} image={car.image || undefined} year={car.year || undefined} mileage={car.mileage || undefined} isActive={car.isActive} />
+      <CarDetail id={car.id} name={car.name} description={car.description} price={car.price} images={car.images} image={car.image || undefined} year={car.year || undefined} mileage={car.mileage || undefined} isActive={car.isActive} />
       <div className="container my-16">
         <ProductsSection />
       </div>

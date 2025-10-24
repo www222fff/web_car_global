@@ -10,7 +10,7 @@ export default function AboutPage() {
               关于我们
             </h1>
             <p className="mx-auto max-w-3xl text-lg text-muted-foreground">
-              我们致力于打造值得信赖的二手车交易平台，以透明车况和专业服务让购车更简单
+              我们专注于舒适与美学并重的内衣与家居服，致力于为每一位消费者提供贴身而自在的穿着体验。
             </p>
           </div>
         </div>
@@ -21,36 +21,28 @@ export default function AboutPage() {
           <div className="order-2 md:order-1">
             <div className="space-y-6">
               <div>
-                <h2 className="text-3xl font-bold tracking-tight">
-                  我们的���事
-                </h2>
+                <h2 className="text-3xl font-bold tracking-tight">我们的故事</h2>
                 <div className="mt-4 space-y-4">
                   <p>
-                    我们的故事始于2015年，几位资深汽车人希望用更透明的方式重塑二手车交易体验。我们深知买车不易，于是从源头把控车源、建立标准化检测，减少信息不对称。
+                    品牌成立于 2018 年，我们相信内衣不仅是必需品，更是表达自我与关爱自我的方式。我们从面料、版型到工艺不断打磨，只为带来更舒适的日常穿着。
                   </p>
                   <p>
-                    经过多年沉淀，我们形成了严谨的车况评估体系与完善的服务流程，让每一位用户都能高效、安心地找到合适的车辆。
+                    通过对用户反馈的持续倾听与快速打样，我们形成了覆盖日常、运动与家居的完整产品线，适配不同场景的舒适需求。
                   </p>
                 </div>
               </div>
               <div>
-                <h2 className="text-3xl font-bold tracking-tight">
-                  我们的使命
-                </h2>
+                <h2 className="text-3xl font-bold tracking-tight">我们的使命</h2>
                 <div className="mt-4 space-y-4">
-                  <p>
-                    我们的使命是让二手车交易更简单可信：车况透明、价格透明、流程高效。
-                  </p>
-                  <p>
-                    无论是通勤代步还是家庭出行，我们希望帮助每位用户以合理的预算买到称心如意的车。
-                  </p>
+                  <p>让更多人找到真正合身且舒适的内衣，用心呈现每一处细节。</p>
+                  <p>坚持透明与真诚，从原料选择到售后服务，打造值得长期信赖的品牌体验。</p>
                 </div>
               </div>
             </div>
           </div>
           <div className="order-1 md:order-2">
             <img
-              src="/images/group.jpg"
+              src="https://images.unsplash.com/photo-1547764696-3b05cda36c5b?q=80&w=1600&auto=format&fit=crop"
               alt="我们的团队"
               className="rounded-lg object-cover shadow-lg"
             />
@@ -61,50 +53,36 @@ export default function AboutPage() {
       <div className="bg-slate-50 py-16">
         <div className="container">
           <div className="mb-12 text-center">
-            <h2 className="mb-4 text-3xl font-bold tracking-tight">
-              我们的价值观
-            </h2>
+            <h2 className="mb-4 text-3xl font-bold tracking-tight">我们的价值观</h2>
             <p className="mx-auto max-w-3xl text-muted-foreground">
-              这些核心价值观指导着我们的每一个决策和行动
+              以舒适、合身与可持续为核心，打造经久耐穿的贴身之选
             </p>
           </div>
 
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
             <div className="rounded-lg bg-white p-6 shadow-md">
               <h3 className="mb-4 text-xl font-semibold">品质第一</h3>
-              <p>
-                我们坚持使用最优质的���材料，采用先进的生产工艺，确保每一款产品都达到最高标准。我们的生产过程符合严格的质量控制体系，每批产品都经过多重检测，确保安全可靠。
-              </p>
+              <p>精选亲肤面料与稳固工艺，每一针一线都经得起考验。</p>
             </div>
             <div className="rounded-lg bg-white p-6 shadow-md">
               <h3 className="mb-4 text-xl font-semibold">诚信透明</h3>
-              <p>
-                我们坚持诚信经营，对消费者负责。我们清晰地标注产品成分和营养价值，不夸大产品功效，让消费者充分了解产品信息，做出明智的选择。
-              </p>
+              <p>清晰标注面料与护理说明，帮助你做出明智选择。</p>
             </div>
             <div className="rounded-lg bg-white p-6 shadow-md">
-              <h3 className="mb-4 text-xl font-semibold">创新发展</h3>
-              <p>
-                我们不断投入研发，探索新技术、新配方，提高产品的口感和功效。我们密切关注健康领域的最新研究，将科学成果应用到产品开发中，为消费者提供更好的健康解决方案。
-              </p>
+              <h3 className="mb-4 text-xl font-semibold">持续创新</h3>
+              <p>不断优化版型与细节，让舒适与美感同时在线。</p>
             </div>
             <div className="rounded-lg bg-white p-6 shadow-md">
               <h3 className="mb-4 text-xl font-semibold">客户至上</h3>
-              <p>
-                我们始终将客户的需求和反馈放在首位。我们不断优化产品和服务，���供专业的健康咨询，建立长期的客户关系，帮助客户实现健康目标。
-              </p>
+              <p>提供贴心客服与无忧售后，与你保持长期信任关系。</p>
             </div>
             <div className="rounded-lg bg-white p-6 shadow-md">
-              <h3 className="mb-4 text-xl font-semibold">环境责任</h3>
-              <p>
-                我们关注产品全生命周期的环境影响。我们选���环保包装材料，优化生产流程，减少资源消耗和废弃物排放，为保护环境贡献自己的力量。
-              </p>
+              <h3 className="mb-4 text-xl font-semibold">环保责任</h3>
+              <p>优先选择更耐穿与更友好的材料，减少不必要的浪费。</p>
             </div>
             <div className="rounded-lg bg-white p-6 shadow-md">
               <h3 className="mb-4 text-xl font-semibold">社会回馈</h3>
-              <p>
-                我们积极参与社会公益活动，推广健康知识，支持健康教育。我们相信，企业的发展离不开社会的支持，我们有责任回馈社会，创造更大的社会价值。
-              </p>
+              <p>关注女性健康与身心自信议题，持续参与公益行动。</p>
             </div>
           </div>
         </div>
@@ -114,20 +92,20 @@ export default function AboutPage() {
         <div className="mb-12 text-center">
           <h2 className="mb-4 text-3xl font-bold tracking-tight">我们的团队</h2>
           <p className="mx-auto max-w-3xl text-muted-foreground">
-            由车辆评估师、资深销售顾问与服务工程师组成的专业团队
+            由版型师、面料工程师、供应链与客服团队共同守护你的舒适体验
           </p>
         </div>
 
         <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {[
-            { id: 1, name: "张博士", role: "创始人兼CEO", image: "/images/member1.jpg" },
-            { id: 2, name: "李教授", role: "首席营养学家", image: "/images/member2.jpg" },
-            { id: 3, name: "王主任", role: "产品研发总监", image: "/images/member3.jpg" },
-            { id: 4, name: "陈经理", role: "质量控制经理", image: "/images/member4.jpg" },
-            { id: 5, name: "王女士", role: "市场总监", image: "/images/wang.jpg" },
-            { id: 6, name: "杨主管", role: "客户服务主管", image: "/images/member6.jpg" },
-            { id: 7, name: "赵经理", role: "供应链经理", image: "/images/member7.jpg" },
-            { id: 8, name: "孙顾问", role: "车辆顾问", image: "/images/member8.jpg" },
+            { id: 1, name: "刘女士", role: "创始人兼设计总监", image: "https://randomuser.me/api/portraits/women/12.jpg" },
+            { id: 2, name: "王女���", role: "面料工程师", image: "https://randomuser.me/api/portraits/women/22.jpg" },
+            { id: 3, name: "张女士", role: "版型师", image: "https://randomuser.me/api/portraits/women/28.jpg" },
+            { id: 4, name: "陈女士", role: "质量管理", image: "https://randomuser.me/api/portraits/women/56.jpg" },
+            { id: 5, name: "周女士", role: "市场负责人", image: "https://randomuser.me/api/portraits/women/44.jpg" },
+            { id: 6, name: "杨女士", role: "客服主管", image: "https://randomuser.me/api/portraits/women/48.jpg" },
+            { id: 7, name: "赵女士", role: "供应链经理", image: "https://randomuser.me/api/portraits/women/66.jpg" },
+            { id: 8, name: "孙女士", role: "门店经理", image: "https://randomuser.me/api/portraits/women/75.jpg" },
           ].map((member) => (
             <div key={member.id} className="text-center">
               <div className="mx-auto mb-4 h-40 w-40 overflow-hidden rounded-full">
@@ -143,8 +121,6 @@ export default function AboutPage() {
           ))}
         </div>
       </div>
-
-  {/* <CtaSection /> */}
     </Layout>
   );
 }
