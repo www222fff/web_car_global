@@ -1,15 +1,16 @@
-import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ShoppingCart, Menu, X } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
+import { Link, useNavigate } from "react-router-dom";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  // 事件派发给 Layout 控制主内容 transform
   if (typeof window !== 'undefined') {
+    // Control main content transform when mobile menu is open
+    // @ts-expect-error global assignment
     window.__setMainTransform = (open: boolean) => {
       const main = document.getElementById('main-content');
       if (main) {
@@ -26,7 +27,7 @@ export function Header() {
       <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center">
           <Link to="/" className="flex items-center space-x-2">
-            <span className="text-xl font-bold text-green-600">Used Car Market</span>
+            <span className="text-xl font-bold text-green-600">Lingerie Boutique</span>
           </Link>
         </div>
 
@@ -42,7 +43,7 @@ export function Header() {
             to="/products"
             className="text-sm font-medium transition-colors hover:text-green-600"
           >
-            Cars
+            Lingerie
           </Link>
           {user && !isAdmin && (
             <Link
@@ -58,7 +59,7 @@ export function Header() {
                 to="/admin/upload"
                 className="text-sm font-medium transition-colors hover:text-green-600"
               >
-                Post Car
+                Add Product
               </Link>
               <Link
                 to="/admin/orders"
@@ -114,8 +115,8 @@ export function Header() {
         )}
         style={{ willChange: 'transform' }}
         onTransitionEnd={() => {
-          if (typeof window !== 'undefined' && window.__setMainTransform) {
-            window.__setMainTransform(isMenuOpen);
+          if (typeof window !== 'undefined' && (window as any).__setMainTransform) {
+            (window as any).__setMainTransform(isMenuOpen);
           }
         }}
       >
@@ -132,7 +133,7 @@ export function Header() {
             className="flex h-10 items-center border-b text-sm font-medium transition-colors hover:text-green-600"
             onClick={() => setIsMenuOpen(false)}
           >
-            Cars
+            Lingerie
           </Link>
           {user && (
             <Link
@@ -150,7 +151,7 @@ export function Header() {
                 className="flex h-10 items-center border-b text-sm font-medium transition-colors hover:text-green-600"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Post Car
+                Add Product
               </Link>
               <Link
                 to="/admin/orders"

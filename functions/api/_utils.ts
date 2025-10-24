@@ -45,7 +45,6 @@ export interface CarItem {
 
 export async function ensureSchema(env: any) {
   const db = env.DB as D1Database;
-  // Users
   await db.prepare(`CREATE TABLE IF NOT EXISTS users (
     id TEXT PRIMARY KEY,
     username TEXT UNIQUE NOT NULL,
@@ -53,7 +52,7 @@ export async function ensureSchema(env: any) {
     role TEXT NOT NULL
   );`).run();
 
-  // Cars
+  // Reuse "cars" table as products
   await db.prepare(`CREATE TABLE IF NOT EXISTS cars (
     id TEXT PRIMARY KEY,
     name TEXT NOT NULL,
@@ -68,7 +67,6 @@ export async function ensureSchema(env: any) {
     isActive INTEGER NOT NULL DEFAULT 1
   );`).run();
 
-  // Ensure isActive column exists (for existing DBs)
   try {
     const info = await db.prepare(`PRAGMA table_info(cars)`).all();
     const hasIsActive = Array.isArray(info.results) && info.results.some((r: any) => r.name === "isActive");
@@ -77,7 +75,6 @@ export async function ensureSchema(env: any) {
     }
   } catch {}
 
-  // Cart
   await db.prepare(`CREATE TABLE IF NOT EXISTS cart (
     userId TEXT NOT NULL,
     carId TEXT NOT NULL,
@@ -85,7 +82,6 @@ export async function ensureSchema(env: any) {
     PRIMARY KEY (userId, carId)
   );`).run();
 
-  // Orders
   await db.prepare(`CREATE TABLE IF NOT EXISTS orders (
     id TEXT PRIMARY KEY,
     userId TEXT NOT NULL,
@@ -97,7 +93,6 @@ export async function ensureSchema(env: any) {
     contact TEXT
   );`).run();
 
-  // Addresses
   await db.prepare(`CREATE TABLE IF NOT EXISTS addresses (
     userId TEXT PRIMARY KEY,
     address TEXT NOT NULL,
@@ -107,14 +102,12 @@ export async function ensureSchema(env: any) {
 
 export async function seedIfNeeded(env: any) {
   const db = env.DB as D1Database;
-  // Seed admin user
   const admin = await db.prepare(`SELECT id FROM users WHERE role = 'admin' LIMIT 1;`).first<{id:string}>();
   if (!admin) {
     const id = randomUUID();
-    await db.prepare(`INSERT INTO users (id, username, password, role) VALUES (?, ?, ?, ?);`).bind(id, 'admin', 'admin', 'admin', 'admin').run();
+    await db.prepare(`INSERT INTO users (id, username, password, role) VALUES (?, ?, ?, ?);`).bind(id, 'admin', 'admin', 'admin').run();
   }
 
-  // Seed sample cars
   const countRow = await db.prepare(`SELECT COUNT(*) as c FROM cars;`).first<{c:number}>();
   const count = countRow ? Number((countRow as any).c) : 0;
   if (count === 0) {
@@ -122,22 +115,40 @@ export async function seedIfNeeded(env: any) {
     const createdBy = adminIdRow?.id || randomUUID();
     const samples: Omit<CarItem, 'id'>[] = [
       {
-        name: 'Honda CR-V 2017 2.0L 2WD',
-        description: 'Spacious, fuel-efficient, family favorite with inspection report available',
-        price: 88000,
-        year: 2017,
-        mileage: 92000,
-        image: 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?q=80&w=1200&auto=format&fit=crop',
-        category: 'SUV',
+        name: 'Wireless Lightweight Bra',
+        description: 'Breathable and skin‑friendly with gentle support for all‑day wear.',
+        price: 199,
+        image: 'https://images.unsplash.com/photo-1603252109303-2751441dd157?q=80&w=1200&auto=format&fit=crop',
+        category: 'Bras',
         createdBy,
-        images: ['https://images.unsplash.com/photo-1552519507-da3b142c6e3d?q=80&w=1200&auto=format&fit=crop'],
+        images: ['https://images.unsplash.com/photo-1603252109303-2751441dd157?q=80&w=1200&auto=format&fit=crop'],
+        isActive: 1,
+      },
+      {
+        name: 'Modal High‑Waist Underwear (Pack of 3)',
+        description: 'Soft, stretchy, and comfortable for everyday.',
+        price: 129,
+        image: 'https://images.unsplash.com/photo-1603252109744-5f17d0c0d5f1?q=80&w=1200&auto=format&fit=crop',
+        category: 'Underwear',
+        createdBy,
+        images: ['https://images.unsplash.com/photo-1603252109744-5f17d0c0d5f1?q=80&w=1200&auto=format&fit=crop'],
+        isActive: 1,
+      },
+      {
+        name: 'Cotton Lounge Pajama Set',
+        description: 'Relaxed fit and breathable fabric to unwind anytime.',
+        price: 239,
+        image: 'https://images.unsplash.com/photo-1519340241574-2cec6aef0c01?q=80&w=1200&auto=format&fit=crop',
+        category: 'Loungewear',
+        createdBy,
+        images: ['https://images.unsplash.com/photo-1519340241574-2cec6aef0c01?q=80&w=1200&auto=format&fit=crop'],
         isActive: 1,
       },
     ];
     for (const s of samples) {
       const id = randomUUID();
       await db.prepare(`INSERT INTO cars (id, name, description, price, image, year, mileage, category, createdBy, images, isActive) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`)
-        .bind(id, s.name, s.description, s.price, s.image ?? null, s.year ?? null, s.mileage ?? null, s.category ?? null, s.createdBy, JSON.stringify(s.images ?? []), s.isActive ?? 1)
+        .bind(id, s.name, s.description, s.price, s.image ?? null, null, null, s.category ?? null, s.createdBy, JSON.stringify(s.images ?? []), s.isActive ?? 1)
         .run();
     }
   }

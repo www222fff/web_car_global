@@ -24,18 +24,16 @@ export default function ProductsPage() {
   const maxPrice = useMemo(() => (cars.length ? Math.max(...cars.map((c) => c.price)) : 100000), [cars]);
   const [priceRange, setPriceRange] = useState<number[]>([0, maxPrice]);
 
-    // 只过滤本地已被删除的车辆，已售出(isActive===0)也显示但不可买
-    const filteredProducts = cars.filter((product) => {
-      // 只隐藏本地已被删除的车辆（即不在cars数组中）
-      const matchesSearch =
-        product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (product.description || '').toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesCategory =
-        selectedCategory === "all" || product.category === selectedCategory;
-      const matchesPrice =
-        product.price >= priceRange[0] && product.price <= priceRange[1];
-      return matchesSearch && matchesCategory && matchesPrice;
-    });
+  const filteredProducts = cars.filter((product) => {
+    const matchesSearch =
+      product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (product.description || '').toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory =
+      selectedCategory === "all" || product.category === selectedCategory;
+    const matchesPrice =
+      product.price >= priceRange[0] && product.price <= priceRange[1];
+    return matchesSearch && matchesCategory && matchesPrice;
+  });
 
   const categories = [
     "all",
@@ -45,17 +43,17 @@ export default function ProductsPage() {
   return (
     <Layout>
       <div className="container py-8 md:py-12">
-        <h1 className="mb-6 text-3xl font-bold">All Cars</h1>
+        <h1 className="mb-6 text-3xl font-bold">All Lingerie</h1>
 
         <div className="grid gap-8 md:grid-cols-4">
           <div className="space-y-6">
             <div>
-              <h3 className="mb-4 font-medium">Search Cars</h3>
+              <h3 className="mb-4 font-medium">Search Products</h3>
               <div className="relative">
                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                 <Input
                   type="search"
-                  placeholder="Search..."
+                  placeholder="Search…"
                   className="pl-8"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
@@ -64,7 +62,7 @@ export default function ProductsPage() {
             </div>
 
             <div>
-              <h3 className="mb-4 font-medium">Vehicle Category</h3>
+              <h3 className="mb-4 font-medium">Category</h3>
               <Select
                 value={selectedCategory}
                 onValueChange={setSelectedCategory}
@@ -75,7 +73,7 @@ export default function ProductsPage() {
                 <SelectContent>
                   {categories.map((category) => (
                     <SelectItem key={category} value={category}>
-                      {category === "all" ? "All categories" : category}
+                      {category === "all" ? "All" : category}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -86,8 +84,8 @@ export default function ProductsPage() {
               <h3 className="mb-4 font-medium">Price Range</h3>
               <Slider
                 defaultValue={[0, maxPrice]}
-                max={Math.max(maxPrice, 10000)}
-                step={1000}
+                max={Math.max(maxPrice, 1000)}
+                step={10}
                 value={priceRange}
                 onValueChange={setPriceRange}
                 className="mb-6"

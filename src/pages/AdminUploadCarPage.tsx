@@ -15,9 +15,7 @@ export default function AdminUploadCarPage() {
 
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
-  const [year, setYear] = useState<number | "">("");
-  const [mileage, setMileage] = useState<number | "">("");
-  const [category, setCategory] = useState("轿车");
+  const [category, setCategory] = useState("Bras");
   const [description, setDescription] = useState("");
   const [imageData, setImageData] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
@@ -26,7 +24,7 @@ export default function AdminUploadCarPage() {
     return (
       <Layout>
         <div className="container py-12">
-          <div className="text-center text-muted-foreground">无权访问，仅管理员可发布车辆</div>
+          <div className="text-center text-muted-foreground">Access denied. Admins only.</div>
         </div>
       </Layout>
     );
@@ -42,21 +40,19 @@ export default function AdminUploadCarPage() {
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      if (!user) throw new Error("未登录");
-      if (!name || !price || !imageData) throw new Error("请完善名称/价格/图片");
+      if (!user) throw new Error("Not signed in");
+      if (!name || !price || !imageData) throw new Error("Please provide name, price and image");
       const car = await api.createCar(user.id, {
         name,
         description,
         price: Number(price),
         image: imageData,
-        year: year ? Number(year) : undefined,
-        mileage: mileage ? Number(mileage) : undefined,
         category,
         images: [imageData],
       });
       navigate(`/products/${car.id}`);
     } catch (err: any) {
-      setError(err.message || "提交失败");
+      setError(err.message || "Submit failed");
     }
   };
 
@@ -66,36 +62,35 @@ export default function AdminUploadCarPage() {
         <div className="mx-auto max-w-2xl">
           <Card>
             <CardHeader>
-              <CardTitle>发布二手车</CardTitle>
+              <CardTitle>Add Product</CardTitle>
             </CardHeader>
             <CardContent>
               <form className="space-y-4" onSubmit={onSubmit}>
-                <Input placeholder="车辆标题，如：丰田 卡罗拉 2019款 1.2T" value={name} onChange={(e) => setName(e.target.value)} />
-                <div className="grid grid-cols-3 gap-3">
-                  <Input type="number" placeholder="价格 (¥)" value={price} onChange={(e) => setPrice(Number(e.target.value))} />
-                  <Input type="number" placeholder="年份" value={year} onChange={(e) => setYear(e.target.value ? Number(e.target.value) : "")} />
-                  <Input type="number" placeholder="里程 (km)" value={mileage} onChange={(e) => setMileage(e.target.value ? Number(e.target.value) : "")} />
+                <Input placeholder="Product title, e.g. Wireless lightweight bra" value={name} onChange={(e) => setName(e.target.value)} />
+                <div className="grid grid-cols-2 gap-3">
+                  <Input type="number" placeholder="Price (¥)" value={price} onChange={(e) => setPrice(Number(e.target.value))} />
+                  <Select value={category} onValueChange={setCategory}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select category" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Bras">Bras</SelectItem>
+                      <SelectItem value="Underwear">Underwear</SelectItem>
+                      <SelectItem value="Loungewear">Loungewear</SelectItem>
+                      <SelectItem value="Sports bra">Sports bra</SelectItem>
+                      <SelectItem value="Accessories">Accessories</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
-                <Select value={category} onValueChange={setCategory}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="选择车型" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="轿车">轿车</SelectItem>
-                    <SelectItem value="SUV">SUV</SelectItem>
-                    <SelectItem value="MPV">MPV</SelectItem>
-                    <SelectItem value="其他">其他</SelectItem>
-                  </SelectContent>
-                </Select>
-                <Textarea placeholder="车辆描述" value={description} onChange={(e) => setDescription(e.target.value)} />
+                <Textarea placeholder="Product description" value={description} onChange={(e) => setDescription(e.target.value)} />
                 <div>
                   <input type="file" accept="image/*" onChange={(e) => onImageChange(e.target.files?.[0] || null)} />
                   {imageData && (
-                    <img className="mt-2 h-40 w-auto rounded border object-cover" src={imageData} alt="预览" />
+                    <img className="mt-2 h-40 w-auto rounded border object-cover" src={imageData} alt="Preview" />
                   )}
                 </div>
                 {error && <div className="text-sm text-red-600">{error}</div>}
-                <Button type="submit" className="w-full">发布</Button>
+                <Button type="submit" className="w-full">Publish</Button>
               </form>
             </CardContent>
           </Card>

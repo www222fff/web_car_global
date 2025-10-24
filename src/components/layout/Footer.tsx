@@ -6,14 +6,14 @@ export function Footer() {
       <div className="container py-8 md:py-12">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           <div className="space-y-3">
-            <h3 className="text-lg font-semibold">Used Car Market</h3>
+            <h3 className="text-lg font-semibold">Lingerie Boutique</h3>
             <img
-              src="https://images.unsplash.com/photo-1549924231-f129b911e442?auto=format&fit=crop&w=200&q=80"
+              src="https://images.unsplash.com/photo-1519742908083-976d3e506cd8?auto=format&fit=crop&w=200&q=80"
               alt="Brand logo"
               className="w-20 h-20 object-cover rounded-full mb-2"
             />
             <p className="text-sm text-muted-foreground">
-              Carefully selected used cars with transparent condition for a worry-free purchase.
+              Curated lingerie and loungewear with skin-friendly comfort and refined fit.
             </p>
             <div className="flex gap-2 mt-2">
               <a
@@ -52,7 +52,6 @@ export function Footer() {
             </div>
           </div>
 
-
           <div className="space-y-3">
             <h3 className="text-sm font-semibold">About</h3>
             <ul className="space-y-2">
@@ -85,7 +84,7 @@ export function Footer() {
         </div>
         <div className="mt-8 border-t pt-8 text-center">
           <p className="text-xs text-muted-foreground">
-            &copy; {new Date().getFullYear()} Used Car Market. All rights reserved.
+            &copy; {new Date().getFullYear()} Lingerie Boutique. All rights reserved.
           </p>
         </div>
       </div>

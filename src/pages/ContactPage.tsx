@@ -22,10 +22,10 @@ import { toast } from "@/components/ui/use-toast";
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters" }),
-  email: z.string().email({ message: "请输入有效的电子邮件地址" }),
-  phone: z.string().min(11, { message: "请输入有效的电话号码" }),
-  subject: z.string().min(5, { message: "主题至少需要5个字符" }),
-  message: z.string().min(10, { message: "留言至少需要10个字符" }),
+  email: z.string().email({ message: "Please enter a valid email" }),
+  phone: z.string().min(6, { message: "Please enter a valid phone number" }),
+  subject: z.string().min(3, { message: "Subject must be at least 3 characters" }),
+  message: z.string().min(10, { message: "Message must be at least 10 characters" }),
 });
 
 export default function ContactPage() {
@@ -45,13 +45,12 @@ export default function ContactPage() {
   function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
 
-    // Simulate API call
     setTimeout(() => {
       console.log(values);
       setIsSubmitting(false);
       toast({
-        title: "提交成功",
-        description: "我们会尽快回复您的留言，感谢您的关注！",
+        title: "Submitted",
+        description: "Thanks for your message. We’ll get back to you soon!",
       });
       form.reset();
     }, 1500);
@@ -66,7 +65,7 @@ export default function ContactPage() {
               Contact Us
             </h1>
             <p className="mx-auto max-w-3xl text-lg text-muted-foreground">
-              如果您有任何问题、建议或合作意向，请随时Contact Us，我们将竭诚为您服务
+              Have a question, feedback, or partnership idea? Reach out—we’re here to help.
             </p>
           </div>
         </div>
@@ -80,13 +79,13 @@ export default function ContactPage() {
                 <div className="flex items-start space-x-4">
                   <MapPin className="mt-1 h-5 w-5 text-green-600" />
                   <div>
-                    <h3 className="mb-2 font-medium">公司地址</h3>
+                    <h3 className="mb-2 font-medium">Address</h3>
                     <p className="text-sm text-muted-foreground">
-                      上海市浦东新区张江高科技园区
+                      Zhangjiang Hi-Tech Park, Pudong, Shanghai
                       <br />
-                      碧波路999号
+                      Bibow Rd 999
                       <br />
-                      邮编: 201203
+                      Postal code: 201203
                     </p>
                   </div>
                 </div>
@@ -96,11 +95,11 @@ export default function ContactPage() {
                 <div className="flex items-start space-x-4">
                   <Phone className="mt-1 h-5 w-5 text-green-600" />
                   <div>
-                    <h3 className="mb-2 font-medium">联系电话</h3>
+                    <h3 className="mb-2 font-medium">Phone</h3>
                     <p className="text-sm text-muted-foreground">
-                      客服热线: 086-15020782726
+                      Customer Service: 086-15020782726
                       <br />
-                      工作时间: 周一至周五 9:00-18:00
+                      Hours: Mon–Fri 9:00–18:00
                     </p>
                   </div>
                 </div>
@@ -110,9 +109,9 @@ export default function ContactPage() {
                 <div className="flex items-start space-x-4">
                   <AtSign className="mt-1 h-5 w-5 text-green-600" />
                   <div>
-                    <h3 className="mb-2 font-medium">电子邮箱</h3>
+                    <h3 className="mb-2 font-medium">Email</h3>
                     <p className="text-sm text-muted-foreground">
-                      客户服务: abc@qq.com
+                      Support: abc@qq.com
                     </p>
                   </div>
                 </div>
@@ -122,7 +121,7 @@ export default function ContactPage() {
 
           <div className="md:col-span-2">
             <Card className="p-6">
-              <h2 className="mb-6 text-2xl font-bold">给我们留言</h2>
+              <h2 className="mb-6 text-2xl font-bold">Leave us a message</h2>
 
               <Form {...form}>
                 <form
@@ -135,9 +134,9 @@ export default function ContactPage() {
                       name="name"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>姓名</FormLabel>
+                          <FormLabel>Name</FormLabel>
                           <FormControl>
-                            <Input placeholder="请输入您的姓名" {...field} />
+                            <Input placeholder="Your name" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -149,12 +148,9 @@ export default function ContactPage() {
                       name="email"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>电子邮箱</FormLabel>
+                          <FormLabel>Email</FormLabel>
                           <FormControl>
-                            <Input
-                              placeholder="请输入您的电子邮箱"
-                              {...field}
-                            />
+                            <Input placeholder="Your email" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -168,12 +164,9 @@ export default function ContactPage() {
                       name="phone"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>电话</FormLabel>
+                          <FormLabel>Phone</FormLabel>
                           <FormControl>
-                            <Input
-                              placeholder="请输入您的电话号码"
-                              {...field}
-                            />
+                            <Input placeholder="Your phone number" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -185,9 +178,9 @@ export default function ContactPage() {
                       name="subject"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>主题</FormLabel>
+                          <FormLabel>Subject</FormLabel>
                           <FormControl>
-                            <Input placeholder="请输入留言主题" {...field} />
+                            <Input placeholder="Subject" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -200,16 +193,16 @@ export default function ContactPage() {
                     name="message"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>留言内容</FormLabel>
+                        <FormLabel>Message</FormLabel>
                         <FormControl>
                           <Textarea
-                            placeholder="请输入您的留言内容"
+                            placeholder="Tell us more about your request"
                             className="min-h-32"
                             {...field}
                           />
                         </FormControl>
                         <FormDescription>
-                          请详细描述您的问题或建议，我们会尽快回复您。
+                          Provide as much detail as you can so we can help quickly.
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
@@ -221,7 +214,7 @@ export default function ContactPage() {
                     className="w-full"
                     disabled={isSubmitting}
                   >
-                    {isSubmitting ? "提交中..." : "提交留言"}
+                    {isSubmitting ? "Submitting…" : "Send message"}
                   </Button>
                 </form>
               </Form>
@@ -232,13 +225,12 @@ export default function ContactPage() {
 
       <div className="container py-16">
         <div className="mb-8 text-center">
-          <h2 className="text-2xl font-bold">我们的位置</h2>
+          <h2 className="text-2xl font-bold">Our Location</h2>
         </div>
         <div className="overflow-hidden rounded-lg border">
-          {/* In a real project, this would be a real map component */}
           <div className="aspect-video bg-slate-200 flex items-center justify-center">
             <p className="text-xl text-slate-600">
-              地图位置: 上海市浦东新区张江高科技园区
+              Map: Zhangjiang Hi-Tech Park, Pudong, Shanghai
             </p>
           </div>
         </div>

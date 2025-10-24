@@ -30,8 +30,8 @@ export default function ProductPage() {
     return (
       <Layout>
         <div className="container py-16 text-center">
-          <h1 className="text-2xl font-bold">Car not found</h1>
-          <p className="mt-4">Sorry, the car you are looking for does not exist.</p>
+          <h1 className="text-2xl font-bold">Product not found</h1>
+          <p className="mt-4">Sorry, the product you are looking for does not exist.</p>
         </div>
       </Layout>
     );
@@ -40,7 +40,6 @@ export default function ProductPage() {
   const toggleActive = async () => {
     if (!user || !isAdmin) return;
     if (car.isActive) {
-      // 下架时直接删除车辆
       await api.deleteCar(user.id, car.id);
       window.location.href = "/products";
     }
@@ -55,7 +54,7 @@ export default function ProductPage() {
           </Button>
         </div>
       )}
-  <CarDetail id={car.id} name={car.name} description={car.description} price={car.price} images={car.images} image={car.image || undefined} year={car.year || undefined} mileage={car.mileage || undefined} isActive={car.isActive} />
+      <CarDetail id={car.id} name={car.name} description={car.description} price={car.price} images={car.images} image={car.image || undefined} year={car.year || undefined} mileage={car.mileage || undefined} isActive={car.isActive} />
       <div className="container my-16">
         <ProductsSection />
       </div>

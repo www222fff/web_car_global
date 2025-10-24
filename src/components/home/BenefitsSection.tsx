@@ -5,28 +5,28 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { ShieldCheck, FileCheck, Wrench, Car } from "lucide-react";
+import { ShieldCheck, Shirt, Ruler, Recycle } from "lucide-react";
 
 const benefits = [
   {
     icon: <ShieldCheck className="h-10 w-10 text-green-600" />,
-    title: "Rigorous Inspection",
-    description: "Multi-point condition checks and history verification; excludes major accidents, fire, and flood damage.",
+    title: "Quality Assurance",
+    description: "Skin-friendly fabrics and reliable craftsmanship for peace of mind.",
   },
   {
-    icon: <FileCheck className="h-10 w-10 text-blue-600" />,
-    title: "Transparent Reports",
-    description: "Detailed inspection reports and maintenance records for full transparency.",
+    icon: <Shirt className="h-10 w-10 text-blue-600" />,
+    title: "Comfort Fit",
+    description: "Styles for everyday, sport, and lounge—supportive yet comfortable.",
   },
   {
-    icon: <Wrench className="h-10 w-10 text-amber-600" />,
-    title: "After-sales Support",
-    description: "Basic warranty and 7-day hassle-free issue handling for peace of mind.",
+    icon: <Ruler className="h-10 w-10 text-amber-600" />,
+    title: "Size Guidance",
+    description: "Detailed fit advice and size guide to find your perfect match.",
   },
   {
-    icon: <Car className="h-10 w-10 text-slate-600" />,
-    title: "Wide Selection",
-    description: "Sedans, SUVs, MPVs and more to meet commuting and family needs.",
+    icon: <Recycle className="h-10 w-10 text-slate-600" />,
+    title: "Hassle-free Support",
+    description: "Easy returns and friendly customer service for stress-free shopping.",
   },
 ];
 
@@ -36,10 +36,10 @@ export function BenefitsSection() {
       <div className="container">
         <div className="mb-12 text-center">
           <h2 className="mb-2 text-3xl font-bold tracking-tight">
-            Our Guarantees
+            Our Promise
           </h2>
           <p className="text-muted-foreground">
-            Transparent condition, reliable inspection, and worry-free after-sales—helping you buy with confidence
+            Comfort, fit, style, and durability—making everyday wear feel great
           </p>
         </div>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
