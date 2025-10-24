@@ -42,7 +42,7 @@ export function HeroSection() {
           </div>
           <div className="relative overflow-hidden rounded-lg flex items-center justify-center bg-black h-[220px] md:h-[350px] lg:h-[350px] w-full max-w-5xl">
             <img
-              src="https://images.unsplash.com/photo-1520975954732-35dd22f2ffb5?q=80&w=1600&auto=format&fit=crop"
+              src="/images/group.jpg"
               className="h-full w-full object-cover"
               alt="Lingerie collection banner"
             />
