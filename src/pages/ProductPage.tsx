@@ -30,8 +30,8 @@ export default function ProductPage() {
     return (
       <Layout>
         <div className="container py-16 text-center">
-          <h1 className="text-2xl font-bold">未找到商品</h1>
-          <p className="mt-4">抱歉，您访问的商品不存在。</p>
+          <h1 className="text-2xl font-bold">Product not found</h1>
+          <p className="mt-4">Sorry, the product you are looking for does not exist.</p>
         </div>
       </Layout>
     );
@@ -50,7 +50,7 @@ export default function ProductPage() {
       {isAdmin && (
         <div className="container mt-6 flex justify-end">
           <Button variant={car.isActive ? "destructive" : "default"} onClick={toggleActive}>
-            {car.isActive ? "下架商品" : "上架商品"}
+            {car.isActive ? "Remove Listing" : "Activate Listing"}
           </Button>
         </div>
       )}

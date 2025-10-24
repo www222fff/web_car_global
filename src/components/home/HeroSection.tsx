@@ -9,15 +9,15 @@ export function HeroSection() {
           <div className="space-y-6 text-center max-w-3xl">
             <div>
               <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-                ��身之选，绽放自信<span className="text-green-600">舒适每一天</span>
+                Comfort made effortless, <span className="text-green-600">confidence every day</span>
               </h1>
               <p className="mt-4 text-lg text-muted-foreground">
-                精选高品质内衣与家居服，兼顾舒适与美感，支持在线选购与购物车管理。
+                Curated lingerie and loungewear that balance comfort and style. Browse online and manage your cart with ease.
               </p>
             </div>
             <div className="flex flex-col gap-2 sm:flex-row justify-center">
               <Button size="lg" asChild>
-                <Link to="/products">选购内衣</Link>
+                <Link to="/products">Shop lingerie</Link>
               </Button>
             </div>
             <div className="flex items-center justify-center gap-4">
@@ -36,7 +36,7 @@ export function HeroSection() {
                 ))}
               </div>
               <div className="text-sm">
-                <span className="font-medium">1000+</span> 好评推荐
+                <span className="font-medium">1000+</span> positive reviews
               </div>
             </div>
           </div>

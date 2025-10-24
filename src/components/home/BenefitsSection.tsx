@@ -10,23 +10,23 @@ import { ShieldCheck, Shirt, Ruler, Recycle } from "lucide-react";
 const benefits = [
   {
     icon: <ShieldCheck className="h-10 w-10 text-green-600" />,
-    title: "品质保障",
-    description: "精选柔软亲肤面料与可靠工艺，贴身更安心。",
+    title: "Quality Assurance",
+    description: "Skin-friendly fabrics and reliable craftsmanship for peace of mind.",
   },
   {
     icon: <Shirt className="h-10 w-10 text-blue-600" />,
-    title: "舒适版型",
-    description: "多种款式覆盖日常/运动/家居，兼顾支撑与舒适。",
+    title: "Comfort Fit",
+    description: "Styles for everyday, sport, and lounge—supportive yet comfortable.",
   },
   {
     icon: <Ruler className="h-10 w-10 text-amber-600" />,
-    title: "尺码贴心",
-    description: "提供详细尺码建议与穿着指南，轻松找到合适大小。",
+    title: "Size Guidance",
+    description: "Detailed fit advice and size guide to find your perfect match.",
   },
   {
     icon: <Recycle className="h-10 w-10 text-slate-600" />,
-    title: "无忧售后",
-    description: "支持便捷退换与客服咨询，购物更省心。",
+    title: "Hassle-free Support",
+    description: "Easy returns and friendly customer service for stress-free shopping.",
   },
 ];
 
@@ -36,10 +36,10 @@ export function BenefitsSection() {
       <div className="container">
         <div className="mb-12 text-center">
           <h2 className="mb-2 text-3xl font-bold tracking-tight">
-            我们的承诺
+            Our Promise
           </h2>
           <p className="text-muted-foreground">
-            舒适、合身、好看且耐穿——让每一次贴身穿着都愉悦
+            Comfort, fit, style, and durability—making everyday wear feel great
           </p>
         </div>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">

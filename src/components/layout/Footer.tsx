@@ -13,7 +13,7 @@ export function Footer() {
               className="w-20 h-20 object-cover rounded-full mb-2"
             />
             <p className="text-sm text-muted-foreground">
-              精选内衣与家居服，亲肤舒适、精致剪裁，打造自信之美。
+              Curated lingerie and loungewear with skin-friendly comfort and refined fit.
             </p>
             <div className="flex gap-2 mt-2">
               <a
@@ -60,7 +60,7 @@ export function Footer() {
                   to="/about"
                   className="text-sm text-muted-foreground hover:text-green-600"
                 >
-                  关于我们
+                  About Us
                 </Link>
               </li>
               <li>
@@ -68,7 +68,7 @@ export function Footer() {
                   to="/contact"
                   className="text-sm text-muted-foreground hover:text-green-600"
                 >
-                  联系我们
+                  Contact Us
                 </Link>
               </li>
               <li>
@@ -76,7 +76,7 @@ export function Footer() {
                   to="/faq"
                   className="text-sm text-muted-foreground hover:text-green-600"
                 >
-                  常见问题
+                  FAQ
                 </Link>
               </li>
             </ul>

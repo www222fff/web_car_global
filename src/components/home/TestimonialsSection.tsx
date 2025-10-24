@@ -2,21 +2,21 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
 const testimonials = [
   {
-    quote: "面料很柔软，透气也不错，长时间穿着依然舒适。",
-    author: "张女士",
-    role: "设计师",
+    quote: "The fabric is soft and breathable—still comfy after a full day.",
+    author: "Ms. Zhang",
+    role: "Designer",
     avatar: "https://randomuser.me/api/portraits/women/65.jpg",
   },
   {
-    quote: "尺码建议很准确，运动系列支撑到位，体验很好。",
-    author: "王女士",
-    role: "健身爱好者",
+    quote: "Size tips were spot-on. The sports line is supportive and feels great.",
+    author: "Ms. Wang",
+    role: "Fitness Enthusiast",
     avatar: "https://randomuser.me/api/portraits/women/72.jpg",
   },
   {
-    quote: "款式好看，做工细致，售后服务也很及时。",
-    author: "李小姐",
-    role: "新手妈妈",
+    quote: "Beautiful styles, neat stitching, and very responsive support.",
+    author: "Ms. Li",
+    role: "New Mom",
     avatar: "https://randomuser.me/api/portraits/women/68.jpg",
   },
 ];
@@ -27,9 +27,9 @@ export function TestimonialsSection() {
       <div className="container">
         <div className="mb-12 text-center">
           <h2 className="mb-2 text-3xl font-bold tracking-tight">
-            用户评价
+            User Reviews
           </h2>
-          <p className="text-muted-foreground">听听她们怎么说</p>
+          <p className="text-muted-foreground">Hear what they say</p>
         </div>
         <div className="grid gap-6 md:grid-cols-3">
           {testimonials.map((testimonial, index) => (

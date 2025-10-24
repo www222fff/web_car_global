@@ -28,7 +28,7 @@ export function ProductCard(props: ProductCardProps & { onDelete?: (id: string) 
       <div className="aspect-square overflow-hidden">
         {isSold && (
           <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/60">
-            <span className="text-white text-lg font-bold">已售罄</span>
+            <span className="text-white text-lg font-bold">Sold out</span>
           </div>
         )}
         <img
@@ -65,7 +65,7 @@ export function ProductCard(props: ProductCardProps & { onDelete?: (id: string) 
       <CardFooter className="p-4 pt-0">
         <div className="flex w-full gap-2 items-center">
           <Button asChild className="flex-1">
-            <Link to={`/products/${id}`}>查看详情</Link>
+            <Link to={`/products/${id}`}>View details</Link>
           </Button>
         </div>
       </CardFooter>
