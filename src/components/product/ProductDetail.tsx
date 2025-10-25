@@ -8,11 +8,8 @@ interface ProductDetailProps {
   name: string;
   description: string;
   price: number;
-  originalPrice?: number;
-  images: string[];
-  details: string;
-  ingredients: string;
-  instructions: string;
+  images?: string[];
+  image?: string | null;
   isActive?: number;
 }
 
@@ -21,11 +18,8 @@ export function ProductDetail({
   name,
   description,
   price,
-  originalPrice,
-  images,
-  details,
-  ingredients,
-  instructions,
+  images = [],
+  image,
   isActive = 1,
 }: ProductDetailProps) {
   const [quantity, setQuantity] = useState(1);
@@ -80,13 +74,13 @@ export function ProductDetail({
               </div>
             )}
             <img
-              src={images[selectedImageIndex]}
+              src={images[selectedImageIndex] || image || "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80"}
               alt={name}
               className="w-full object-cover"
             />
           </div>
           <div className="flex space-x-2">
-            {images.map((image, index) => (
+            {[...(images ?? []), image].filter(Boolean).map((img, index) => (
               <div
                 key={index}
                 className={`overflow-hidden rounded-md border-2 cursor-pointer ${
@@ -97,16 +91,9 @@ export function ProductDetail({
                 onClick={() => setSelectedImageIndex(index)}
               >
                 <img
-                  src={
-                    image ||
-                    "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80"
-                  }
+                  src={img as string}
                   alt={`${name} - view ${index + 1}`}
                   className="h-20 w-20 object-cover"
-                  onError={(e) => {
-                    e.currentTarget.src =
-                      "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80";
-                  }}
                 />
               </div>
             ))}
@@ -124,16 +111,6 @@ export function ProductDetail({
             <span className="text-3xl font-bold text-green-600">
               ¥{price.toFixed(2)}
             </span>
-            {originalPrice && (
-              <span className="text-lg text-muted-foreground line-through">
-                ¥{originalPrice.toFixed(2)}
-              </span>
-            )}
-            {originalPrice && (
-              <span className="rounded-md bg-red-100 px-2 py-1 text-sm font-medium text-red-600">
-                Save ¥{(originalPrice - price).toFixed(2)}
-              </span>
-            )}
           </div>
 
           <div className="space-y-2">
@@ -184,36 +161,7 @@ export function ProductDetail({
             </div>
           </div>
 
-          <div className="space-y-4">
-            <Tabs defaultValue="details">
-              <TabsList className="w-full">
-                <TabsTrigger value="details" className="flex-1">
-                  Details
-                </TabsTrigger>
-                <TabsTrigger value="ingredients" className="flex-1">
-                  Ingredients
-                </TabsTrigger>
-                <TabsTrigger value="instructions" className="flex-1">
-                  How to Use
-                </TabsTrigger>
-              </TabsList>
-              <TabsContent value="details" className="mt-4">
-                <div className="space-y-4 text-sm">
-                  <p>{details}</p>
-                </div>
-              </TabsContent>
-              <TabsContent value="ingredients" className="mt-4">
-                <div className="space-y-4 text-sm">
-                  <p>{ingredients}</p>
-                </div>
-              </TabsContent>
-              <TabsContent value="instructions" className="mt-4">
-                <div className="space-y-4 text-sm">
-                  <p>{instructions}</p>
-                </div>
-              </TabsContent>
-            </Tabs>
-          </div>
+          {/* 可扩展更多产品信息 */}
         </div>
       </div>
     </div>

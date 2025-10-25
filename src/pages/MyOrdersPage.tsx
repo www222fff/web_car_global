@@ -1,15 +1,15 @@
 import { Layout } from "@/components/layout/Layout";
 import { useAuth } from "@/context/AuthContext";
-import { api, CarDTO } from "@/lib/api";
+import { api, ProductDTO } from "@/lib/api";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 
-interface OrderRow { id: string; userId: string; items: {carId:string; qty:number; price:number}[]; totalPrice: number; status: string; createdAt: number }
+interface OrderRow { id: string; userId: string; items: {productId:string; qty:number; price:number}[]; totalPrice: number; status: string; createdAt: number }
 
 export default function MyOrdersPage() {
   const { user, isAdmin } = useAuth();
   const [orders, setOrders] = useState<OrderRow[]>([]);
-  const [carMap, setCarMap] = useState<Record<string, CarDTO>>({});
+  const [productMap, setProductMap] = useState<Record<string, ProductDTO>>({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -17,13 +17,13 @@ export default function MyOrdersPage() {
     setLoading(true);
     Promise.all([
       api.listOrders(user.id),
-      api.getCars(true)
+  api.getProducts(true)
     ])
       .then(([orders, cars]) => {
         setOrders(orders);
-        const map: Record<string, CarDTO> = {};
-        cars.forEach((c: CarDTO) => { map[c.id] = c; });
-        setCarMap(map);
+  const map: Record<string, ProductDTO> = {};
+  cars.forEach((p: ProductDTO) => { map[p.id] = p; });
+  setProductMap(map);
       })
       .catch(() => { setOrders([]); setCarMap({}); })
       .finally(() => setLoading(false));
@@ -61,12 +61,12 @@ export default function MyOrdersPage() {
                 </div>
                 <div className="mt-2 space-y-1 text-sm">
                   {o.items.map((it, idx) => {
-                    const car = carMap[it.carId];
+                    const product = productMap[it.productId];
                     return (
                       <div key={idx} className="flex items-center gap-3 py-2 border-b last:border-b-0">
-                        {car?.image && <img src={car.image} alt={car.name} className="h-12 w-20 object-cover rounded" />}
+                        {product?.image && <img src={product.image} alt={product.name} className="h-12 w-20 object-cover rounded" />}
                         <div className="flex-1 min-w-0">
-                          <div className="font-medium line-clamp-1">{car?.name || `Car ID: ${it.carId}`}</div>
+                          <div className="font-medium line-clamp-1">{product?.name || `Product ID: ${it.productId}`}</div>
                           <div className="text-xs text-muted-foreground">Unit price: ¥{it.price.toFixed(2)}</div>
                         </div>
                         <div className="font-semibold">× {it.qty}</div>

@@ -5,9 +5,9 @@ import { useAuth } from "./AuthContext";
 interface CartContextValue {
   items: CartItemDTO[];
   count: number;
-  add: (carId: string, qty?: number) => void;
-  update: (carId: string, qty: number) => void;
-  remove: (carId: string) => void;
+  add: (productId: string, qty?: number) => void;
+  update: (productId: string, qty: number) => void;
+  remove: (productId: string) => void;
 }
 
 const CartContext = createContext<CartContextValue | undefined>(undefined);
@@ -28,63 +28,63 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => { reload(); }, [user?.id]);
 
-  const add = async (carId: string, qty = 1) => {
+  const add = async (productId: string, qty = 1) => {
     if (!user) return;
     // Optimistic update
     setItems(prev => {
-      const idx = prev.findIndex(i => i.carId === carId);
+      const idx = prev.findIndex(i => i.productId === productId);
       let next: CartItemDTO[];
       if (idx >= 0) {
         next = prev.map((i, k) => k === idx ? { ...i, qty: i.qty + qty } : i);
       } else {
-        next = [...prev, { carId, qty }];
+        next = [...prev, { productId, qty }];
       }
       setCount(computeCount(next));
       return next;
     });
     try {
-      await api.addToCart(user.id, carId, qty);
+      await api.addToCart(user.id, productId, qty);
     } finally {
-      reload(); // always reload to fix car info
+      reload(); // always reload to fix product info
     }
   };
 
-  const update = async (carId: string, qty: number) => {
+  const update = async (productId: string, qty: number) => {
     if (!user) return;
     if (qty <= 0) {
       setItems(prev => {
-        const next = prev.filter(i => i.carId !== carId);
+        const next = prev.filter(i => i.productId !== productId);
         setCount(computeCount(next));
         return next;
       });
       try {
-        await api.removeFromCart(user.id, carId);
+        await api.removeFromCart(user.id, productId);
       } finally {
         reload();
       }
       return;
     }
     setItems(prev => {
-      const next = prev.map(i => i.carId === carId ? { ...i, qty } : i);
+      const next = prev.map(i => i.productId === productId ? { ...i, qty } : i);
       setCount(computeCount(next));
       return next;
     });
     try {
-      await api.setCartItem(user.id, carId, qty);
+      await api.setCartItem(user.id, productId, qty);
     } finally {
       reload();
     }
   };
 
-  const remove = async (carId: string) => {
+  const remove = async (productId: string) => {
     if (!user) return;
     setItems(prev => {
-      const next = prev.filter(i => i.carId !== carId);
+      const next = prev.filter(i => i.productId !== productId);
       setCount(computeCount(next));
       return next;
     });
     try {
-      await api.removeFromCart(user.id, carId);
+      await api.removeFromCart(user.id, productId);
     } finally {
       reload();
     }

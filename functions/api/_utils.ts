@@ -29,14 +29,12 @@ export interface User {
   role: Role;
 }
 
-export interface CarItem {
+export interface ProductItem {
   id: string;
   name: string;
   description: string;
   price: number;
   image: string | null;
-  year?: number | null;
-  mileage?: number | null;
   category?: string | null;
   createdBy: string;
   images?: string[] | null;
@@ -52,15 +50,13 @@ export async function ensureSchema(env: any) {
     role TEXT NOT NULL
   );`).run();
 
-  // Reuse "cars" table as products
-  await db.prepare(`CREATE TABLE IF NOT EXISTS cars (
+  // products 表
+  await db.prepare(`CREATE TABLE IF NOT EXISTS products (
     id TEXT PRIMARY KEY,
     name TEXT NOT NULL,
     description TEXT,
     price REAL NOT NULL,
     image TEXT,
-    year INTEGER,
-    mileage INTEGER,
     category TEXT,
     createdBy TEXT NOT NULL,
     images TEXT,
@@ -68,18 +64,18 @@ export async function ensureSchema(env: any) {
   );`).run();
 
   try {
-    const info = await db.prepare(`PRAGMA table_info(cars)`).all();
+    const info = await db.prepare(`PRAGMA table_info(products)`).all();
     const hasIsActive = Array.isArray(info.results) && info.results.some((r: any) => r.name === "isActive");
     if (!hasIsActive) {
-      await db.prepare(`ALTER TABLE cars ADD COLUMN isActive INTEGER NOT NULL DEFAULT 1;`).run();
+      await db.prepare(`ALTER TABLE products ADD COLUMN isActive INTEGER NOT NULL DEFAULT 1;`).run();
     }
   } catch {}
 
   await db.prepare(`CREATE TABLE IF NOT EXISTS cart (
     userId TEXT NOT NULL,
-    carId TEXT NOT NULL,
+    productId TEXT NOT NULL,
     qty INTEGER NOT NULL,
-    PRIMARY KEY (userId, carId)
+    PRIMARY KEY (userId, productId)
   );`).run();
 
   await db.prepare(`CREATE TABLE IF NOT EXISTS orders (
@@ -108,12 +104,12 @@ export async function seedIfNeeded(env: any) {
     await db.prepare(`INSERT INTO users (id, username, password, role) VALUES (?, ?, ?, ?);`).bind(id, 'admin', 'admin', 'admin').run();
   }
 
-  const countRow = await db.prepare(`SELECT COUNT(*) as c FROM cars;`).first<{c:number}>();
+  const countRow = await db.prepare(`SELECT COUNT(*) as c FROM products;`).first<{c:number}>();
   const count = countRow ? Number((countRow as any).c) : 0;
   if (count === 0) {
     const adminIdRow = await db.prepare(`SELECT id FROM users WHERE role='admin' LIMIT 1;`).first<{id:string}>();
     const createdBy = adminIdRow?.id || randomUUID();
-    const samples: Omit<CarItem, 'id'>[] = [
+    const samples: Omit<ProductItem, 'id'>[] = [
       {
         name: 'Wireless Lightweight Bra',
         description: 'Breathable and skin‑friendly with gentle support for all‑day wear.',
@@ -128,10 +124,10 @@ export async function seedIfNeeded(env: any) {
         name: 'Modal High‑Waist Underwear (Pack of 3)',
         description: 'Soft, stretchy, and comfortable for everyday.',
         price: 129,
-        image: 'https://images.unsplash.com/photo-1603252109744-5f17d0c0d5f1?q=80&w=1200&auto=format&fit=crop',
+        image: 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?q=80&w=1200&auto=format&fit=crop',
         category: 'Underwear',
         createdBy,
-        images: ['https://images.unsplash.com/photo-1603252109744-5f17d0c0d5f1?q=80&w=1200&auto=format&fit=crop'],
+        images: ['https://images.unsplash.com/photo-1512436991641-6745cdb1723f?q=80&w=1200&auto=format&fit=crop'],
         isActive: 1,
       },
       {
@@ -147,8 +143,8 @@ export async function seedIfNeeded(env: any) {
     ];
     for (const s of samples) {
       const id = randomUUID();
-      await db.prepare(`INSERT INTO cars (id, name, description, price, image, year, mileage, category, createdBy, images, isActive) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`)
-        .bind(id, s.name, s.description, s.price, s.image ?? null, null, null, s.category ?? null, s.createdBy, JSON.stringify(s.images ?? []), s.isActive ?? 1)
+      await db.prepare(`INSERT INTO products (id, name, description, price, image, category, createdBy, images, isActive) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`)
+        .bind(id, s.name, s.description, s.price, s.image ?? null, s.category ?? null, s.createdBy, JSON.stringify(s.images ?? []), s.isActive ?? 1)
         .run();
     }
   }

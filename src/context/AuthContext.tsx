@@ -1,4 +1,4 @@
-import { createContext, useContext, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { api, UserDTO } from "@/lib/api";
 
 interface AuthContextValue {
@@ -13,6 +13,11 @@ const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<UserDTO | null>(null);
+  
+  // Initialize database when AuthProvider mounts
+  useEffect(() => {
+    fetch('/api/init').catch(console.error);
+  }, []); // Empty dependency array means this runs once on mount
 
   const login = async (username: string, password: string) => {
     const u = await api.login(username, password);

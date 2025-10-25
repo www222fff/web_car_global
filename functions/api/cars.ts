@@ -1,4 +1,4 @@
-import { ensureSchema, seedIfNeeded, getUserFromRequest, ensureJsonResponse, badRequest } from "./_utils";
+import { getUserFromRequest, ensureJsonResponse, badRequest } from "./_utils";
 // 临时声明 D1Database 类型（如有 Cloudflare D1 依赖请替换为官方类型）
 type D1Database = {
   prepare: (sql: string) => {
@@ -12,8 +12,6 @@ interface Env { DB: D1Database }
 interface OnRequestArgs { request: Request; env: Env }
 
 export async function onRequest({ request, env }: OnRequestArgs) {
-  await ensureSchema(env);
-  await seedIfNeeded(env);
   const url = new URL(request.url);
   const db = env.DB as D1Database;
   const user = await getUserFromRequest(request, env);

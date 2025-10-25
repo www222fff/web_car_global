@@ -24,7 +24,7 @@ export default function CartPage() {
   }, [user]);
 
   const total = items.reduce((sum, i) => {
-    const price = i.car?.price || 0;
+    const price = i.product?.price || 0;
     return sum + price * i.qty;
   }, 0);
 
@@ -72,22 +72,22 @@ export default function CartPage() {
             ) : (
               <div className="space-y-4">
                 {items.map((i) => {
-                  const car = i.car;
-                  if (!car) return null;
+                  const product = i.product;
+                  if (!product) return null;
                   return (
-                    <div key={i.carId} className="flex flex-wrap items-start gap-3 border-b pb-3">
-                      <img src={car.image || ''} alt={car.name} className="h-16 w-24 object-cover rounded shrink-0" />
+                    <div key={i.productId} className="flex flex-wrap items-start gap-3 border-b pb-3">
+                      <img src={product.image || ''} alt={product.name} className="h-16 w-24 object-cover rounded shrink-0" />
                       <div className="flex-1 min-w-0">
-                        <div className="font-medium line-clamp-1">{car.name}</div>
-                        <div className="text-sm text-muted-foreground">¥{car.price.toFixed(2)}</div>
+                        <div className="font-medium line-clamp-1">{product.name}</div>
+                        <div className="text-sm text-muted-foreground">¥{product.price.toFixed(2)}</div>
                       </div>
                       <div className="flex items-center gap-2 flex-wrap w-full sm:w-auto sm:ml-auto">
-                        <Button variant="outline" size="icon" onClick={() => update(i.carId, i.qty - 1)}>-</Button>
+                        <Button variant="outline" size="icon" onClick={() => update(i.productId, i.qty - 1)}>-</Button>
                         <Input value={i.qty} onChange={(e) => {
                           const val = Number(e.target.value);
-                          update(i.carId, Number.isFinite(val) ? val : i.qty);
+                          update(i.productId, Number.isFinite(val) ? val : i.qty);
                         }} className="w-16 text-center" />
-                        <Button variant="outline" size="icon" onClick={() => update(i.carId, i.qty + 1)}>+</Button>
+                        <Button variant="outline" size="icon" onClick={() => update(i.productId, i.qty + 1)}>+</Button>
                       </div>
                     </div>
                   );

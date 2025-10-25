@@ -1,7 +1,6 @@
-import { ensureSchema, getUserFromRequest, ensureJsonResponse, badRequest } from "./_utils";
+import { getUserFromRequest, ensureJsonResponse, badRequest } from "./_utils";
 
 export async function onRequest({ request, env }) {
-  await ensureSchema(env);
   const db = env.DB;
   const user = await getUserFromRequest(request, env);
   if (!user) return badRequest('Unauthorized', 401);

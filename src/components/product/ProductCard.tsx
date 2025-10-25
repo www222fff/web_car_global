@@ -14,13 +14,14 @@ export interface ProductCardProps {
   name: string;
   description: string;
   price: number;
-  originalPrice?: number;
   image?: string | null;
+  images?: string[];
+  category?: string | null;
   isActive?: number;
 }
 
 export function ProductCard(props: ProductCardProps & { onDelete?: (id: string) => void }) {
-  const { id, name, description, price, originalPrice, image, isActive = 1 } = props;
+  const { id, name, description, price, image, images, category, isActive = 1 } = props;
   const isSold = isActive === 0;
 
   return (
@@ -31,18 +32,17 @@ export function ProductCard(props: ProductCardProps & { onDelete?: (id: string) 
             <span className="text-white text-lg font-bold">Sold out</span>
           </div>
         )}
-        <img
-          src={
-            image ||
-            "https://images.unsplash.com/photo-1603252109303-2751441dd157?q=80&w=1200&auto=format&fit=crop"
-          }
-          alt={name}
-          className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
-          onError={(e) => {
-            e.currentTarget.src =
-              "https://images.unsplash.com/photo-1603252109303-2751441dd157?q=80&w=1200&auto=format&fit=crop";
-          }}
-        />
+        {image ? (
+          <img
+            src={image}
+            alt={name}
+            className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
+          />
+        ) : (
+          <div className="h-full w-full flex items-center justify-center bg-gray-100 text-gray-400">
+            No image
+          </div>
+        )}
       </div>
       <CardHeader className="p-4">
         <CardTitle className="line-clamp-1 text-lg">{name}</CardTitle>
@@ -55,11 +55,6 @@ export function ProductCard(props: ProductCardProps & { onDelete?: (id: string) 
           <span className="text-lg font-bold text-green-600">
             ¥{price.toFixed(2)}
           </span>
-          {originalPrice && (
-            <span className="text-sm text-muted-foreground line-through">
-              ¥{originalPrice.toFixed(2)}
-            </span>
-          )}
         </div>
       </CardContent>
       <CardFooter className="p-4 pt-0">

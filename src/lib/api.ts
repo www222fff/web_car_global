@@ -1,6 +1,6 @@
 export interface UserDTO { id: string; username: string; role: 'admin'|'user' }
-export interface CarDTO { id: string; name: string; description: string; price: number; image?: string|null; year?: number|null; mileage?: number|null; category?: string|null; createdBy: string; images?: string[]; isActive?: number }
-export interface CartItemDTO { carId: string; qty: number; car?: { id: string; name: string; price: number; image?: string|null } }
+export interface ProductDTO { id: string; name: string; description: string; price: number; image?: string|null; category?: string|null; createdBy: string; images?: string[]; isActive?: number }
+export interface CartItemDTO { productId: string; qty: number; product?: { id: string; name: string; price: number; image?: string|null } }
 
 function withHeaders(userId?: string) {
   const headers: Record<string, string> = { 'Content-Type': 'application/json' };
@@ -9,8 +9,8 @@ function withHeaders(userId?: string) {
 }
 
 export const api = {
-  async deleteCar(userId: string, id: string) {
-    const res = await fetch(`/api/cars?id=${encodeURIComponent(id)}`, { method: 'DELETE', ...withHeaders(userId) });
+  async deleteProduct(userId: string, id: string) {
+    const res = await fetch(`/api/products?id=${encodeURIComponent(id)}`, { method: 'DELETE', ...withHeaders(userId) });
     if (!res.ok) throw new Error((await res.json()).error || 'Delete failed');
     return res.json();
   },
@@ -24,23 +24,23 @@ export const api = {
     if (!res.ok) throw new Error((await res.json()).error || 'Registration failed');
     return res.json();
   },
-  async getCars(all = false): Promise<CarDTO[]> {
-    const res = await fetch(`/api/cars${all ? '?all=1' : ''}`);
-    if (!res.ok) throw new Error('Failed to fetch cars');
+  async getProducts(all = false): Promise<ProductDTO[]> {
+    const res = await fetch(`/api/products${all ? '?all=1' : ''}`);
+    if (!res.ok) throw new Error('Failed to fetch products');
     return res.json();
   },
-  async getCar(id: string): Promise<CarDTO> {
-    const res = await fetch(`/api/cars?id=${encodeURIComponent(id)}`);
-    if (!res.ok) throw new Error('Car not found');
+  async getProduct(id: string): Promise<ProductDTO> {
+    const res = await fetch(`/api/products?id=${encodeURIComponent(id)}`);
+    if (!res.ok) throw new Error('Product not found');
     return res.json();
   },
-  async createCar(userId: string, data: Partial<CarDTO>): Promise<CarDTO> {
-    const res = await fetch('/api/cars', { method: 'POST', ...withHeaders(userId), body: JSON.stringify(data) });
+  async createProduct(userId: string, data: Partial<ProductDTO>): Promise<ProductDTO> {
+    const res = await fetch('/api/products', { method: 'POST', ...withHeaders(userId), body: JSON.stringify(data) });
     if (!res.ok) throw new Error((await res.json()).error || 'Create failed');
     return res.json();
   },
-  async updateCar(userId: string, id: string, data: Partial<CarDTO>): Promise<CarDTO> {
-    const res = await fetch(`/api/cars?id=${encodeURIComponent(id)}`, { method: 'PATCH', ...withHeaders(userId), body: JSON.stringify(data) });
+  async updateProduct(userId: string, id: string, data: Partial<ProductDTO>): Promise<ProductDTO> {
+    const res = await fetch(`/api/products?id=${encodeURIComponent(id)}`, { method: 'PATCH', ...withHeaders(userId), body: JSON.stringify(data) });
     if (!res.ok) throw new Error((await res.json()).error || 'Update failed');
     return res.json();
   },
@@ -49,18 +49,18 @@ export const api = {
     if (!res.ok) throw new Error('Failed to fetch cart');
     return res.json();
   },
-  async addToCart(userId: string, carId: string, qty = 1) {
-    const res = await fetch('/api/cart', { method: 'POST', ...withHeaders(userId), body: JSON.stringify({ carId, qty }) });
+  async addToCart(userId: string, productId: string, qty = 1) {
+    const res = await fetch('/api/cart', { method: 'POST', ...withHeaders(userId), body: JSON.stringify({ productId, qty }) });
     if (!res.ok) throw new Error('Failed to add to cart');
     return res.json();
   },
-  async setCartItem(userId: string, carId: string, qty: number) {
-    const res = await fetch('/api/cart', { method: 'PUT', ...withHeaders(userId), body: JSON.stringify({ carId, qty }) });
+  async setCartItem(userId: string, productId: string, qty: number) {
+    const res = await fetch('/api/cart', { method: 'PUT', ...withHeaders(userId), body: JSON.stringify({ productId, qty }) });
     if (!res.ok) throw new Error('Failed to update cart');
     return res.json();
   },
-  async removeFromCart(userId: string, carId: string) {
-    const res = await fetch('/api/cart', { method: 'DELETE', ...withHeaders(userId), body: JSON.stringify({ carId }) });
+  async removeFromCart(userId: string, productId: string) {
+    const res = await fetch('/api/cart', { method: 'DELETE', ...withHeaders(userId), body: JSON.stringify({ productId }) });
     if (!res.ok) throw new Error('Failed to remove from cart');
     return res.json();
   },

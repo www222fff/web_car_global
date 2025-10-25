@@ -1,8 +1,5 @@
-import { ensureSchema, seedIfNeeded, getUserFromRequest, ensureJsonResponse, badRequest } from "./_utils";
+import { getUserFromRequest, ensureJsonResponse, badRequest } from "./_utils";
 
-export async function onRequest({ request, env }) {
-  await ensureSchema(env);
-  await seedIfNeeded(env);
   const db = env.DB as D1Database;
   const url = new URL(request.url);
 
@@ -27,8 +24,8 @@ export async function onRequest({ request, env }) {
     let address = body.address, contact = body.contact;
     if (!items) {
       // build from cart
-      const rs = await db.prepare(`SELECT c.carId, c.qty, cars.price FROM cart c LEFT JOIN cars ON cars.id=c.carId WHERE c.userId=?`).bind(user.id).all();
-      items = (rs.results || []).map((r: any) => ({ carId: r.carId, qty: r.qty, price: r.price }));
+  const rs = await db.prepare(`SELECT c.productId, c.qty, products.price FROM cart c LEFT JOIN products ON products.id=c.productId WHERE c.userId=?`).bind(user.id).all();
+  items = (rs.results || []).map((r: any) => ({ productId: r.productId, qty: r.qty, price: r.price }));
     }
     if (!items || items.length === 0) return badRequest('Empty order');
     // fetch address/contact if not provided
@@ -40,14 +37,14 @@ export async function onRequest({ request, env }) {
     if (!address || !contact) return badRequest('Missing address or contact');
     // compute total from DB prices
     let total = 0;
-    const validated: {carId:string; qty:number; price:number}[] = [];
+    const validated: {productId:string; qty:number; price:number}[] = [];
     for (const it of items) {
-      const row = await db.prepare(`SELECT price, isActive FROM cars WHERE id=?`).bind(it.carId).first<{price:number,isActive:number}>();
-      if (!row) return badRequest(`Car not found: ${it.carId}`);
-      if (row.isActive === 0) return badRequest(`Car already sold: ${it.carId}`);
+      const row = await db.prepare(`SELECT price, isActive FROM products WHERE id=?`).bind(it.productId).first<{price:number,isActive:number}>();
+      if (!row) return badRequest(`Product not found: ${it.productId}`);
+      if (row.isActive === 0) return badRequest(`Product already sold: ${it.productId}`);
       const price = Number(row.price);
       const qty = Number(it.qty || 1);
-      validated.push({ carId: it.carId, qty, price });
+      validated.push({ productId: it.productId, qty, price });
       total += price * qty;
     }
     const id = crypto.randomUUID();
@@ -56,7 +53,7 @@ export async function onRequest({ request, env }) {
       .bind(id, user.id, JSON.stringify(validated), total, createdAt, address, contact).run();
     // 标记车辆为已售出
     for (const it of validated) {
-      await db.prepare(`UPDATE cars SET isActive=0 WHERE id=?`).bind(it.carId).run();
+      await db.prepare(`UPDATE products SET isActive=0 WHERE id=?`).bind(it.productId).run();
     }
     // Clear cart after order
     await db.prepare(`DELETE FROM cart WHERE userId=?`).bind(user.id).run();
@@ -77,7 +74,7 @@ export async function onRequest({ request, env }) {
     // 恢复车辆可售
     const items = JSON.parse(order.items || '[]');
     for (const it of items) {
-      await db.prepare('UPDATE cars SET isActive=1 WHERE id=?').bind(it.carId).run();
+      await db.prepare('UPDATE products SET isActive=1 WHERE id=?').bind(it.productId).run();
     }
     await db.prepare('DELETE FROM orders WHERE id=?').bind(id).run();
     return ensureJsonResponse({ success: true });
@@ -95,7 +92,7 @@ export async function onRequest({ request, env }) {
     // 删除订单时无论状态都恢复车辆可售
     const items = JSON.parse(order.items || '[]');
     for (const it of items) {
-      await db.prepare('UPDATE cars SET isActive=1 WHERE id=?').bind(it.carId).run();
+      await db.prepare('UPDATE products SET isActive=1 WHERE id=?').bind(it.productId).run();
     }
     await db.prepare('DELETE FROM orders WHERE id=?').bind(id).run();
     return ensureJsonResponse({ success: true });

@@ -13,7 +13,7 @@ import { useState } from "react";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import CartPage from "./pages/CartPage";
-import AdminUploadCarPage from "./pages/AdminUploadCarPage";
+import AdminUploadProductPage from "./pages/AdminUploadProductPage";
 import { AuthProvider } from "./context/AuthContext";
 import { CartProvider } from "./context/CartContext";
 import AdminOrdersPage from "./pages/AdminOrdersPage";
@@ -38,7 +38,7 @@ const App = () => {
                 <Route path="/products" element={<ProductsPage />} />
                 <Route path="/products/:id" element={<ProductPage />} />
                 <Route path="/cart" element={<CartPage />} />
-                <Route path="/admin/upload" element={<AdminUploadCarPage />} />
+                <Route path="/admin/upload" element={<AdminUploadProductPage />} />
                 <Route path="/admin/orders" element={<AdminOrdersPage />} />
                 <Route path="/orders" element={<MyOrdersPage />} />
                 <Route path="/login" element={<LoginPage />} />
