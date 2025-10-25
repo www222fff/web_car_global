@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { api } from "@/lib/api";
 
-export default function AdminUploadCarPage() {
+export default function AdminUploadProductPage() {
   const { isAdmin, user } = useAuth();
   const navigate = useNavigate();
 
@@ -42,7 +42,7 @@ export default function AdminUploadCarPage() {
     try {
       if (!user) throw new Error("Not signed in");
       if (!name || !price || !imageData) throw new Error("Please provide name, price and image");
-      const car = await api.createCar(user.id, {
+      const product = await api.createProduct(user.id, {
         name,
         description,
         price: Number(price),
@@ -50,7 +50,7 @@ export default function AdminUploadCarPage() {
         category,
         images: [imageData],
       });
-      navigate(`/products/${car.id}`);
+      navigate(`/products/${product.id}`);
     } catch (err: any) {
       setError(err.message || "Submit failed");
     }

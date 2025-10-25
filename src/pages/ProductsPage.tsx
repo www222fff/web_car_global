@@ -12,19 +12,19 @@ import {
 import { Slider } from "@/components/ui/slider";
 import { Search } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import { api, CarDTO } from "@/lib/api";
+import { api, ProductDTO } from "@/lib/api";
 import { useAuth } from "@/context/AuthContext";
 
 export default function ProductsPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
-  const [cars, setCars] = useState<CarDTO[]>([]);
+  const [products, setProducts] = useState<ProductDTO[]>([]);
   const { user, isAdmin } = useAuth();
-  useEffect(() => { api.getCars().then(setCars).catch(() => setCars([])); }, []);
-  const maxPrice = useMemo(() => (cars.length ? Math.max(...cars.map((c) => c.price)) : 100000), [cars]);
+  useEffect(() => { api.getProducts().then(setProducts).catch(() => setProducts([])); }, []);
+  const maxPrice = useMemo(() => (products.length ? Math.max(...products.map((c) => c.price)) : 100000), [products]);
   const [priceRange, setPriceRange] = useState<number[]>([0, maxPrice]);
 
-  const filteredProducts = cars.filter((product) => {
+  const filteredProducts = products.filter((product) => {
     const matchesSearch =
       product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       (product.description || '').toLowerCase().includes(searchQuery.toLowerCase());
@@ -37,7 +37,7 @@ export default function ProductsPage() {
 
   const categories = [
     "all",
-    ...Array.from(new Set(cars.map((product) => product.category).filter(Boolean))) as string[],
+    ...Array.from(new Set(products.map((product) => product.category).filter(Boolean))) as string[],
   ];
 
   return (

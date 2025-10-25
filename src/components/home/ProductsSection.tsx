@@ -1,11 +1,11 @@
 import { ProductCard } from "../product/ProductCard";
 import { useEffect, useState } from "react";
-import { api, CarDTO } from "@/lib/api";
+import { api, ProductDTO } from "@/lib/api";
 
 export function ProductsSection() {
-  const [cars, setCars] = useState<CarDTO[]>([]);
+  const [products, setProducts] = useState<ProductDTO[]>([]);
   useEffect(() => {
-    api.getCars().then((list) => setCars(list.slice(0, 4))).catch(() => setCars([]));
+    api.getProducts().then((list) => setProducts(list.slice(0, 4))).catch(() => setProducts([]));
   }, []);
   return (
     <section className="py-16 md:py-24">
@@ -15,8 +15,8 @@ export function ProductsSection() {
           <p className="text-muted-foreground">Soft fabrics and tailored cuts, great for everyday and sport</p>
         </div>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {cars.map((car) => (
-            <ProductCard key={car.id} {...car} />
+          {products.map((product) => (
+            <ProductCard key={product.id} {...product} />
           ))}
         </div>
       </div>
