@@ -99,4 +99,4 @@ import { getUserFromRequest, ensureJsonResponse, badRequest } from "./_utils";
   }
 
   return badRequest('Method not allowed', 405);
-}
+
