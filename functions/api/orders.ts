@@ -1,6 +1,9 @@
 import { getUserFromRequest, ensureJsonResponse, badRequest } from "./_utils";
 
-  const db = env.DB as D1Database;
+export async function onRequest({ request, env }) {
+  const db = env.DB;
+  const user = await getUserFromRequest(request, env);
+  if (!user) return badRequest('Unauthorized', 401);
   const url = new URL(request.url);
 
   if (request.method === 'GET') {
@@ -99,4 +102,4 @@ import { getUserFromRequest, ensureJsonResponse, badRequest } from "./_utils";
   }
 
   return badRequest('Method not allowed', 405);
-
+}
