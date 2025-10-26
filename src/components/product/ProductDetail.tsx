@@ -35,12 +35,10 @@ export function ProductDetail({
   const { user } = useAuth();
   const { add } = useCart();
   const handleAddToCart = async () => {
-    console.log("danny 0:", user);
     if (!user || isActive === 0) return;
     setSubmitting(true);
     setSuccess(false);
     try {
-      console.log("danny 1:", user);
       await add(id, quantity);
       setSuccess(true);
       setTimeout(() => setSuccess(false), 1500);
