@@ -2,6 +2,8 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Minus, Plus, ShoppingCart, Heart, Share2 } from "lucide-react";
 import { useState } from "react";
+import { useAuth } from "@/context/AuthContext";
+import { useCart } from "@/context/CartContext";
 
 interface ProductDetailProps {
   id: string;
@@ -26,36 +28,20 @@ export function ProductDetail({
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [contact, setContact] = useState("");
 
   const increaseQuantity = () => setQuantity((prev) => prev + 1);
   const decreaseQuantity = () => setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
 
-  const handleOrder = async () => {
-    if (!contact.trim()) {
-      setContact('Please enter contact info');
-      return;
-    }
+  const { user } = useAuth();
+  const { add } = useCart();
+  const handleAddToCart = async () => {
+    if (!user || isActive === 0) return;
     setSubmitting(true);
     setSuccess(false);
     try {
-      const orderDate = new Date().toISOString();
-      await fetch('/api/orders', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          product: name,
-          num: quantity,
-          contact,
-          orderdata: JSON.stringify({ orderDate }),
-        }),
-      });
+      await add(id, quantity);
       setSuccess(true);
-      setContact('Order placed!');
-      setTimeout(() => {
-        setSuccess(false);
-        setContact("");
-      }, 2000);
+      setTimeout(() => setSuccess(false), 1500);
     } catch (e) {
       // 可选：处理错误
     }
@@ -136,21 +122,10 @@ export function ProductDetail({
                 </Button>
               </div>
             </div>
-            <div className="mt-2">
-              <input
-                type="text"
-                className="w-full border rounded px-2 py-1 text-sm"
-                placeholder="Enter contact (phone/WeChat/email)"
-                value={contact}
-                onChange={e => setContact(e.target.value)}
-                disabled={submitting || isActive === 0}
-                style={success || contact === 'Please enter contact info' ? { color: contact === 'Please enter contact info' ? 'red' : 'green', fontWeight: 'bold' } : {}}
-              />
-            </div>
             <div className="flex gap-2">
-              <Button className="flex-1 gap-2" size="lg" onClick={handleOrder} disabled={submitting || isActive === 0}>
+              <Button className="flex-1 gap-2" size="lg" onClick={handleAddToCart} disabled={submitting || isActive === 0}>
                 <ShoppingCart className="h-4 w-4" />
-                {isActive === 0 ? 'Sold' : 'Order Now'}
+                {isActive === 0 ? 'Sold' : success ? 'Added!' : 'Add to Cart'}
               </Button>
               <Button variant="outline" size="icon" className="h-11 w-11" disabled={isActive === 0}>
                 <Heart className="h-5 w-5" />
