@@ -6,8 +6,8 @@ export async function onRequest({ request, env }) {
   if (!user) return badRequest('Unauthorized', 401);
 
   if (request.method === 'GET') {
-  const rs = await db.prepare(`SELECT c.productId, c.qty, products.name as productName, products.price as price, products.image as productImage FROM cart c LEFT JOIN products ON products.id=c.productId WHERE c.userId=?`).bind(user.id).all();
-  const items = (rs.results || []).map((r: any) => ({ productId: r.productId, qty: r.qty, product: { id: r.productId, name: r.productName, price: r.price, image: r.productImage } }));
+    const rs = await db.prepare(`SELECT c.productId, c.qty, products.name as productName, products.price as price, products.image as productImage FROM cart c LEFT JOIN products ON products.id=c.productId WHERE c.userId=?`).bind(user.id).all();
+    const items = (rs.results || []).map((r: any) => ({ productId: r.productId, qty: r.qty, product: { id: r.productId, name: r.productName, price: r.price, image: r.productImage } }));
     const count = items.reduce((s: number, i: any) => s + i.qty, 0);
     return ensureJsonResponse({ items, count });
   }
