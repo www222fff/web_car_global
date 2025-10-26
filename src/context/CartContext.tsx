@@ -30,7 +30,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const add = async (productId: string, qty = 1) => {
     if (!user) return;
-    console.log('addToCart', user.id, productId, qty)；
+    console.log('addToCart', user.id, productId, qty);
     // Optimistic update
     setItems(prev => {
       const idx = prev.findIndex(i => i.productId === productId);
