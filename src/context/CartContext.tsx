@@ -8,55 +8,84 @@ interface CartContextValue {
   add: (productId: string, qty?: number) => void;
   update: (productId: string, qty: number) => void;
   remove: (productId: string) => void;
+  reload: () => void;
 }
 
 const CartContext = createContext<CartContextValue | undefined>(undefined);
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
-  const { user } = useAuth();
+  const { user, loading } = useAuth(); // ✅ 需要 AuthContext 提供 loading 状态
   const [items, setItems] = useState<CartItemDTO[]>([]);
   const [count, setCount] = useState(0);
 
   const computeCount = (list: CartItemDTO[]) => list.reduce((s, i) => s + i.qty, 0);
 
   const reload = async () => {
-    if (!user) { setItems([]); setCount(0); return; }
-    const data = await api.getCart(user.id);
-    setItems(data.items);
-    setCount(data.count);
+    if (!user) {
+      setItems([]);
+      setCount(0);
+      return;
+    }
+    try {
+      const data = await api.getCart(user.id);
+      setItems(data.items);
+      setCount(data.count);
+    } catch (err) {
+      console.error("Failed to reload cart:", err);
+      setItems([]);
+      setCount(0);
+    }
   };
 
-  useEffect(() => { reload(); }, [user?.id]);
+  // ✅ 等 AuthContext 加载完后再执行
+  useEffect(() => {
+    if (!loading && user) {
+      reload();
+    }
+  }, [user?.id, loading]);
 
   const add = async (productId: string, qty = 1) => {
-    console.log("danny 2:", user);
-    if (!user) return;
-    console.log("danny 3:", user);
+    if (loading) {
+      console.warn("addToCart: waiting for auth to load...");
+      return;
+    }
+    if (!user) {
+      console.warn("addToCart: user not logged in");
+      return;
+    }
+
+    console.log("addToCart:", user.id, productId, qty);
 
     // Optimistic update
-    setItems(prev => {
-      const idx = prev.findIndex(i => i.productId === productId);
+    setItems((prev) => {
+      const idx = prev.findIndex((i) => i.productId === productId);
       let next: CartItemDTO[];
       if (idx >= 0) {
-        next = prev.map((i, k) => k === idx ? { ...i, qty: i.qty + qty } : i);
+        next = prev.map((i, k) =>
+          k === idx ? { ...i, qty: i.qty + qty } : i
+        );
       } else {
         next = [...prev, { productId, qty }];
       }
       setCount(computeCount(next));
       return next;
     });
+
     try {
       await api.addToCart(user.id, productId, qty);
+    } catch (err) {
+      console.error("Failed to add to cart:", err);
     } finally {
-      reload(); // always reload to fix product info
+      reload(); // always reload to sync with server
     }
   };
 
   const update = async (productId: string, qty: number) => {
-    if (!user) return;
+    if (loading || !user) return;
+
     if (qty <= 0) {
-      setItems(prev => {
-        const next = prev.filter(i => i.productId !== productId);
+      setItems((prev) => {
+        const next = prev.filter((i) => i.productId !== productId);
         setCount(computeCount(next));
         return next;
       });
@@ -67,11 +96,15 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       }
       return;
     }
-    setItems(prev => {
-      const next = prev.map(i => i.productId === productId ? { ...i, qty } : i);
+
+    setItems((prev) => {
+      const next = prev.map((i) =>
+        i.productId === productId ? { ...i, qty } : i
+      );
       setCount(computeCount(next));
       return next;
     });
+
     try {
       await api.setCartItem(user.id, productId, qty);
     } finally {
@@ -80,12 +113,14 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   };
 
   const remove = async (productId: string) => {
-    if (!user) return;
-    setItems(prev => {
-      const next = prev.filter(i => i.productId !== productId);
+    if (loading || !user) return;
+
+    setItems((prev) => {
+      const next = prev.filter((i) => i.productId !== productId);
       setCount(computeCount(next));
       return next;
     });
+
     try {
       await api.removeFromCart(user.id, productId);
     } finally {
@@ -98,7 +133,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     [items, count]
   );
 
-  return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
+  // ✅ 不渲染直到 AuthContext 加载完成
+  if (loading) return null;
+
+  return (
+    <CartContext.Provider value={value}>{children}</CartContext.Provider>
+  );
 }
 
 export function useCart() {
