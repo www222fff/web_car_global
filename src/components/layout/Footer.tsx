@@ -7,11 +7,6 @@ export function Footer() {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           <div className="space-y-3">
             <h3 className="text-lg font-semibold">Lingerie Boutique</h3>
-            <img
-              src="https://images.unsplash.com/photo-1519742908083-976d3e506cd8?auto=format&fit=crop&w=200&q=80"
-              alt="Brand logo"
-              className="w-20 h-20 object-cover rounded-full mb-2"
-            />
             <p className="text-sm text-muted-foreground">
               Curated lingerie and loungewear with skin-friendly comfort and refined fit.
             </p>
